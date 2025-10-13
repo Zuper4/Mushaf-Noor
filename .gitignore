@@ -1,0 +1,33 @@
+android/
+ios/
+build/
+.dart_tool/
+.packages
+.metadata
+.flutter-plugins
+.flutter-plugins-dependencies
+pubspec.lock
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# App-specific
+/assets/fonts/*.ttf
+/assets/fonts/*.otf
+!/assets/fonts/.gitkeep
+
+# Local development files
+local.properties
+.env
+.env.local
