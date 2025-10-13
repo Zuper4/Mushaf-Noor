@@ -64,8 +64,8 @@ class Surah {
       englishNameTranslation: 'The Opening',
       revelationType: 'Meccan',
       numberOfAyahs: 7,
-      startPage: 1,
-      endPage: 1,
+      startPage: 2,
+      endPage: 2,
     ),
     Surah(
       number: 2,
@@ -75,8 +75,8 @@ class Surah {
       englishNameTranslation: 'The Cow',
       revelationType: 'Medinan',
       numberOfAyahs: 286,
-      startPage: 2,
-      endPage: 49,
+      startPage: 3,
+      endPage: 50,
     ),
     Surah(
       number: 3,

@@ -42,9 +42,12 @@ class QiraatProvider extends ChangeNotifier {
         _availableQiraats = savedQiraats;
       }
 
-      // Set default qiraat (Hafs)
+      // Update download status for all qiraats
+      await _updateDownloadStatuses();
+
+      // Set default qiraat (Warsh - since we have its images)
       _selectedQiraat = _availableQiraats.firstWhere(
-        (q) => q.id == 'hafs',
+        (q) => q.id == 'nafi_warsh',
         orElse: () => _availableQiraats.first,
       );
     } catch (e) {
@@ -86,7 +89,7 @@ class QiraatProvider extends ChangeNotifier {
         description: 'Common in North Africa',
         colorCode: '#FF5722',
         folderPath: 'Nafi3',
-        isDownloaded: false,
+        isDownloaded: true, // We have the images for this qiraat
       ),
       
       // 2. Ibn Kathir from Makkah
@@ -198,7 +201,7 @@ class QiraatProvider extends ChangeNotifier {
         description: 'Most common recitation worldwide',
         colorCode: '#000000',
         folderPath: 'Asim',
-        isDownloaded: true, // Default
+        isDownloaded: false,
       ),
       
       // 6. Hamzah from Kufa
@@ -393,7 +396,7 @@ class QiraatProvider extends ChangeNotifier {
   }
 
   Future<void> deleteQiraat(String qiraatId) async {
-    if (qiraatId == 'hafs') return; // Don't allow deleting default qiraat
+    if (qiraatId == 'nafi_warsh') return; // Don't allow deleting default qiraat
     
     final qiraatIndex = _availableQiraats.indexWhere((q) => q.id == qiraatId);
     if (qiraatIndex == -1) return;
@@ -408,9 +411,9 @@ class QiraatProvider extends ChangeNotifier {
       
       await _databaseService.updateQiraat(_availableQiraats[qiraatIndex]);
       
-      // If this was the selected qiraat, switch to Hafs
+      // If this was the selected qiraat, switch to Warsh
       if (_selectedQiraat?.id == qiraatId) {
-        await selectQiraat('hafs');
+        await selectQiraat('nafi_warsh');
       }
       
       notifyListeners();
@@ -422,5 +425,38 @@ class QiraatProvider extends ChangeNotifier {
   double getQiraatSize(String qiraatId) {
     // Estimate size in MB - in real app, get from server
     return 50.0; // Approximate size for 604 pages
+  }
+
+  Future<void> _updateDownloadStatuses() async {
+    bool hasChanges = false;
+    
+    try {
+      for (int i = 0; i < _availableQiraats.length; i++) {
+        final qiraat = _availableQiraats[i];
+        
+        try {
+          final isDownloaded = await _downloadService.isQiraatDownloaded(qiraat.id);
+          
+          if (qiraat.isDownloaded != isDownloaded) {
+            _availableQiraats[i] = qiraat.copyWith(isDownloaded: isDownloaded);
+            await _databaseService.updateQiraat(_availableQiraats[i]);
+            hasChanges = true;
+          }
+        } catch (e) {
+          debugPrint('Error checking download status for ${qiraat.id}: $e');
+          // For web compatibility, assume default status
+        }
+      }
+    } catch (e) {
+      debugPrint('Error updating download statuses: $e');
+    }
+    
+    if (hasChanges) {
+      notifyListeners();
+    }
+  }
+
+  Future<void> refreshDownloadStatuses() async {
+    await _updateDownloadStatuses();
   }
 }

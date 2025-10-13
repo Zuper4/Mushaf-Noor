@@ -8,6 +8,7 @@ import '../providers/qiraat_provider.dart';
 import '../services/pdf_service.dart';
 import '../l10n/app_localizations.dart';
 import '../models/surah.dart';
+import 'reading_screen.dart';
 
 class PDFReaderScreen extends StatefulWidget {
   final String qiraatId;
@@ -44,6 +45,16 @@ class _PDFReaderScreenState extends State<PDFReaderScreen> {
   }
 
   Future<void> _loadPDF() async {
+    // For web compatibility, redirect to ReadingScreen instead of loading PDFs
+    if (kIsWeb) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const ReadingScreen()),
+        );
+      });
+      return;
+    }
+    
     try {
       setState(() {
         _isLoading = true;

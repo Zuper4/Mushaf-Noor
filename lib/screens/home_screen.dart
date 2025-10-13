@@ -268,40 +268,14 @@ class HomeScreen extends StatelessWidget {
           final qiraatProvider = context.read<QiraatProvider>();
           final currentQiraat = qiraatProvider.selectedQiraat?.id ?? 'hafs';
           
-          // Check if PDF exists for current qiraat
-          final pdfService = PDFService();
-          final selectedQiraat = qiraatProvider.selectedQiraat;
-          
-          bool hasPDF = false;
-          if (selectedQiraat != null) {
-            hasPDF = await pdfService.hasPDF(
-              selectedQiraat.id,
-              qariFolder: selectedQiraat.folderPath,
-              rawiFileName: selectedQiraat.rawiName,
-            );
-          }
-          
-          if (hasPDF && selectedQiraat != null) {
-            // Navigate to PDF reader with surah
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => PDFReaderScreen(
-                  qiraatId: selectedQiraat.id,
-                  surahNumber: surah.number,
-                ),
-              ),
-            );
-          } else {
-            // Fallback to reading screen or show error
-            appState.goToPage(surah.startPage);
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const ReadingScreen(),
-              ),
-            );
-          }
+          // Always use ReadingScreen instead of PDFReaderScreen for web compatibility
+          appState.goToPage(surah.startPage);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const ReadingScreen(),
+            ),
+          );
         },
         borderRadius: BorderRadius.circular(8.r),
         child: Padding(

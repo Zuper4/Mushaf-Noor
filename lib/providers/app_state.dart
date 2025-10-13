@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/mushaf_page.dart';
 
 class AppState extends ChangeNotifier {
-  int _currentPage = 1;
+  int _currentPage = 2;  // Start from page 2 (page 1 is cover)
   bool _isDarkMode = false;
   double _fontSize = 18.0;
   String _fontFamily = 'Uthmanic';

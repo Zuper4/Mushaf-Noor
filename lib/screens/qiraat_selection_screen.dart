@@ -184,7 +184,7 @@ class QiraatSelectionScreen extends StatelessWidget {
                               downloadProvider,
                             );
                           },
-                          onDelete: qiraat.id != 'hafs'
+                          onDelete: qiraat.id != 'asim_hafs'
                               ? () => _showDeleteConfirmation(
                                     context,
                                     qiraat,
@@ -334,7 +334,14 @@ class QiraatSelectionScreen extends StatelessWidget {
               ElevatedButton(
                 onPressed: () async {
                   Navigator.pop(context);
-                  await downloadProvider.startDownload(qiraat.id, qiraat.name);
+                  await downloadProvider.startDownload(
+                    qiraat.id, 
+                    qiraat.name,
+                    onComplete: () async {
+                      // Update the qiraat provider when download completes
+                      await qiraatProvider.refreshDownloadStatuses();
+                    },
+                  );
                 },
                 child: Text(
                   localizations.download,

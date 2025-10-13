@@ -24,7 +24,7 @@ class DownloadProvider extends ChangeNotifier {
     return _downloadStatus[qiraatId] ?? 'Not started';
   }
 
-  Future<void> startDownload(String qiraatId, String qiraatName) async {
+  Future<void> startDownload(String qiraatId, String qiraatName, {VoidCallback? onComplete}) async {
     if (_activeDownloads.contains(qiraatId)) return;
 
     _activeDownloads.add(qiraatId);
@@ -44,6 +44,11 @@ class DownloadProvider extends ChangeNotifier {
 
       _downloadStatus[qiraatId] = 'Download completed';
       _downloadProgress[qiraatId] = 1.0;
+      
+      // Notify completion callback
+      if (onComplete != null) {
+        onComplete();
+      }
     } catch (e) {
       _downloadStatus[qiraatId] = 'Download failed: ${e.toString()}';
       _downloadProgress[qiraatId] = 0.0;

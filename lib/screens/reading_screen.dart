@@ -24,7 +24,10 @@ class _ReadingScreenState extends State<ReadingScreen> {
   void initState() {
     super.initState();
     final appState = Provider.of<AppState>(context, listen: false);
-    _pageController = PageController(initialPage: appState.currentPage - 1);
+    // Arabic reading: page 1 is at index 603, page 2 at index 602, etc.
+    // Formula: index = 604 - page
+    final arabicIndex = 604 - appState.currentPage;
+    _pageController = PageController(initialPage: arabicIndex);
     
     // Hide system UI for fullscreen reading
     _updateSystemUI();
@@ -58,9 +61,12 @@ class _ReadingScreenState extends State<ReadingScreen> {
               // Main page viewer
               PageViewer(
                 pageController: _pageController,
-                onPageChanged: (page) {
-                  appState.goToPage(page + 1);
-                  appState.addToHistory(page + 1);
+                onPageChanged: (index) {
+                  // Arabic reading: convert index back to page number
+                  // index 0 = page 604, index 1 = page 603, etc.
+                  final actualPage = 604 - index;
+                  appState.goToPage(actualPage);
+                  appState.addToHistory(actualPage);
                 },
                 onTap: () {
                   setState(() {
@@ -160,7 +166,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
                 ),
               ),
               
-              // Side navigation areas (invisible touch zones)
+              // Side navigation areas (invisible touch zones) - Arabic style
               Positioned(
                 left: 0,
                 top: 0,
@@ -168,8 +174,9 @@ class _ReadingScreenState extends State<ReadingScreen> {
                 width: 80.w,
                 child: GestureDetector(
                   onTap: () {
-                    if (appState.currentPage > 1) {
-                      _pageController.previousPage(
+                    // Left tap = next page in Arabic (higher page number)
+                    if (appState.currentPage < 604) {
+                      _pageController.nextPage(
                         duration: const Duration(milliseconds: 300),
                         curve: Curves.easeInOut,
                       );
@@ -185,8 +192,9 @@ class _ReadingScreenState extends State<ReadingScreen> {
                 width: 80.w,
                 child: GestureDetector(
                   onTap: () {
-                    if (appState.currentPage < 604) {
-                      _pageController.nextPage(
+                    // Right tap = previous page in Arabic (lower page number)
+                    if (appState.currentPage > 1) {
+                      _pageController.previousPage(
                         duration: const Duration(milliseconds: 300),
                         curve: Curves.easeInOut,
                       );
