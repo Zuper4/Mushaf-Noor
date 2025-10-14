@@ -79,28 +79,6 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 16.h),
-              Card(
-                child: ListTile(
-                  leading: Icon(Icons.text_fields),
-                  title: Text(
-                    localizations.fontSize,
-                    style: TextStyle(
-                      fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
-                    ),
-                  ),
-                  subtitle: Slider(
-                    value: appState.fontSize,
-                    min: 12.0,
-                    max: 32.0,
-                    divisions: 10,
-                    label: '${appState.fontSize.round()}',
-                    onChanged: (value) {
-                      appState.setFontSize(value);
-                    },
-                  ),
-                ),
-              ),
             ],
           );
         },

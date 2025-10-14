@@ -240,36 +240,6 @@ class _ReadingScreenState extends State<ReadingScreen> {
               ),
               SizedBox(height: 20.h),
               
-              // Font size slider
-              Consumer<AppState>(
-                builder: (context, appState, child) {
-                  final localizations = AppLocalizations.of(context);
-                  return Row(
-                    children: [
-                      Text(
-                        localizations.fontSize,
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
-                        ),
-                      ),
-                      Expanded(
-                        child: Slider(
-                          value: appState.fontSize,
-                          min: 12.0,
-                          max: 32.0,
-                          divisions: 10,
-                          label: appState.fontSize.round().toString(),
-                          onChanged: (value) {
-                            appState.setFontSize(value);
-                          },
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ),
-              
               // Dark mode toggle
               Consumer<AppState>(
                 builder: (context, appState, child) {
@@ -285,26 +255,6 @@ class _ReadingScreenState extends State<ReadingScreen> {
                     value: appState.isDarkMode,
                     onChanged: (value) {
                       appState.setDarkMode(value);
-                    },
-                  );
-                },
-              ),
-              
-              // Translation toggle
-              Consumer<AppState>(
-                builder: (context, appState, child) {
-                  final localizations = AppLocalizations.of(context);
-                  return SwitchListTile(
-                    title: Text(
-                      localizations.showTranslation,
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
-                      ),
-                    ),
-                    value: appState.showTranslation,
-                    onChanged: (value) {
-                      appState.setShowTranslation(value);
                     },
                   );
                 },
@@ -411,29 +361,50 @@ class _ReadingScreenState extends State<ReadingScreen> {
   void _showDownloadDialog(BuildContext context, qiraat, QiraatProvider qiraatProvider) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          'تنزيل القراءة',
-          style: TextStyle(fontFamily: 'Amiri', fontSize: 18.sp),
-        ),
-        content: Text(
-          'هل تريد تنزيل قراءة ${qiraat.arabicName}؟\nحجم التنزيل تقريباً: ${qiraatProvider.getQiraatSize(qiraat.id).toStringAsFixed(1)} ميجابايت',
-          style: TextStyle(fontFamily: 'Amiri', fontSize: 16.sp),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('إلغاء', style: TextStyle(fontFamily: 'Amiri')),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              Navigator.pop(context);
-              Navigator.pop(context); // Close qiraat selector
-              await qiraatProvider.downloadQiraat(qiraat.id);
-            },
-            child: const Text('تنزيل', style: TextStyle(fontFamily: 'Amiri')),
-          ),
-        ],
+      builder: (context) => Consumer<AppState>(
+        builder: (context, appState, child) {
+          final localizations = AppLocalizations.of(context);
+          return AlertDialog(
+            title: Text(
+              localizations.downloadQiraat,
+              style: TextStyle(
+                fontSize: 18.sp,
+                fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
+              ),
+            ),
+            content: Text(
+              '${localizations.downloadConfirmation} ${appState.languageCode == 'ar' ? qiraat.arabicName : qiraat.name}?\nSize: approximately ${qiraatProvider.getQiraatSize(qiraat.id).toStringAsFixed(1)} MB',
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(
+                  localizations.cancel,
+                  style: TextStyle(
+                    fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
+                  ),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  Navigator.pop(context);
+                  Navigator.pop(context); // Close qiraat selector
+                  await qiraatProvider.downloadQiraat(qiraat.id);
+                },
+                child: Text(
+                  localizations.download,
+                  style: TextStyle(
+                    fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import '../l10n/app_localizations.dart';
 import '../providers/app_state.dart';
 import '../providers/qiraat_provider.dart';
 import '../services/download_service.dart';
@@ -92,7 +93,7 @@ class PageViewer extends StatelessWidget {
         if (imagePath != null) {
           return _buildImagePage(imagePath, appState);
         } else {
-          return _buildPlaceholderPage(pageNumber, selectedQiraat, appState);
+          return _buildPlaceholderPage(context, pageNumber, selectedQiraat, appState);
         }
       },
     );
@@ -509,7 +510,8 @@ class PageViewer extends StatelessWidget {
     );
   }
 
-  Widget _buildPlaceholderPage(int pageNumber, qiraat, AppState appState) {
+  Widget _buildPlaceholderPage(BuildContext context, int pageNumber, qiraat, AppState appState) {
+    final localizations = AppLocalizations.of(context);
     return Container(
       margin: EdgeInsets.all(16.w),
       padding: EdgeInsets.all(24.w),
@@ -543,10 +545,10 @@ class PageViewer extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'صفحة $pageNumber',
+                  '${localizations.pageNumber} $pageNumber',
                   style: TextStyle(
                     fontSize: 16.sp,
-                    fontFamily: 'Amiri',
+                    fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
                     color: appState.isDarkMode ? Colors.white : Colors.black,
                   ),
                 ),
@@ -601,20 +603,20 @@ class PageViewer extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(
-                          'محتوى الصفحة غير متوفر',
+                          localizations.pageContentUnavailable,
                           style: TextStyle(
                             fontSize: 16.sp,
-                            fontFamily: 'Amiri',
+                            fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
                             color: appState.isDarkMode ? Colors.grey[300] : Colors.grey[600],
                           ),
                         ),
                         SizedBox(height: 8.h),
                         Text(
-                          'يرجى التأكد من تنزيل قراءة ${qiraat.arabicName}',
+                          localizations.getEnsureQiraatDownloadedText(appState.languageCode == 'ar' ? qiraat.arabicName : qiraat.name),
                           style: TextStyle(
                             fontSize: 14.sp,
-                            fontFamily: 'Amiri',
                             color: appState.isDarkMode ? Colors.grey[400] : Colors.grey[500],
+                            fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
                           ),
                           textAlign: TextAlign.center,
                         ),

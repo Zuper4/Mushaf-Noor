@@ -213,16 +213,11 @@ class QiraatCard extends StatelessWidget {
                       SizedBox(height: 4.h),
                       Consumer<AppState>(
                         builder: (context, appState, child) {
-                          final localizations = AppLocalizations.of(context);
-                          final text = appState.languageCode == 'ar' 
-                              ? 'تنزيل: ${(qiraat.downloadProgress * 100).round()}%'
-                              : 'Downloading: ${(qiraat.downloadProgress * 100).round()}%';
                           return Text(
-                            text,
+                            'Downloading: ${(qiraat.downloadProgress * 100).round()}%',
                             style: TextStyle(
                               fontSize: 12.sp,
                               color: Colors.grey[600],
-                              fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
                             ),
                           );
                         },

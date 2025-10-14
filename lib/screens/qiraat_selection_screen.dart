@@ -226,22 +226,12 @@ class QiraatSelectionScreen extends StatelessWidget {
                           Consumer<AppState>(
                             builder: (context, appState, child) {
                               final localizations = AppLocalizations.of(context);
-                              final infoText = appState.languageCode == 'ar' 
-                                ? '• كل قراءة تحتاج تقريباً 50 ميجابايت من التخزين\n'
-                                  '• يمكنك تنزيل القراءات عند الحاجة\n'
-                                  '• الألوان تدل على الاختلافات عن رواية حفص\n'
-                                  '• قراءة حفص متاحة افتراضياً ولا يمكن حذفها'
-                                : '• Each qiraat requires approximately 50 MB of storage\n'
-                                  '• You can download qiraats as needed\n'
-                                  '• Colors indicate differences from Hafs recitation\n'
-                                  '• Hafs recitation is available by default and cannot be deleted';
-                              
                               return Text(
-                                infoText,
+                                localizations.qiraatInfo,
                                 style: TextStyle(
                                   fontSize: 14.sp,
+                                  color: appState.isDarkMode ? Colors.grey[300] : Colors.grey[600],
                                   fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
-                                  color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
                                 ),
                               );
                             },
@@ -283,8 +273,7 @@ class QiraatSelectionScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  localizations.downloadConfirmation.replaceAll('{0}', 
-                    appState.languageCode == 'ar' ? qiraat.arabicName : qiraat.name),
+                  '${localizations.downloadConfirmation} ${appState.languageCode == 'ar' ? qiraat.arabicName : qiraat.name}?',
                   style: TextStyle(
                     fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
                     fontSize: 16.sp,
@@ -296,8 +285,7 @@ class QiraatSelectionScreen extends StatelessWidget {
                     Icon(Icons.info_outline, size: 16.sp, color: Colors.blue),
                     SizedBox(width: 8.w),
                     Text(
-                      localizations.sizeMb.replaceAll('{0}', 
-                        qiraatProvider.getQiraatSize(qiraat.id).toStringAsFixed(1)),
+                      'Size: ${qiraatProvider.getQiraatSize(qiraat.id).toStringAsFixed(1)} MB approximately',
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: Colors.blue,
@@ -311,7 +299,7 @@ class QiraatSelectionScreen extends StatelessWidget {
                     Icon(Icons.storage, size: 16.sp, color: Colors.grey[600]),
                     SizedBox(width: 8.w),
                     Text(
-                      localizations.totalPages,
+                      '606 pages',
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: Colors.grey[600],

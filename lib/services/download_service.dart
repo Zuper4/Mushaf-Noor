@@ -167,8 +167,9 @@ class DownloadService {
 
   Future<void> _tryLoadFromAssets(String folderPath, int pageNumber, String outputPath) async {
     try {
-      // Try to load from assets/pdfs/[folderPath]/page_XXX.jpg or similar
-      final assetPath = 'assets/pdfs/$folderPath/page_${pageNumber.toString().padLeft(3, '0')}.jpg';
+      // Try to load from assets/images/qiraats/[qiraatId]/page_XXX.jpg
+      // folderPath is actually the qiraatId now
+      final assetPath = 'assets/images/qiraats/$folderPath/page_${pageNumber.toString().padLeft(3, '0')}.jpg';
       final byteData = await rootBundle.load(assetPath);
       
       final file = File(outputPath);
@@ -260,8 +261,8 @@ class DownloadService {
     if (!await isQiraatDownloaded(qiraatId)) return null;
     
     if (kIsWeb) {
-      // For web, return a placeholder path
-      return 'web://qiraat/$qiraatId/page_${pageNumber.toString().padLeft(3, '0')}.jpg';
+      // For web, return the asset path without the "assets/" prefix
+      return 'images/qiraats/$qiraatId/page_${pageNumber.toString().padLeft(3, '0')}.jpg';
     } else {
       final qiraatDir = await _getQiraatDirectory(qiraatId);
       if (qiraatDir == null) return null;

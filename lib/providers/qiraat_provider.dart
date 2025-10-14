@@ -88,7 +88,7 @@ class QiraatProvider extends ChangeNotifier {
         rawiArabicName: 'ورش',
         description: 'Common in North Africa',
         colorCode: '#FF5722',
-        folderPath: 'Nafi3',
+        folderPath: 'nafi_warsh',
         isDownloaded: true, // We have the images for this qiraat
       ),
       
@@ -116,8 +116,8 @@ class QiraatProvider extends ChangeNotifier {
         rawiArabicName: 'قنبل',
         description: 'Makkan recitation',
         colorCode: '#8BC34A',
-        folderPath: 'Ibn_Kathir',
-        isDownloaded: false,
+        folderPath: 'ibn_kathir_qunbul',
+        isDownloaded: true, // We have the images for this qiraat
       ),
       
       // 3. Abu Amr from Basra
@@ -215,8 +215,8 @@ class QiraatProvider extends ChangeNotifier {
         rawiArabicName: 'خلف',
         description: 'Kufan recitation',
         colorCode: '#795548',
-        folderPath: 'Hamzah',
-        isDownloaded: false,
+        folderPath: 'hamzah_khalaf',
+        isDownloaded: true, // We have the images for this qiraat
       ),
       Qiraat(
         id: 'hamzah_khallad',
@@ -299,8 +299,8 @@ class QiraatProvider extends ChangeNotifier {
         rawiArabicName: 'رويس',
         description: 'Basran recitation',
         colorCode: '#CDDC39',
-        folderPath: 'Ya3qub',
-        isDownloaded: false,
+        folderPath: 'yaqub_ruways',
+        isDownloaded: true, // We have the images for this qiraat
       ),
       Qiraat(
         id: 'yaqub_rawh',
