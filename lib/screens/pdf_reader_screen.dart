@@ -34,7 +34,7 @@ class _PDFReaderScreenState extends State<PDFReaderScreen> {
   bool _hasError = false;
   String? _pdfPath;
   int _currentPage = 1;
-  int _totalPages = 604;
+  int _totalPages = 606;
   bool _showControls = true;
 
   @override

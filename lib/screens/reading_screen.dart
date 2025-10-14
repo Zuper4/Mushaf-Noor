@@ -24,9 +24,9 @@ class _ReadingScreenState extends State<ReadingScreen> {
   void initState() {
     super.initState();
     final appState = Provider.of<AppState>(context, listen: false);
-    // Arabic reading: page 1 is at index 603, page 2 at index 602, etc.
-    // Formula: index = 604 - page
-    final arabicIndex = 604 - appState.currentPage;
+    // Arabic reading: page 1 is at index 605, page 2 at index 604, etc.
+    // Formula: index = 606 - page
+    final arabicIndex = 606 - appState.currentPage;
     _pageController = PageController(initialPage: arabicIndex);
     
     // Hide system UI for fullscreen reading
@@ -63,8 +63,8 @@ class _ReadingScreenState extends State<ReadingScreen> {
                 pageController: _pageController,
                 onPageChanged: (index) {
                   // Arabic reading: convert index back to page number
-                  // index 0 = page 604, index 1 = page 603, etc.
-                  final actualPage = 604 - index;
+                  // index 0 = page 606, index 1 = page 605, etc.
+                  final actualPage = 606 - index;
                   appState.goToPage(actualPage);
                   appState.addToHistory(actualPage);
                 },
@@ -104,7 +104,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
                           Expanded(
                             child: PageIndicator(
                               currentPage: appState.currentPage,
-                              totalPages: 604,
+                              totalPages: 606,
                             ),
                           ),
                           IconButton(
@@ -167,15 +167,16 @@ class _ReadingScreenState extends State<ReadingScreen> {
               ),
               
               // Side navigation areas (invisible touch zones) - Arabic style
+              // Only cover middle area, not top/bottom controls
               Positioned(
                 left: 0,
-                top: 0,
-                bottom: 0,
+                top: 100.h, // Start below top controls
+                bottom: 150.h, // End above bottom controls  
                 width: 80.w,
                 child: GestureDetector(
                   onTap: () {
                     // Left tap = next page in Arabic (higher page number)
-                    if (appState.currentPage < 604) {
+                    if (appState.currentPage < 606) {
                       _pageController.nextPage(
                         duration: const Duration(milliseconds: 300),
                         curve: Curves.easeInOut,
@@ -187,8 +188,8 @@ class _ReadingScreenState extends State<ReadingScreen> {
               ),
               Positioned(
                 right: 0,
-                top: 0,
-                bottom: 0,
+                top: 100.h, // Start below top controls
+                bottom: 150.h, // End above bottom controls
                 width: 80.w,
                 child: GestureDetector(
                   onTap: () {
@@ -240,57 +241,72 @@ class _ReadingScreenState extends State<ReadingScreen> {
               SizedBox(height: 20.h),
               
               // Font size slider
-              Row(
-                children: [
-                  Text(
-                    'حجم الخط',
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontFamily: 'Amiri',
-                    ),
-                  ),
-                  Expanded(
-                    child: Slider(
-                      value: appState.fontSize,
-                      min: 12.0,
-                      max: 32.0,
-                      divisions: 10,
-                      label: appState.fontSize.round().toString(),
-                      onChanged: (value) {
-                        appState.setFontSize(value);
-                      },
-                    ),
-                  ),
-                ],
+              Consumer<AppState>(
+                builder: (context, appState, child) {
+                  final localizations = AppLocalizations.of(context);
+                  return Row(
+                    children: [
+                      Text(
+                        localizations.fontSize,
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
+                        ),
+                      ),
+                      Expanded(
+                        child: Slider(
+                          value: appState.fontSize,
+                          min: 12.0,
+                          max: 32.0,
+                          divisions: 10,
+                          label: appState.fontSize.round().toString(),
+                          onChanged: (value) {
+                            appState.setFontSize(value);
+                          },
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
               
               // Dark mode toggle
-              SwitchListTile(
-                title: Text(
-                  'الوضع الليلي',
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontFamily: 'Amiri',
-                  ),
-                ),
-                value: appState.isDarkMode,
-                onChanged: (value) {
-                  appState.setDarkMode(value);
+              Consumer<AppState>(
+                builder: (context, appState, child) {
+                  final localizations = AppLocalizations.of(context);
+                  return SwitchListTile(
+                    title: Text(
+                      localizations.darkMode,
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
+                      ),
+                    ),
+                    value: appState.isDarkMode,
+                    onChanged: (value) {
+                      appState.setDarkMode(value);
+                    },
+                  );
                 },
               ),
               
               // Translation toggle
-              SwitchListTile(
-                title: Text(
-                  'إظهار الترجمة',
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontFamily: 'Amiri',
-                  ),
-                ),
-                value: appState.showTranslation,
-                onChanged: (value) {
-                  appState.setShowTranslation(value);
+              Consumer<AppState>(
+                builder: (context, appState, child) {
+                  final localizations = AppLocalizations.of(context);
+                  return SwitchListTile(
+                    title: Text(
+                      localizations.showTranslation,
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
+                      ),
+                    ),
+                    value: appState.showTranslation,
+                    onChanged: (value) {
+                      appState.setShowTranslation(value);
+                    },
+                  );
                 },
               ),
               

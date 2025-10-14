@@ -23,15 +23,20 @@ class PageViewer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer2<AppState, QiraatProvider>(
       builder: (context, appState, qiraatProvider, child) {
-        return PageView.builder(
-          controller: pageController,
-          onPageChanged: onPageChanged,
-          itemCount: 604, // Total Mushaf pages
-          reverse: true, // Arabic reading: right-to-left, page 1 on far right
-          itemBuilder: (context, index) {
-            // For Arabic reading: reverse the page mapping
-            // index 0 = page 604, index 1 = page 603, ..., index 603 = page 1
-            final pageNumber = 604 - index;
+        return Directionality(
+          textDirection: TextDirection.rtl, // Right-to-left for Arabic
+          child: PageView.builder(
+            controller: pageController,
+            onPageChanged: onPageChanged,
+            itemCount: 606, // Total Mushaf pages
+            reverse: true, // Arabic reading: right-to-left, page 1 on far right
+            scrollDirection: Axis.horizontal, // Horizontal scrolling for Arabic books
+            physics: const BouncingScrollPhysics(), // Smooth scrolling physics
+            pageSnapping: true, // Snap to pages for clean navigation
+            itemBuilder: (context, index) {
+              // For Arabic reading: reverse the page mapping
+              // index 0 = page 606, index 1 = page 605, ..., index 605 = page 1
+              final pageNumber = 606 - index;
             return GestureDetector(
               onTap: onTap,
               child: Container(
@@ -47,6 +52,7 @@ class PageViewer extends StatelessWidget {
               ),
             );
           },
+        ),
         );
       },
     );

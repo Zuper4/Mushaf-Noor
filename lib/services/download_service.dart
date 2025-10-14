@@ -67,7 +67,7 @@ class DownloadService {
 
     try {
       final qiraatDir = await _getQiraatDirectory(qiraatId);
-      const totalPages = 604;
+      const totalPages = 606;
       
       onProgress(0.0, 'Preparing download...');
 
@@ -188,7 +188,7 @@ class DownloadService {
   Future<void> _createManifestFile(String qiraatId, String? dirPath) async {
     final manifest = {
       'qiraatId': qiraatId,
-      'totalPages': 604,
+      'totalPages': 606,
       'downloadedAt': DateTime.now().toIso8601String(),
       'version': '1.0',
     };

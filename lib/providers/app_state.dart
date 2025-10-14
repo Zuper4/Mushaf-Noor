@@ -21,14 +21,14 @@ class AppState extends ChangeNotifier {
 
   // Page navigation
   void goToPage(int page) {
-    if (page >= 1 && page <= 604) {
+    if (page >= 1 && page <= 606) {
       _currentPage = page;
       notifyListeners();
     }
   }
 
   void nextPage() {
-    if (_currentPage < 604) {
+    if (_currentPage < 606) {
       _currentPage++;
       notifyListeners();
     }

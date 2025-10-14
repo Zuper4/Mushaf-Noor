@@ -26,7 +26,7 @@ class Qiraat {
     required this.folderPath,
     this.isDownloaded = false,
     this.downloadProgress = 0.0,
-    this.totalPages = 604, // Standard Mushaf page count
+    this.totalPages = 606, // Standard Mushaf page count
   });
 
   factory Qiraat.fromJson(Map<String, dynamic> json) {
@@ -43,7 +43,7 @@ class Qiraat {
       folderPath: json['folderPath'],
       isDownloaded: json['isDownloaded'] ?? false,
       downloadProgress: json['downloadProgress']?.toDouble() ?? 0.0,
-      totalPages: json['totalPages'] ?? 604,
+      totalPages: json['totalPages'] ?? 606,
     );
   }
 

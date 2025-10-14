@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import '../providers/app_state.dart';
+import '../l10n/app_localizations.dart';
 
 class ReadingControls extends StatelessWidget {
   final PageController pageController;
@@ -15,50 +18,56 @@ class ReadingControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          // Previous page
-          _buildControlButton(
-            icon: Icons.keyboard_arrow_right,
-            onPressed: () {
-              pageController.previousPage(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-              );
-            },
-            tooltip: 'الصفحة السابقة',
+    return Consumer<AppState>(
+      builder: (context, appState, child) {
+        final localizations = AppLocalizations.of(context);
+        
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              // Previous page (for Arabic reading, this goes RIGHT)
+              _buildControlButton(
+                icon: Icons.keyboard_arrow_left, // Left arrow for previous in Arabic
+                onPressed: () {
+                  pageController.previousPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  );
+                },
+                tooltip: appState.languageCode == 'ar' ? 'الصفحة السابقة' : 'Previous Page',
+              ),
+              
+              // Settings
+              _buildControlButton(
+                icon: Icons.settings,
+                onPressed: onSettingsPressed,
+                tooltip: appState.languageCode == 'ar' ? 'الإعدادات' : 'Settings',
+              ),
+              
+              // Qiraat selector
+              _buildControlButton(
+                icon: Icons.library_books,
+                onPressed: onQiraatPressed,
+                tooltip: appState.languageCode == 'ar' ? 'اختيار القراءة' : 'Select Qiraat',
+              ),
+              
+              // Next page (for Arabic reading, this goes LEFT)
+              _buildControlButton(
+                icon: Icons.keyboard_arrow_right, // Right arrow for next in Arabic
+                onPressed: () {
+                  pageController.nextPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  );
+                },
+                tooltip: appState.languageCode == 'ar' ? 'الصفحة التالية' : 'Next Page',
+              ),
+            ],
           ),
-          
-          // Settings
-          _buildControlButton(
-            icon: Icons.settings,
-            onPressed: onSettingsPressed,
-            tooltip: 'الإعدادات',
-          ),
-          
-          // Qiraat selector
-          _buildControlButton(
-            icon: Icons.library_books,
-            onPressed: onQiraatPressed,
-            tooltip: 'اختيار القراءة',
-          ),
-          
-          // Next page
-          _buildControlButton(
-            icon: Icons.keyboard_arrow_left,
-            onPressed: () {
-              pageController.nextPage(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-              );
-            },
-            tooltip: 'الصفحة التالية',
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 

@@ -34,7 +34,7 @@ class AppLocalizations {
       // Navigation
       'cancel': 'Cancel',
       'go': 'Go',
-      'page_number_hint': 'Page number (1-604)',
+      'page_number_hint': 'Page number (1-606)',
       
       // Qiraat Selection
       'available_qiraats': 'Available Qiraats',
@@ -45,7 +45,7 @@ class AppLocalizations {
       'download_qiraat': 'Download Qiraat',
       'download_confirmation': 'Do you want to download',
       'size_mb': 'Size: {0} MB approximately',
-      'total_pages': '604 pages',
+      'total_pages': '606 pages',
       'delete_qiraat': 'Delete Qiraat',
       'delete_confirmation': 'Do you want to delete {0} from the device?\\n\\nAll saved pages will be deleted.',
       'qiraat_downloaded': '{0} has been downloaded',
@@ -149,7 +149,7 @@ class AppLocalizations {
       // Navigation
       'cancel': 'إلغاء',
       'go': 'اذهب',
-      'page_number_hint': 'رقم الصفحة (1-604)',
+      'page_number_hint': 'رقم الصفحة (1-606)',
       
       // Qiraat Selection
       'available_qiraats': 'القراءات المتاحة',
@@ -160,7 +160,7 @@ class AppLocalizations {
       'download_qiraat': 'تنزيل القراءة',
       'download_confirmation': 'هل تريد تنزيل قراءة',
       'size_mb': 'الحجم: {0} ميجابايت تقريباً',
-      'total_pages': '604 صفحة',
+      'total_pages': '606 صفحة',
       'delete_qiraat': 'حذف القراءة',
       'delete_confirmation': 'هل تريد حذف قراءة {0} من الجهاز؟\\n\\nسيتم حذف جميع الصفحات المحفوظة.',
       'qiraat_downloaded': 'تم تنزيل قراءة {0}',
