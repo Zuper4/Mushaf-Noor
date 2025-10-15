@@ -5,7 +5,7 @@ A beautiful Quran reading app built with Flutter that supports multiple Qiraats 
 ## 🌟 Features
 
 ### Core Functionality
-- **Multiple Qiraats Support**: Switch between different recitation styles (Hafs, Warsh, Qaloon, etc.)
+- **Complete Qiraats Support**: All 20 traditional recitations (10 Qaris × 2 Rawis each)
 - **Downloadable Content**: Download specific Qiraats on-demand to save storage space
 - **Smooth Page Navigation**: Intuitive page-by-page reading with swipe gestures
 - **High-Quality Pages**: PDF-based page rendering for crisp text display
@@ -162,12 +162,49 @@ lib/
 - **flutter_pdfview**: PDF rendering
 - **path_provider**: File system access
 
-### Supported Qiraats
-- حفص عن عاصم (Hafs) - Default
-- ورش عن نافع (Warsh)
-- قالون عن نافع (Qaloon)
-- الدوري عن أبي عمرو (Al-Douri from Abu Amr)
-- السوسي عن أبي عمرو (As-Sousi from Abu Amr)
+### Supported Qiraats (All 20 Recitations)
+
+#### The 10 Qaris with their 2 Rawis each:
+
+**1. Nafi' (نافع) from Madinah**
+- قالون عن نافع (Qalun 'an Nafi')
+- ورش عن نافع (Warsh 'an Nafi') - *Popular in North/West Africa*
+
+**2. Ibn Kathir (ابن كثير) from Makkah**
+- البزي عن ابن كثير (Al-Bazzi 'an Ibn Kathir)
+- قنبل عن ابن كثير (Qunbul 'an Ibn Kathir)
+
+**3. Abu 'Amr (أبو عمرو) from Basra**
+- الدوري عن أبي عمرو (Ad-Duri 'an Abu 'Amr)
+- السوسي عن أبي عمرو (As-Sussi 'an Abu 'Amr)
+
+**4. Ibn 'Amir (ابن عامر) from Damascus**
+- هشام عن ابن عامر (Hisham 'an Ibn 'Amir)
+- ابن ذكوان عن ابن عامر (Ibn Dhakwan 'an Ibn 'Amir)
+
+**5. 'Asim (عاصم) from Kufa**
+- شعبة عن عاصم (Shu'ba 'an 'Asim)
+- حفص عن عاصم (Hafs 'an 'Asim) - *Most widely used today*
+
+**6. Hamzah (حمزة) from Kufa**
+- خلاد عن حمزة (Khalaad 'an Hamzah)
+- خلف عن حمزة (Khalaf 'an Hamzah)
+
+**7. Al-Kisa'i (الكسائي) from Kufa**
+- أبو الحارث عن الكسائي (Abu al-Harith 'an al-Kisa'i)
+- الدوري عن الكسائي (Ad-Duri 'an al-Kisa'i)
+
+**8. Abu Ja'far (أبو جعفر) from Madinah**
+- ابن وردان عن أبي جعفر (Ibn Wardan 'an Abu Ja'far)
+- ابن جماز عن أبي جعفر (Ibn Jammaz 'an Abu Ja'far)
+
+**9. Ya'qub (يعقوب) from Basra**
+- رويس عن يعقوب (Ruways 'an Ya'qub)
+- روح عن يعقوب (Rawh 'an Ya'qub)
+
+**10. Khalaf al-'Ashir (خلف العاشر)**
+- إسحاق عن خلف (Ishaq 'an Khalaf)
+- إدريس عن خلف (Idris 'an Khalaf)
 
 ### File Format
 - Pages stored as high-resolution JPEG images

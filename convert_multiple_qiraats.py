@@ -15,22 +15,166 @@ import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# Configuration
+# Configuration for all 20 Qiraats (10 Qaris × 2 Rawis each)
 QIRAATS_CONFIG = {
-    'khalaf': {
+    # Nafi' from Madinah
+    'nafi_qalun': {
+        'pdf_path': 'assets/pdfs/Nafi3/Qalun.pdf',
+        'output_dir': 'assets/images/qiraats/nafi_qalun',
+        'display_name': 'Qalun \'an Nafi\'',
+        'qari': 'Nafi\'',
+        'rawi': 'Qalun'
+    },
+    'nafi_warsh': {
+        'pdf_path': 'assets/pdfs/Nafi3/Warsh.pdf',
+        'output_dir': 'assets/images/qiraats/nafi_warsh',
+        'display_name': 'Warsh \'an Nafi\'',
+        'qari': 'Nafi\'',
+        'rawi': 'Warsh'
+    },
+    
+    # Ibn Kathir from Makkah
+    'ibn_kathir_bazzi': {
+        'pdf_path': 'assets/pdfs/Ibn_Kathir/Al-Bazzi.pdf',
+        'output_dir': 'assets/images/qiraats/ibn_kathir_bazzi',
+        'display_name': 'Al-Bazzi \'an Ibn Kathir',
+        'qari': 'Ibn Kathir',
+        'rawi': 'Al-Bazzi'
+    },
+    'ibn_kathir_qunbul': {
+        'pdf_path': 'assets/pdfs/Ibn_Kathir/Qunbul.pdf',
+        'output_dir': 'assets/images/qiraats/ibn_kathir_qunbul',
+        'display_name': 'Qunbul \'an Ibn Kathir',
+        'qari': 'Ibn Kathir',
+        'rawi': 'Qunbul'
+    },
+    
+    # Abu 'Amr from Basra
+    'abu_amr_duri': {
+        'pdf_path': 'assets/pdfs/Abu_Amr/Ad-Duri.pdf',
+        'output_dir': 'assets/images/qiraats/abu_amr_duri',
+        'display_name': 'Ad-Duri \'an Abu \'Amr',
+        'qari': 'Abu \'Amr',
+        'rawi': 'Ad-Duri'
+    },
+    'abu_amr_sussi': {
+        'pdf_path': 'assets/pdfs/Abu_Amr/As-Sussi.pdf',
+        'output_dir': 'assets/images/qiraats/abu_amr_sussi',
+        'display_name': 'As-Sussi \'an Abu \'Amr',
+        'qari': 'Abu \'Amr',
+        'rawi': 'As-Sussi'
+    },
+    
+    # Ibn 'Amir from Damascus
+    'ibn_amir_hisham': {
+        'pdf_path': 'assets/pdfs/Ibn_Amir/Hisham.pdf',
+        'output_dir': 'assets/images/qiraats/ibn_amir_hisham',
+        'display_name': 'Hisham \'an Ibn \'Amir',
+        'qari': 'Ibn \'Amir',
+        'rawi': 'Hisham'
+    },
+    'ibn_amir_dhakwan': {
+        'pdf_path': 'assets/pdfs/Ibn_Amir/Ibn_Dhakwan.pdf',
+        'output_dir': 'assets/images/qiraats/ibn_amir_dhakwan',
+        'display_name': 'Ibn Dhakwan \'an Ibn \'Amir',
+        'qari': 'Ibn \'Amir',
+        'rawi': 'Ibn Dhakwan'
+    },
+    
+    # 'Asim from Kufa
+    'asim_shuba': {
+        'pdf_path': 'assets/pdfs/Asim/Shu3ba.pdf',
+        'output_dir': 'assets/images/qiraats/asim_shuba',
+        'display_name': 'Shu\'ba \'an \'Asim',
+        'qari': '\'Asim',
+        'rawi': 'Shu\'ba'
+    },
+    'asim_hafs': {
+        'pdf_path': 'assets/pdfs/Asim/Hafs.pdf',
+        'output_dir': 'assets/images/qiraats/asim_hafs',
+        'display_name': 'Hafs \'an \'Asim',
+        'qari': '\'Asim',
+        'rawi': 'Hafs'
+    },
+    
+    # Hamzah from Kufa
+    'hamzah_khalaad': {
+        'pdf_path': 'assets/pdfs/Hamzah/Khalaad.pdf',
+        'output_dir': 'assets/images/qiraats/hamzah_khalaad',
+        'display_name': 'Khalaad \'an Hamzah',
+        'qari': 'Hamzah',
+        'rawi': 'Khalaad'
+    },
+    'hamzah_khalaf': {
         'pdf_path': 'assets/pdfs/Hamzah/Khalaf.pdf',
         'output_dir': 'assets/images/qiraats/hamzah_khalaf',
-        'display_name': 'Khalaf \'an Hamzah'
+        'display_name': 'Khalaf \'an Hamzah',
+        'qari': 'Hamzah',
+        'rawi': 'Khalaf'
     },
-    'qunbul': {
-        'pdf_path': 'assets/pdfs/Ibn_Kathir/Qunbul.pdf', 
-        'output_dir': 'assets/images/qiraats/ibn_kathir_qunbul',
-        'display_name': 'Qunbul \'an Ibn Kathir'
+    
+    # Al-Kisa'i from Kufa
+    'kisai_abu_harith': {
+        'pdf_path': 'assets/pdfs/Al-Kisai/Abu_Al-Harith.pdf',
+        'output_dir': 'assets/images/qiraats/kisai_abu_harith',
+        'display_name': 'Abu al-Harith \'an al-Kisa\'i',
+        'qari': 'Al-Kisa\'i',
+        'rawi': 'Abu al-Harith'
     },
-    'ruwais': {
+    'kisai_duri': {
+        'pdf_path': 'assets/pdfs/Al-Kisai/Ad-Duri.pdf',
+        'output_dir': 'assets/images/qiraats/kisai_duri',
+        'display_name': 'Ad-Duri \'an al-Kisa\'i',
+        'qari': 'Al-Kisa\'i',
+        'rawi': 'Ad-Duri'
+    },
+    
+    # Abu Ja'far from Madinah
+    'abu_jafar_ibn_wardan': {
+        'pdf_path': 'assets/pdfs/Abu_Jafar/Ibn_Wardaan.pdf',
+        'output_dir': 'assets/images/qiraats/abu_jafar_ibn_wardan',
+        'display_name': 'Ibn Wardan \'an Abu Ja\'far',
+        'qari': 'Abu Ja\'far',
+        'rawi': 'Ibn Wardan'
+    },
+    'abu_jafar_ibn_jammaz': {
+        'pdf_path': 'assets/pdfs/Abu_Jafar/Ibn_Jammaaz.pdf',
+        'output_dir': 'assets/images/qiraats/abu_jafar_ibn_jammaz',
+        'display_name': 'Ibn Jammaz \'an Abu Ja\'far',
+        'qari': 'Abu Ja\'far',
+        'rawi': 'Ibn Jammaz'
+    },
+    
+    # Ya'qub from Basra
+    'yaqub_ruways': {
         'pdf_path': 'assets/pdfs/Ya3qub/Ruwais.pdf',
-        'output_dir': 'assets/images/qiraats/yaqub_ruways', 
-        'display_name': 'Ruwais \'an Ya\'qub'
+        'output_dir': 'assets/images/qiraats/yaqub_ruways',
+        'display_name': 'Ruways \'an Ya\'qub',
+        'qari': 'Ya\'qub',
+        'rawi': 'Ruways'
+    },
+    'yaqub_rawh': {
+        'pdf_path': 'assets/pdfs/Ya3qub/Rawh.pdf',
+        'output_dir': 'assets/images/qiraats/yaqub_rawh',
+        'display_name': 'Rawh \'an Ya\'qub',
+        'qari': 'Ya\'qub',
+        'rawi': 'Rawh'
+    },
+    
+    # Khalaf al-'Ashir
+    'khalaf_ishaq': {
+        'pdf_path': 'assets/pdfs/Khalaf/Ishaq.pdf',
+        'output_dir': 'assets/images/qiraats/khalaf_ishaq',
+        'display_name': 'Ishaq \'an Khalaf',
+        'qari': 'Khalaf',
+        'rawi': 'Ishaq'
+    },
+    'khalaf_idris': {
+        'pdf_path': 'assets/pdfs/Khalaf/Idris.pdf',
+        'output_dir': 'assets/images/qiraats/khalaf_idris',
+        'display_name': 'Idris \'an Khalaf',
+        'qari': 'Khalaf',
+        'rawi': 'Idris'
     }
 }
 
@@ -95,27 +239,41 @@ def convert_qiraat_pdf(qiraat_key, config):
 
 def convert_all_qiraats():
     """Convert all configured qiraats"""
-    logger.info("=== Starting Multiple Qiraats Conversion ===")
+    logger.info("=== Starting ALL Qiraats Conversion (20 Recitations) ===")
+    logger.info("Converting 10 Qaris × 2 Rawis = 20 total recitations")
     
     successful = 0
     failed = 0
     
+    # Group qiraats by Qari for better organization
+    qaris = {}
     for qiraat_key, config in QIRAATS_CONFIG.items():
-        logger.info(f"\n--- Processing {qiraat_key.upper()} ---")
-        
-        if convert_qiraat_pdf(qiraat_key, config):
-            successful += 1
-        else:
-            failed += 1
+        qari = config['qari']
+        if qari not in qaris:
+            qaris[qari] = []
+        qaris[qari].append((qiraat_key, config))
     
-    logger.info(f"\n=== Conversion Summary ===")
-    logger.info(f"✅ Successful: {successful}")
-    logger.info(f"❌ Failed: {failed}")
-    logger.info(f"📊 Total: {successful + failed}")
+    # Process each Qari's recitations
+    for qari_name, qiraat_list in qaris.items():
+        logger.info(f"\n🕌 === Processing {qari_name} ({len(qiraat_list)} recitations) ===")
+        
+        for qiraat_key, config in qiraat_list:
+            logger.info(f"\n--- Converting {config['rawi']} 'an {config['qari']} ---")
+            
+            if convert_qiraat_pdf(qiraat_key, config):
+                successful += 1
+            else:
+                failed += 1
+    
+    logger.info(f"\n=== Final Conversion Summary ===")
+    logger.info(f"✅ Successful: {successful}/20 qiraats")
+    logger.info(f"❌ Failed: {failed}/20 qiraats")
+    logger.info(f"📊 Success Rate: {successful/20*100:.1f}%")
     
     if successful > 0:
         logger.info(f"\n🎉 Successfully converted {successful} qiraat(s)!")
         logger.info("The converted images are ready for use in your Flutter app.")
+        logger.info("All 10 Qaris with their respective Rawis are now available.")
     
     return successful, failed
 
@@ -133,8 +291,9 @@ def convert_single_qiraat(qiraat_name):
 
 def main():
     """Main function"""
-    print("🕌 Mushaf Noor - Multiple Qiraats PDF Converter")
-    print("=" * 50)
+    print("🕌 Mushaf Noor - Complete Qiraats PDF Converter")
+    print("📖 Converting All 20 Qiraats (10 Qaris × 2 Rawis)")
+    print("=" * 60)
     
     # Check if specific qiraat was requested
     if len(sys.argv) > 1:
