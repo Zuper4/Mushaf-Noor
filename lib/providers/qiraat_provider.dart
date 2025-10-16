@@ -63,16 +63,16 @@ class QiraatProvider extends ChangeNotifier {
     return [
       // 1. Nafi' from Madinah
       Qiraat(
-        id: 'nafi_qaloon',
+        id: 'nafi_qalun',
         qariName: 'Nafi\'',
-        rawiName: 'Qaloon',
-        name: 'Qaloon \'an Nafi\'',
+        rawiName: 'Qalun',
+        name: 'Qalun \'an Nafi\'',
         arabicName: 'قالون عن نافع',
         qariArabicName: 'نافع',
         rawiArabicName: 'قالون',
         description: 'Madinan recitation',
         colorCode: '#2196F3',
-        folderPath: 'Nafi3',
+        folderPath: 'nafi_qalun',
         isDownloaded: false,
       ),
       Qiraat(
@@ -91,16 +91,16 @@ class QiraatProvider extends ChangeNotifier {
       
       // 2. Ibn Kathir from Makkah
       Qiraat(
-        id: 'ibn_kathir_buzzi',
+        id: 'ibn_kathir_bazzi',
         qariName: 'Ibn Kathir',
-        rawiName: 'Al-Buzzi',
-        name: 'Al-Buzzi \'an Ibn Kathir',
+        rawiName: 'Al-Bazzi',
+        name: 'Al-Bazzi \'an Ibn Kathir',
         arabicName: 'البزي عن ابن كثير',
         qariArabicName: 'ابن كثير',
         rawiArabicName: 'البزي',
         description: 'Makkan recitation',
         colorCode: '#4CAF50',
-        folderPath: 'Ibn_Kathir',
+        folderPath: 'ibn_kathir_bazzi',
         isDownloaded: false,
       ),
       Qiraat(
@@ -119,29 +119,29 @@ class QiraatProvider extends ChangeNotifier {
       
       // 3. Abu Amr from Basra
       Qiraat(
-        id: 'abu_amr_douri',
+        id: 'abu_amr_duri',
         qariName: 'Abu Amr',
-        rawiName: 'Al-Douri',
-        name: 'Al-Douri \'an Abu Amr',
+        rawiName: 'Al-Duri',
+        name: 'Al-Duri \'an Abu Amr',
         arabicName: 'الدوري عن أبي عمرو',
         qariArabicName: 'أبو عمرو',
         rawiArabicName: 'الدوري',
         description: 'Basran recitation',
         colorCode: '#9C27B0',
-        folderPath: 'Abu_Amr',
+        folderPath: 'abu_amr_duri',
         isDownloaded: false,
       ),
       Qiraat(
-        id: 'abu_amr_sousi',
+        id: 'abu_amr_sussi',
         qariName: 'Abu Amr',
-        rawiName: 'As-Sousi',
-        name: 'As-Sousi \'an Abu Amr',
+        rawiName: 'As-Sussi',
+        name: 'As-Sussi \'an Abu Amr',
         arabicName: 'السوسي عن أبي عمرو',
         qariArabicName: 'أبو عمرو',
         rawiArabicName: 'السوسي',
         description: 'Basran recitation',
         colorCode: '#E91E63',
-        folderPath: 'Abu_Amr',
+        folderPath: 'abu_amr_sussi',
         isDownloaded: false,
       ),
       
@@ -156,7 +156,7 @@ class QiraatProvider extends ChangeNotifier {
         rawiArabicName: 'هشام',
         description: 'Damascene recitation',
         colorCode: '#FF9800',
-        folderPath: 'Ibn_Amir',
+        folderPath: 'ibn_amir_hisham',
         isDownloaded: false,
       ),
       Qiraat(
@@ -169,13 +169,13 @@ class QiraatProvider extends ChangeNotifier {
         rawiArabicName: 'ابن ذكوان',
         description: 'Damascene recitation',
         colorCode: '#FFC107',
-        folderPath: 'Ibn_Amir',
+        folderPath: 'ibn_amir_dhakwan',
         isDownloaded: false,
       ),
       
       // 5. Asim from Kufa
       Qiraat(
-        id: 'asim_shubah',
+        id: 'asim_shuba',
         qariName: 'Asim',
         rawiName: 'Shu\'bah',
         name: 'Shu\'bah \'an Asim',
@@ -184,7 +184,7 @@ class QiraatProvider extends ChangeNotifier {
         rawiArabicName: 'شعبة',
         description: 'Kufan recitation',
         colorCode: '#607D8B',
-        folderPath: 'Asim',
+        folderPath: 'asim_shuba',
         isDownloaded: false,
       ),
       Qiraat(
@@ -197,7 +197,7 @@ class QiraatProvider extends ChangeNotifier {
         rawiArabicName: 'حفص',
         description: 'Most common recitation worldwide',
         colorCode: '#000000',
-        folderPath: 'Asim',
+        folderPath: 'asim_hafs',
         isDownloaded: true, // This is the only qiraat we have as assets
       ),
       
@@ -216,16 +216,16 @@ class QiraatProvider extends ChangeNotifier {
         isDownloaded: false, // Will be set by _updateDownloadStatuses()
       ),
       Qiraat(
-        id: 'hamzah_khallad',
+        id: 'hamzah_khalaad',
         qariName: 'Hamzah',
-        rawiName: 'Khallad',
-        name: 'Khallad \'an Hamzah',
+        rawiName: 'Khalaad',
+        name: 'Khalaad \'an Hamzah',
         arabicName: 'خلاد عن حمزة',
         qariArabicName: 'حمزة',
         rawiArabicName: 'خلاد',
         description: 'Kufan recitation',
         colorCode: '#8D6E63',
-        folderPath: 'Hamzah',
+        folderPath: 'hamzah_khalaad',
         isDownloaded: false,
       ),
       
@@ -240,20 +240,20 @@ class QiraatProvider extends ChangeNotifier {
         rawiArabicName: 'أبو الحارث',
         description: 'Kufan recitation',
         colorCode: '#009688',
-        folderPath: 'Al-Kisai',
+        folderPath: 'kisai_abu_harith',
         isDownloaded: false,
       ),
       Qiraat(
-        id: 'kisai_douri',
+        id: 'kisai_duri',
         qariName: 'Al-Kisa\'i',
-        rawiName: 'Al-Douri',
-        name: 'Al-Douri \'an al-Kisa\'i',
+        rawiName: 'Al-Duri',
+        name: 'Al-Duri \'an al-Kisa\'i',
         arabicName: 'الدوري عن الكسائي',
         qariArabicName: 'الكسائي',
         rawiArabicName: 'الدوري',
         description: 'Kufan recitation',
         colorCode: '#00BCD4',
-        folderPath: 'Al-Kisai',
+        folderPath: 'kisai_duri',
         isDownloaded: false,
       ),
       
@@ -268,7 +268,7 @@ class QiraatProvider extends ChangeNotifier {
         rawiArabicName: 'ابن وردان',
         description: 'Madinan recitation',
         colorCode: '#3F51B5',
-        folderPath: 'Abu_Jafar',
+        folderPath: 'abu_jafar_ibn_wardan',
         isDownloaded: false,
       ),
       Qiraat(
@@ -281,7 +281,7 @@ class QiraatProvider extends ChangeNotifier {
         rawiArabicName: 'ابن جماز',
         description: 'Madinan recitation',
         colorCode: '#673AB7',
-        folderPath: 'Abu_Jafar',
+        folderPath: 'abu_jafar_ibn_jammaz',
         isDownloaded: false,
       ),
       
@@ -309,7 +309,7 @@ class QiraatProvider extends ChangeNotifier {
         rawiArabicName: 'روح',
         description: 'Basran recitation',
         colorCode: '#FFEB3B',
-        folderPath: 'Ya3qub',
+        folderPath: 'yaqub_rawh',
         isDownloaded: false,
       ),
       
@@ -324,7 +324,7 @@ class QiraatProvider extends ChangeNotifier {
         rawiArabicName: 'إسحاق',
         description: 'Khalaf al-\'Ashir recitation',
         colorCode: '#FF6F00',
-        folderPath: 'Khalaf',
+        folderPath: 'khalaf_ishaq',
         isDownloaded: false,
       ),
       Qiraat(
@@ -337,7 +337,7 @@ class QiraatProvider extends ChangeNotifier {
         rawiArabicName: 'إدريس',
         description: 'Khalaf al-\'Ashir recitation',
         colorCode: '#F57C00',
-        folderPath: 'Khalaf',
+        folderPath: 'khalaf_idris',
         isDownloaded: false,
       ),
     ];
@@ -365,8 +365,9 @@ class QiraatProvider extends ChangeNotifier {
     final qiraat = _availableQiraats[qiraatIndex];
     
     try {
+      // Download (or enable streaming for) the qiraat
       await _downloadService.downloadQiraat(
-        qiraat,
+        qiraatId,
         onProgress: (progress) {
           _availableQiraats[qiraatIndex] = qiraat.copyWith(
             downloadProgress: progress,
@@ -375,8 +376,9 @@ class QiraatProvider extends ChangeNotifier {
         },
       );
 
+      // Mark as downloaded (available for streaming)
       _availableQiraats[qiraatIndex] = qiraat.copyWith(
-        isDownloaded: false, // Will be set by _updateDownloadStatuses()
+        isDownloaded: true,
         downloadProgress: 1.0,
       );
       
@@ -387,6 +389,7 @@ class QiraatProvider extends ChangeNotifier {
       // Reset progress on error
       _availableQiraats[qiraatIndex] = qiraat.copyWith(
         downloadProgress: 0.0,
+        isDownloaded: false,
       );
       notifyListeners();
     }

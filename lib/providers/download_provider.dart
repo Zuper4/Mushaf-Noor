@@ -33,11 +33,11 @@ class DownloadProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      await _downloadService.downloadQiraatPages(
+      await _downloadService.downloadQiraat(
         qiraatId,
-        onProgress: (progress, status) {
+        onProgress: (progress) {
           _downloadProgress[qiraatId] = progress;
-          _downloadStatus[qiraatId] = status;
+          _downloadStatus[qiraatId] = progress < 1.0 ? 'Downloading...' : 'Download completed';
           notifyListeners();
         },
       );

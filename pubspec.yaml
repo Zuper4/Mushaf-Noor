@@ -48,26 +48,9 @@ flutter:
   uses-material-design: true
   
   assets:
-    - assets/images/qiraats/abu_amr_duri/
-    - assets/images/qiraats/abu_amr_sussi/
-    - assets/images/qiraats/abu_jafar_ibn_jammaz/
-    - assets/images/qiraats/abu_jafar_ibn_wardan/
+    # Only include the default Hafs qiraat as bundled assets
+    # Other qiraats will be loaded from GitHub Pages on demand
     - assets/images/qiraats/asim_hafs/
-    - assets/images/qiraats/asim_shuba/
-    - assets/images/qiraats/hamzah_khalaad/
-    - assets/images/qiraats/hamzah_khalaf/
-    - assets/images/qiraats/ibn_amir_dhakwan/
-    - assets/images/qiraats/ibn_amir_hisham/
-    - assets/images/qiraats/ibn_kathir_bazzi/
-    - assets/images/qiraats/ibn_kathir_qunbul/
-    - assets/images/qiraats/khalaf_idris/
-    - assets/images/qiraats/khalaf_ishaq/
-    - assets/images/qiraats/kisai_abu_harith/
-    - assets/images/qiraats/kisai_duri/
-    - assets/images/qiraats/nafi_qalun/
-    - assets/images/qiraats/nafi_warsh/
-    - assets/images/qiraats/yaqub_rawh/
-    - assets/images/qiraats/yaqub_ruways/
     - assets/icons/
     - assets/fonts/
     - assets/json/

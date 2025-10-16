@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/qiraat.dart';
 import '../models/surah.dart';
-import '../models/mushaf_page.dart';
 
 // For web, we'll use SharedPreferences instead of SQLite
 class DatabaseService {

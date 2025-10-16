@@ -1,6 +1,6 @@
 class GitHubQiraatService {
-  // TODO: Replace with your actual GitHub Pages URL
-  static const String baseUrl = 'https://yourusername.github.io/mushaf-qiraats';
+  // Cloudflare R2 URL for mushaf-qiraats repository
+  static const String baseUrl = 'https://pub-908424a64cd948adab8cb072f37d26a0.r2.dev';
   
   /// Generate the URL for a qiraat page
   static String getPageUrl(String qiraatId, int pageNumber) {
@@ -11,32 +11,33 @@ class GitHubQiraatService {
   /// Check if qiraat is available (all qiraats are available via GitHub)
   static bool isQiraatAvailable(String qiraatId) {
     // All qiraats are available via GitHub - no download needed!
-    return true;
+    return getAvailableQiraats().contains(qiraatId);
   }
   
-  /// Get all available qiraats
+  /// Get all available qiraats from GitHub repo
+  /// These match the folder names in https://github.com/Zuper4/mushaf-qiraats
   static List<String> getAvailableQiraats() {
     return [
-      'asim_hafs',
-      'nafi_warsh',
-      'nafi_qaloon',
-      'asim_shubah',
+      // 'asim_hafs' is bundled as assets, not needed from GitHub
       'abu_amr_duri',
       'abu_amr_sussi',
+      'abu_jafar_ibn_jammaz',
+      'abu_jafar_ibn_wardan',
+      'asim_shuba',
+      'hamzah_khalaad',
+      'hamzah_khalaf',
+      'ibn_amir_dhakwan',
+      'ibn_amir_hisham',
       'ibn_kathir_bazzi',
       'ibn_kathir_qunbul',
-      'ibn_amir_hisham',
-      'ibn_amir_dhakwan',
-      'hamzah_khalaf',
-      'hamzah_khalaad',
-      'kisai_duri',
-      'kisai_abu_harith',
-      'abu_jafar_ibn_wardan',
-      'abu_jafar_ibn_jammaz',
-      'yaqub_ruways',
-      'yaqub_rawh',
-      'khalaf_ishaq',
       'khalaf_idris',
+      'khalaf_ishaq',
+      'kisai_abu_harith',
+      'kisai_duri',
+      'nafi_qalun',
+      'nafi_warsh',
+      'yaqub_rawh',
+      'yaqub_ruways',
     ];
   }
 }

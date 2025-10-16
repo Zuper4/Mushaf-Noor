@@ -8,8 +8,15 @@ import 'reading_screen.dart';
 import 'qiraat_selection_screen.dart';
 import '../l10n/app_localizations.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  String _searchQuery = '';
 
   @override
   Widget build(BuildContext context) {
@@ -150,6 +157,11 @@ class HomeScreen extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(16.w),
                 child: TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      _searchQuery = value.toLowerCase();
+                    });
+                  },
                   decoration: InputDecoration(
                     hintText: 'Search surahs...',
                     prefixIcon: const Icon(Icons.search),
@@ -170,10 +182,14 @@ class HomeScreen extends StatelessWidget {
               // Surahs List
               Expanded(
                 child: ListView.builder(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  itemCount: Surah.allSurahs.length,
+                  padding: EdgeInsets.only(
+                    left: 16.w,
+                    right: 16.w,
+                    bottom: 16.h, // Added bottom padding
+                  ),
+                  itemCount: _getFilteredSurahs().length,
                   itemBuilder: (context, index) {
-                    final surah = Surah.allSurahs[index];
+                    final surah = _getFilteredSurahs()[index];
                     return _buildSurahCard(context, surah, appState);
                   },
                 ),
@@ -361,6 +377,36 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  List<Surah> _getFilteredSurahs() {
+    if (_searchQuery.isEmpty) {
+      return Surah.allSurahs;
+    }
+    
+    return Surah.allSurahs.where((surah) {
+      // Search by surah number
+      if (surah.number.toString().contains(_searchQuery)) {
+        return true;
+      }
+      
+      // Search by English name
+      if (surah.englishName.toLowerCase().contains(_searchQuery)) {
+        return true;
+      }
+      
+      // Search by Arabic name
+      if (surah.nameArabic.contains(_searchQuery)) {
+        return true;
+      }
+      
+      // Search by transliteration
+      if (surah.englishNameTranslation.toLowerCase().contains(_searchQuery)) {
+        return true;
+      }
+      
+      return false;
+    }).toList();
   }
 
 

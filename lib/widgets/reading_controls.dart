@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../providers/app_state.dart';
-import '../l10n/app_localizations.dart';
 
 class ReadingControls extends StatelessWidget {
   final PageController pageController;
@@ -20,8 +19,6 @@ class ReadingControls extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AppState>(
       builder: (context, appState, child) {
-        final localizations = AppLocalizations.of(context);
-        
         return Container(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
           child: Row(
