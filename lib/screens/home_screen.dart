@@ -6,10 +6,6 @@ import '../providers/qiraat_provider.dart';
 import '../models/surah.dart';
 import 'reading_screen.dart';
 import 'qiraat_selection_screen.dart';
-import 'settings_screen.dart';
-
-import '../widgets/custom_app_bar.dart';
-import '../services/pdf_service.dart';
 import '../l10n/app_localizations.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -40,7 +36,6 @@ class HomeScreen extends StatelessWidget {
           // Qiraat Status and Selection
           Consumer2<AppState, QiraatProvider>(
             builder: (context, appState, qiraatProvider, child) {
-              final localizations = AppLocalizations.of(context);
               return GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -146,8 +141,6 @@ class HomeScreen extends StatelessWidget {
       ),
       body: Consumer<AppState>(
         builder: (context, appState, child) {
-          final localizations = AppLocalizations.of(context);
-          
           return Column(
             children: [
               // Continue Reading Banner (if applicable)
@@ -255,8 +248,6 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildSurahCard(BuildContext context, Surah surah, AppState appState) {
-    final localizations = AppLocalizations.of(context);
-    
     return Card(
       margin: EdgeInsets.only(bottom: 8.h),
       elevation: 1,
@@ -265,9 +256,6 @@ class HomeScreen extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () async {
-          final qiraatProvider = context.read<QiraatProvider>();
-          final currentQiraat = qiraatProvider.selectedQiraat?.id ?? 'hafs';
-          
           // Always use ReadingScreen instead of PDFReaderScreen for web compatibility
           appState.goToPage(surah.startPage);
           Navigator.push(
