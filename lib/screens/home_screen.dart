@@ -7,7 +7,7 @@ import '../models/surah.dart';
 import 'reading_screen.dart';
 import 'qiraat_selection_screen.dart';
 import 'settings_screen.dart';
-import 'pdf_reader_screen.dart';
+
 import '../widgets/custom_app_bar.dart';
 import '../services/pdf_service.dart';
 import '../l10n/app_localizations.dart';

@@ -27,27 +27,24 @@ class QiraatProvider extends ChangeNotifier {
       // Initialize database
       await _databaseService.initialize();
       
-      // Load saved qiraats from database
-      final savedQiraats = await _databaseService.getQiraats();
+      // FORCE RELOAD: Always load default qiraats and ignore saved data for now
+      // This ensures we get the correct initial download statuses
+      _availableQiraats = await _loadDefaultQiraats();
       
-      if (savedQiraats.isEmpty) {
-        // Load default qiraats list and save to database
-        _availableQiraats = await _loadDefaultQiraats();
-        
-        // Save default qiraats to database
-        for (final qiraat in _availableQiraats) {
-          await _databaseService.insertQiraat(qiraat);
-        }
-      } else {
-        _availableQiraats = savedQiraats;
+      // Clear any existing data and save fresh defaults
+      // await _databaseService.clearQiraats(); // If this method exists
+      
+      // Save default qiraats to database
+      for (final qiraat in _availableQiraats) {
+        await _databaseService.insertQiraat(qiraat);
       }
 
       // Update download status for all qiraats
       await _updateDownloadStatuses();
 
-      // Set default qiraat (Warsh - since we have its images)
+      // Set default qiraat (asim_hafs - since we have its images)
       _selectedQiraat = _availableQiraats.firstWhere(
-        (q) => q.id == 'nafi_warsh',
+        (q) => q.id == 'asim_hafs',
         orElse: () => _availableQiraats.first,
       );
     } catch (e) {
@@ -89,7 +86,7 @@ class QiraatProvider extends ChangeNotifier {
         description: 'Common in North Africa',
         colorCode: '#FF5722',
         folderPath: 'nafi_warsh',
-        isDownloaded: true, // We have the images for this qiraat
+        isDownloaded: false, // Will be set by _updateDownloadStatuses()
       ),
       
       // 2. Ibn Kathir from Makkah
@@ -117,7 +114,7 @@ class QiraatProvider extends ChangeNotifier {
         description: 'Makkan recitation',
         colorCode: '#8BC34A',
         folderPath: 'ibn_kathir_qunbul',
-        isDownloaded: true, // We have the images for this qiraat
+        isDownloaded: false, // Will be set by _updateDownloadStatuses()
       ),
       
       // 3. Abu Amr from Basra
@@ -201,7 +198,7 @@ class QiraatProvider extends ChangeNotifier {
         description: 'Most common recitation worldwide',
         colorCode: '#000000',
         folderPath: 'Asim',
-        isDownloaded: false,
+        isDownloaded: true, // This is the only qiraat we have as assets
       ),
       
       // 6. Hamzah from Kufa
@@ -216,7 +213,7 @@ class QiraatProvider extends ChangeNotifier {
         description: 'Kufan recitation',
         colorCode: '#795548',
         folderPath: 'hamzah_khalaf',
-        isDownloaded: true, // We have the images for this qiraat
+        isDownloaded: false, // Will be set by _updateDownloadStatuses()
       ),
       Qiraat(
         id: 'hamzah_khallad',
@@ -300,7 +297,7 @@ class QiraatProvider extends ChangeNotifier {
         description: 'Basran recitation',
         colorCode: '#CDDC39',
         folderPath: 'yaqub_ruways',
-        isDownloaded: true, // We have the images for this qiraat
+        isDownloaded: false, // Will be set by _updateDownloadStatuses()
       ),
       Qiraat(
         id: 'yaqub_rawh',
@@ -379,7 +376,7 @@ class QiraatProvider extends ChangeNotifier {
       );
 
       _availableQiraats[qiraatIndex] = qiraat.copyWith(
-        isDownloaded: true,
+        isDownloaded: false, // Will be set by _updateDownloadStatuses()
         downloadProgress: 1.0,
       );
       
@@ -396,7 +393,7 @@ class QiraatProvider extends ChangeNotifier {
   }
 
   Future<void> deleteQiraat(String qiraatId) async {
-    if (qiraatId == 'nafi_warsh') return; // Don't allow deleting default qiraat
+    if (qiraatId == 'asim_hafs') return; // Don't allow deleting default qiraat
     
     final qiraatIndex = _availableQiraats.indexWhere((q) => q.id == qiraatId);
     if (qiraatIndex == -1) return;

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/app_state.dart';
 import '../providers/qiraat_provider.dart';
@@ -138,16 +139,85 @@ class PageViewer extends StatelessWidget {
   }
 
   Widget _buildImageWidget(String imagePath) {
+    // Debug: Print the image path
+    print('DEBUG PageViewer: Attempting to load image: $imagePath');
+    
     // Handle different types of image sources
-    if (imagePath.startsWith('web://')) {
-      // For web downloads, show a placeholder with download info
-      return _buildWebPlaceholder(imagePath);
+    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+      // For GitHub/network URLs - use cached network image
+      print('DEBUG PageViewer: Loading as network image: $imagePath');
+      return CachedNetworkImage(
+        imageUrl: imagePath,
+        fit: BoxFit.contain,
+        placeholder: (context, url) => Container(
+          color: Colors.grey[900],
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2.0,
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'Loading page...',
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        errorWidget: (context, url, error) {
+          print('DEBUG PageViewer: Network loading failed for $imagePath');
+          print('DEBUG PageViewer: Error: $error');
+          return Container(
+            color: Colors.grey[900],
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    size: 48,
+                    color: Colors.red[300],
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Failed to load page',
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 14,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Please check your internet connection',
+                    style: TextStyle(
+                      color: Colors.white54,
+                      fontSize: 12,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
     } else if (imagePath.startsWith('assets/')) {
       // For asset images
+      print('DEBUG PageViewer: Loading as asset: $imagePath');
       return Image.asset(
         imagePath,
         fit: BoxFit.contain,
         errorBuilder: (context, error, stackTrace) {
+          print('DEBUG PageViewer: Asset loading failed for $imagePath');
+          print('DEBUG PageViewer: Error: $error');
           return _buildErrorState('فشل في تحميل صورة الصفحة');
         },
       );
@@ -162,352 +232,17 @@ class PageViewer extends StatelessWidget {
       );
     } else {
       // Default to asset loading
+      print('DEBUG PageViewer: Loading as default asset: $imagePath');
       return Image.asset(
         imagePath,
         fit: BoxFit.contain,
         errorBuilder: (context, error, stackTrace) {
+          print('DEBUG PageViewer: Default asset loading failed for $imagePath');
+          print('DEBUG PageViewer: Error: $error');
           return _buildErrorState('فشل في تحميل صورة الصفحة');
         },
       );
     }
-  }
-
-  Widget _buildWebPlaceholder(String webPath) {
-    // Extract page info from web path like "web://qiraat/nafi_warsh/page_001.jpg"
-    final parts = webPath.split('/');
-    final pageFile = parts.isNotEmpty ? parts.last : 'unknown';
-    final pageNumber = pageFile.replaceAll(RegExp(r'[^\d]'), '');
-    
-    // Extract qiraat ID
-    final qiraatId = parts.length >= 4 ? parts[3] : '';
-    
-    print('DEBUG: Building web placeholder for path: $webPath');
-    print('DEBUG: Extracted page: $pageNumber, qiraat: $qiraatId');
-    
-    // List of qiraats that have converted images
-    final availableImageQiraats = {'nafi_warsh'};
-    
-    if (availableImageQiraats.contains(qiraatId)) {
-      // Try to load actual image for qiraats that have been converted
-      final assetPath = 'images/qiraats/$qiraatId/page_${pageNumber.padLeft(3, '0')}.jpg';
-      print('DEBUG: Trying to load image: $assetPath');
-      
-      return FutureBuilder<bool>(
-        future: _assetExists(assetPath),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return _buildLoadingState();
-          }
-          
-          if (snapshot.data == true) {
-            // Asset exists, show the image
-            return _buildRealImagePage(assetPath);
-          } else {
-            // Asset doesn't exist, show enhanced success display
-            return _buildEnhancedSuccessDisplay(pageNumber, qiraatId);
-          }
-        },
-      );
-    } else {
-      // For qiraats without converted images, show enhanced success display
-      print('DEBUG: No images available for qiraat $qiraatId, showing success display');
-      return _buildEnhancedSuccessDisplay(pageNumber, qiraatId);
-    }
-  }
-
-
-
-  Widget _buildPDFViewer(String pdfPath, String pageNumber) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      child: Column(
-        children: [
-          // Header with page info
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
-            color: Colors.black.withOpacity(0.1),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'صفحة $pageNumber',
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontFamily: 'Amiri',
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          // PDF Viewer
-          Expanded(
-            child: Container(
-              color: Colors.white,
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.picture_as_pdf,
-                      size: 64.sp,
-                      color: Colors.blue[600],
-                    ),
-                    SizedBox(height: 16.h),
-                    Text(
-                      'محتوى القرآن الكريم متوفر',
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        fontFamily: 'Amiri',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blue[700],
-                      ),
-                    ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      'صفحة $pageNumber',
-                      style: TextStyle(
-                        fontSize: 24.sp,
-                        fontFamily: 'Amiri',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green[600],
-                      ),
-                    ),
-                    SizedBox(height: 16.h),
-                    Container(
-                      padding: EdgeInsets.all(16.w),
-                      decoration: BoxDecoration(
-                        color: Colors.blue[50],
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      child: Column(
-                        children: [
-                          Text(
-                            'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ',
-                            style: TextStyle(
-                              fontSize: 20.sp,
-                              fontFamily: 'Amiri',
-                              color: Colors.black,
-                              height: 2.0,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          SizedBox(height: 16.h),
-                          Text(
-                            'ملف PDF متوفر في الأصول',
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              fontFamily: 'Amiri',
-                              color: Colors.grey[700],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future<bool> _assetExists(String assetPath) async {
-    try {
-      await rootBundle.load(assetPath);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-  
-  Widget _buildRealImagePage(String assetPath) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      padding: EdgeInsets.all(4.w), // Reduced padding for bigger display
-      child: InteractiveViewer(
-        boundaryMargin: EdgeInsets.all(10.w), // Reduced margin
-        minScale: 0.5,
-        maxScale: 4.0, // Increased max zoom
-        child: Container(
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                blurRadius: 10,
-                spreadRadius: 2,
-              ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8.r),
-            child: Image.asset(
-              assetPath,
-              fit: BoxFit.contain, // Keep contain to avoid cropping Quran text
-              width: double.infinity,
-              height: double.infinity,
-              errorBuilder: (context, error, stackTrace) {
-                print('DEBUG: Error loading image $assetPath: $error');
-                return _buildErrorState('فشل في تحميل صورة الصفحة');
-              },
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildEnhancedSuccessDisplay(String pageNumber, String qiraatId) {
-    // Map qiraat IDs to Arabic names
-    final qiraatNames = {
-      'nafi_warsh': 'ورش عن نافع',
-      'nafi_qaloon': 'قالون عن نافع',
-      'asim_hafs': 'حفص عن عاصم',
-      'asim_shubah': 'شعبة عن عاصم',
-    };
-    
-    final arabicName = qiraatNames[qiraatId] ?? 'قراءة مُحَمّلة';
-    
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Colors.green[50]!,
-            Colors.blue[50]!,
-            Colors.white,
-          ],
-        ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: EdgeInsets.all(24.w),
-            margin: EdgeInsets.all(20.w),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20.r),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.green.withOpacity(0.2),
-                  blurRadius: 25,
-                  spreadRadius: 5,
-                ),
-              ],
-            ),
-            child: Column(
-              children: [
-                // Success icon
-                Container(
-                  padding: EdgeInsets.all(16.w),
-                  decoration: BoxDecoration(
-                    color: Colors.green[100],
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.check_circle,
-                    size: 48.sp,
-                    color: Colors.green[600],
-                  ),
-                ),
-                
-                SizedBox(height: 20.h),
-                
-                // Main message
-                Text(
-                  'تم تحميل القراءة بنجاح ✅',
-                  style: TextStyle(
-                    fontSize: 20.sp,
-                    fontFamily: 'Amiri',
-                    fontWeight: FontWeight.bold,
-                    color: Colors.green[700],
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                
-                SizedBox(height: 12.h),
-                
-                // Qiraat name
-                Text(
-                  arabicName,
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontFamily: 'Amiri',
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue[700],
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                
-                SizedBox(height: 16.h),
-                
-                // Page number display
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                  decoration: BoxDecoration(
-                    color: Colors.blue[100],
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                  child: Text(
-                    'صفحة رقم $pageNumber',
-                    style: TextStyle(
-                      fontSize: 22.sp,
-                      fontFamily: 'Amiri',
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue[800],
-                    ),
-                  ),
-                ),
-                
-                SizedBox(height: 20.h),
-                
-                // Bismillah
-                Container(
-                  padding: EdgeInsets.all(16.w),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[50],
-                    borderRadius: BorderRadius.circular(12.r),
-                    border: Border.all(color: Colors.grey[300]!),
-                  ),
-                  child: Column(
-                    children: [
-                      Text(
-                        'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ',
-                        style: TextStyle(
-                          fontSize: 24.sp,
-                          fontFamily: 'Amiri',
-                          color: Colors.black87,
-                          height: 1.8,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 12.h),
-                      Text(
-                        'محتوى الصفحة جاهز للعرض 📖',
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontFamily: 'Amiri',
-                          color: Colors.grey[700],
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
   }
 
   Widget _buildPlaceholderPage(BuildContext context, int pageNumber, qiraat, AppState appState) {

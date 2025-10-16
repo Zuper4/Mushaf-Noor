@@ -51,12 +51,112 @@ def convert_pdf_to_images(pdf_path, output_dir, qiraat_name):
         return 0
 
 def main():
-    # Define the mappings
+    # Define the mappings for all qiraats except asim_hafs (which we keep as is)
     pdf_mappings = [
+        # Nafi3
         {
             'pdf_path': 'assets/pdfs/Nafi3/Warsh.pdf',
             'output_dir': 'assets/images/qiraats/nafi_warsh',
             'qiraat_name': 'nafi_warsh'
+        },
+        {
+            'pdf_path': 'assets/pdfs/Nafi3/Qalun.pdf',
+            'output_dir': 'assets/images/qiraats/nafi_qalun',
+            'qiraat_name': 'nafi_qalun'
+        },
+        # Asim - Only Shu3ba (skip Hafs as requested)
+        {
+            'pdf_path': 'assets/pdfs/Asim/Shu3ba.pdf',
+            'output_dir': 'assets/images/qiraats/asim_shuba',
+            'qiraat_name': 'asim_shuba'
+        },
+        # Abu Amr
+        {
+            'pdf_path': 'assets/pdfs/Abu_Amr/Ad-Duri.pdf',
+            'output_dir': 'assets/images/qiraats/abu_amr_duri',
+            'qiraat_name': 'abu_amr_duri'
+        },
+        {
+            'pdf_path': 'assets/pdfs/Abu_Amr/As-Sussi.pdf',
+            'output_dir': 'assets/images/qiraats/abu_amr_sussi',
+            'qiraat_name': 'abu_amr_sussi'
+        },
+        # Ibn Kathir
+        {
+            'pdf_path': 'assets/pdfs/Ibn_Kathir/Al-Bazzi.pdf',
+            'output_dir': 'assets/images/qiraats/ibn_kathir_bazzi',
+            'qiraat_name': 'ibn_kathir_bazzi'
+        },
+        {
+            'pdf_path': 'assets/pdfs/Ibn_Kathir/Qunbul.pdf',
+            'output_dir': 'assets/images/qiraats/ibn_kathir_qunbul',
+            'qiraat_name': 'ibn_kathir_qunbul'
+        },
+        # Ibn Amir
+        {
+            'pdf_path': 'assets/pdfs/Ibn_Amir/Hisham.pdf',
+            'output_dir': 'assets/images/qiraats/ibn_amir_hisham',
+            'qiraat_name': 'ibn_amir_hisham'
+        },
+        {
+            'pdf_path': 'assets/pdfs/Ibn_Amir/Ibn_Dhakwan.pdf',
+            'output_dir': 'assets/images/qiraats/ibn_amir_dhakwan',
+            'qiraat_name': 'ibn_amir_dhakwan'
+        },
+        # Al-Kisai
+        {
+            'pdf_path': 'assets/pdfs/Al-Kisai/Abu_Al-Harith.pdf',
+            'output_dir': 'assets/images/qiraats/kisai_harith',
+            'qiraat_name': 'kisai_harith'
+        },
+        {
+            'pdf_path': 'assets/pdfs/Al-Kisai/Ad-Duri.pdf',
+            'output_dir': 'assets/images/qiraats/kisai_duri',
+            'qiraat_name': 'kisai_duri'
+        },
+        # Hamzah
+        {
+            'pdf_path': 'assets/pdfs/Hamzah/Khalaad.pdf',
+            'output_dir': 'assets/images/qiraats/hamzah_khalaad',
+            'qiraat_name': 'hamzah_khalaad'
+        },
+        {
+            'pdf_path': 'assets/pdfs/Hamzah/Khalaf.pdf',
+            'output_dir': 'assets/images/qiraats/hamzah_khalaf',
+            'qiraat_name': 'hamzah_khalaf'
+        },
+        # Abu Jafar
+        {
+            'pdf_path': 'assets/pdfs/Abu_Jafar/Ibn_Jammaaz.pdf',
+            'output_dir': 'assets/images/qiraats/abu_jafar_jammaaz',
+            'qiraat_name': 'abu_jafar_jammaaz'
+        },
+        {
+            'pdf_path': 'assets/pdfs/Abu_Jafar/Ibn_Wardaan.pdf',
+            'output_dir': 'assets/images/qiraats/abu_jafar_wardaan',
+            'qiraat_name': 'abu_jafar_wardaan'
+        },
+        # Khalaf
+        {
+            'pdf_path': 'assets/pdfs/Khalaf/Idris.pdf',
+            'output_dir': 'assets/images/qiraats/khalaf_idris',
+            'qiraat_name': 'khalaf_idris'
+        },
+        {
+            'pdf_path': 'assets/pdfs/Khalaf/Ishaq.pdf',
+            'output_dir': 'assets/images/qiraats/khalaf_ishaq',
+            'qiraat_name': 'khalaf_ishaq'
+        },
+        # Ya3qub
+        {
+            'pdf_path': 'assets/pdfs/Ya3qub/Rawh.pdf',
+            'output_dir': 'assets/images/qiraats/yaqub_rawh',
+            'qiraat_name': 'yaqub_rawh'
+        },
+        {
+            'pdf_path': 'assets/pdfs/Ya3qub/Ruwais.pdf',
+            'output_dir': 'assets/images/qiraats/yaqub_ruwais',
+            'qiraat_name': 'yaqub_ruwais'
         }
     ]
     
