@@ -17,7 +17,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "com.zeydajraou.mushafnoor"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 36  // Compile against latest Android SDK for plugin compatibility
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -35,7 +35,7 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion  // Android 5.0 minimum for better compatibility
-        targetSdk = 34
+        targetSdk = 35  // Target Android 15 (API level 35) as required by Google Play
         versionCode = flutter.versionCode
         versionName = flutter.versionName
         multiDexEnabled = true  // Enable multidex for larger app size
