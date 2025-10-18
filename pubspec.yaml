@@ -48,9 +48,8 @@ flutter:
   uses-material-design: true
   
   assets:
-    # Only include the default Hafs qiraat as bundled assets
-    # Other qiraats will be loaded from GitHub Pages on demand
-    - assets/images/qiraats/asim_hafs/
+    # All qiraats are now loaded from Cloudflare R2 on demand
+    # No bundled images - makes the app lighter and faster to download!
     - assets/icons/
     - assets/fonts/
     - assets/json/

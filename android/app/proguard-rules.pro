@@ -27,3 +27,7 @@
 -dontwarn javax.annotation.**
 -dontwarn javax.inject.**
 -dontwarn sun.misc.Unsafe
+
+# Ignore Play Core missing classes (not used in this app)
+-dontwarn com.google.android.play.core.**
+-keep class com.google.android.play.core.** { *; }
