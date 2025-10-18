@@ -167,43 +167,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
               ),
               
               // Side navigation areas (invisible touch zones) - Arabic style
-              // Only cover middle area, not top/bottom controls
-              Positioned(
-                left: 0,
-                top: 100.h, // Start below top controls
-                bottom: 150.h, // End above bottom controls  
-                width: 80.w,
-                child: GestureDetector(
-                  onTap: () {
-                    // Left tap = next page in Arabic (higher page number)
-                    if (appState.currentPage < 606) {
-                      _pageController.nextPage(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      );
-                    }
-                  },
-                  child: Container(color: Colors.transparent),
-                ),
-              ),
-              Positioned(
-                right: 0,
-                top: 100.h, // Start below top controls
-                bottom: 150.h, // End above bottom controls
-                width: 80.w,
-                child: GestureDetector(
-                  onTap: () {
-                    // Right tap = previous page in Arabic (lower page number)
-                    if (appState.currentPage > 1) {
-                      _pageController.previousPage(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      );
-                    }
-                  },
-                  child: Container(color: Colors.transparent),
-                ),
-              ),
+              // Tap zones removed - users can only navigate by swiping or using buttons
             ],
           );
         },

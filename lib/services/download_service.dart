@@ -3,28 +3,17 @@ import '../services/github_qiraat_service.dart';
 
 class DownloadService {
   /// Check if a qiraat is "downloaded" (available for reading)
-  /// - asim_hafs is bundled as assets, so always available
-  /// - Other qiraats are streamed from GitHub Pages, so always "available" with internet
+  /// All qiraats are now streamed from Cloudflare R2, so always "available" with internet
   Future<bool> isQiraatDownloaded(String qiraatId) async {
-    // asim_hafs is bundled with the app
-    if (qiraatId == 'asim_hafs') {
-      return true;
-    }
-    
-    // All other qiraats are available via GitHub Pages (no local download needed)
+    // All qiraats are available via Cloudflare R2 (no local download needed)
     // They're streamed on-demand with caching via CachedNetworkImage
     return GitHubQiraatService.isQiraatAvailable(qiraatId);
   }
 
   /// Get the path or URL for a specific page
-  /// Returns an asset path for bundled qiraats, or a GitHub URL for streamed qiraats
+  /// Returns a Cloudflare R2 URL for all qiraats
   Future<String> getPagePath(String qiraatId, int pageNumber) async {
-    if (qiraatId == 'asim_hafs') {
-      // Use bundled assets for Hafs
-      return 'assets/images/qiraats/asim_hafs/page_${pageNumber.toString().padLeft(3, '0')}.jpg';
-    }
-    
-    // Use GitHub Pages URL for all other qiraats
+    // Use Cloudflare R2 URL for all qiraats (including asim_hafs)
     return GitHubQiraatService.getPageUrl(qiraatId, pageNumber);
   }
   
@@ -51,11 +40,6 @@ class DownloadService {
   
   /// Delete a qiraat (not applicable for streamed qiraats)
   Future<void> deleteQiraat(String qiraatId) async {
-    // Can't delete bundled asim_hafs
-    if (qiraatId == 'asim_hafs') {
-      return;
-    }
-    
     // For streamed qiraats, we could clear the cache here
     // But CachedNetworkImage handles this automatically
     if (kDebugMode) {
