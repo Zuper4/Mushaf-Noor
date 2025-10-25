@@ -38,6 +38,10 @@ dependencies:
   # Utilities
   connectivity_plus: ^5.0.2
   package_info_plus: ^4.2.0
+  
+  # Audio Playback
+  just_audio: ^0.9.36
+  audio_session: ^0.1.18
 
 dev_dependencies:
   flutter_test:
@@ -53,6 +57,8 @@ flutter:
     - assets/icons/
     - assets/fonts/
     - assets/json/
+    - assets/json/bounds/asim_hafs/
+    - assets/json/bounds/nafi_warsh/
     - assets/pdfs/
   
   # Fonts will be loaded when available

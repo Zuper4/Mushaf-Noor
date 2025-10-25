@@ -4,9 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../providers/app_state.dart';
 import '../providers/qiraat_provider.dart';
+import '../providers/audio_provider.dart';
+import '../services/ayah_bounds_service.dart';
 import '../widgets/page_viewer.dart';
 import '../widgets/reading_controls.dart';
 import '../widgets/page_indicator.dart';
+import '../widgets/floating_audio_player.dart';
+import '../widgets/ayah_audio_selector.dart';
 import '../l10n/app_localizations.dart';
 
 class ReadingScreen extends StatefulWidget {
@@ -56,6 +60,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
       backgroundColor: Colors.black,
       body: Consumer2<AppState, QiraatProvider>(
         builder: (context, appState, qiraatProvider, child) {
+          final audioProvider = Provider.of<AudioProvider>(context, listen: false);
           return Stack(
             children: [
               // Main page viewer
@@ -161,6 +166,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
                       pageController: _pageController,
                       onSettingsPressed: () => _showQuickSettings(context, appState),
                       onQiraatPressed: () => _showQiraatSelector(context, qiraatProvider),
+                      onMicPressed: () => _handleMicPressed(context, appState, qiraatProvider, audioProvider),
                     ),
                   ),
                 ),
@@ -168,9 +174,131 @@ class _ReadingScreenState extends State<ReadingScreen> {
               
               // Side navigation areas (invisible touch zones) - Arabic style
               // Tap zones removed - users can only navigate by swiping or using buttons
+              
+              // Floating audio player
+              const FloatingAudioPlayer(),
             ],
           );
         },
+      ),
+    );
+  }
+
+  void _handleMicPressed(BuildContext context, AppState appState, QiraatProvider qiraatProvider, AudioProvider audioProvider) async {
+    final pageNumber = appState.currentPage;
+    final selectedQiraat = qiraatProvider.selectedQiraat;
+    
+    if (selectedQiraat == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            appState.languageCode == 'ar' 
+                ? 'الرجاء اختيار قراءة أولاً' 
+                : 'Please select a Qiraat first',
+            style: const TextStyle(fontFamily: 'Amiri'),
+          ),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+    
+    // Determine current surah(s) on this page by loading the bounds
+    final boundsService = AyahBoundsService();
+    final bounds = await boundsService.getBoundsForPage(selectedQiraat.id, pageNumber);
+    
+    // Get all unique surahs on this page
+    Set<int> surahsOnPage = {};
+    if (bounds != null && bounds.ayahs.isNotEmpty) {
+      surahsOnPage = bounds.ayahs.map((ayah) => ayah.surahNumber).toSet();
+    }
+    
+    // If multiple surahs on page, let user choose which one
+    // If only one surah, use that automatically
+    // If no bounds data, fallback to basic mapping
+    int currentSurah = 1; // Default fallback
+    
+    if (surahsOnPage.isEmpty) {
+      // Fallback: basic page-to-surah mapping
+      if (pageNumber >= 3) {
+        currentSurah = 2; // Al-Baqarah starts from page 3
+      }
+    } else if (surahsOnPage.length == 1) {
+      // Only one surah on this page
+      currentSurah = surahsOnPage.first;
+    } else {
+      // Multiple surahs on this page - show selection dialog
+      currentSurah = await _showSurahSelector(context, surahsOnPage.toList()..sort()) ?? surahsOnPage.first;
+    }
+    
+    if (!mounted) return;
+    
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) => SizedBox(
+        height: MediaQuery.of(context).size.height * 0.7,
+        child: AyahAudioSelector(
+          pageNumber: pageNumber,
+          qiraatId: selectedQiraat.id,
+          currentSurah: currentSurah,
+        ),
+      ),
+    );
+  }
+
+  Future<int?> _showSurahSelector(BuildContext context, List<int> surahNumbers) async {
+    final localizations = AppLocalizations.of(context);
+    
+    // Surah names mapping
+    final surahNames = {
+      1: 'الفاتحة', 2: 'البقرة', 3: 'آل عمران', 4: 'النساء', 5: 'المائدة',
+      6: 'الأنعام', 7: 'الأعراف', 8: 'الأنفال', 9: 'التوبة', 10: 'يونس',
+      11: 'هود', 12: 'يوسف', 13: 'الرعد', 14: 'إبراهيم', 15: 'الحجر',
+      16: 'النحل', 17: 'الإسراء', 18: 'الكهف', 19: 'مريم', 20: 'طه',
+      21: 'الأنبياء', 22: 'الحج', 23: 'المؤمنون', 24: 'النور', 25: 'الفرقان',
+      26: 'الشعراء', 27: 'النمل', 28: 'القصص', 29: 'العنكبوت', 30: 'الروم',
+      31: 'لقمان', 32: 'السجدة', 33: 'الأحزاب', 34: 'سبأ', 35: 'فاطر',
+      36: 'يس', 37: 'الصافات', 38: 'ص', 39: 'الزمر', 40: 'غافر',
+      41: 'فصلت', 42: 'الشورى', 43: 'الزخرف', 44: 'الدخان', 45: 'الجاثية',
+      46: 'الأحقاف', 47: 'محمد', 48: 'الفتح', 49: 'الحجرات', 50: 'ق',
+      51: 'الذاريات', 52: 'الطور', 53: 'النجم', 54: 'القمر', 55: 'الرحمن',
+      56: 'الواقعة', 57: 'الحديد', 58: 'المجادلة', 59: 'الحشر', 60: 'الممتحنة',
+      61: 'الصف', 62: 'الجمعة', 63: 'المنافقون', 64: 'التغابن', 65: 'الطلاق',
+      66: 'التحريم', 67: 'الملك', 68: 'القلم', 69: 'الحاقة', 70: 'المعارج',
+      71: 'نوح', 72: 'الجن', 73: 'المزمل', 74: 'المدثر', 75: 'القيامة',
+      76: 'الإنسان', 77: 'المرسلات', 78: 'النبأ', 79: 'النازعات', 80: 'عبس',
+      81: 'التكوير', 82: 'الانفطار', 83: 'المطففين', 84: 'الانشقاق', 85: 'البروج',
+      86: 'الطارق', 87: 'الأعلى', 88: 'الغاشية', 89: 'الفجر', 90: 'البلد',
+      91: 'الشمس', 92: 'الليل', 93: 'الضحى', 94: 'الشرح', 95: 'التين',
+      96: 'العلق', 97: 'القدر', 98: 'البينة', 99: 'الزلزلة', 100: 'العاديات',
+      101: 'القارعة', 102: 'التكاثر', 103: 'العصر', 104: 'الهمزة', 105: 'الفيل',
+      106: 'قريش', 107: 'الماعون', 108: 'الكوثر', 109: 'الكافرون', 110: 'النصر',
+      111: 'المسد', 112: 'الإخلاص', 113: 'الفلق', 114: 'الناس',
+    };
+
+    return await showDialog<int>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          localizations.chooseSurah,
+          style: const TextStyle(fontFamily: 'Amiri', fontSize: 20),
+          textAlign: TextAlign.center,
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: surahNumbers.map((surahNum) {
+            return ListTile(
+              title: Text(
+                surahNames[surahNum] ?? 'سورة $surahNum',
+                style: const TextStyle(fontFamily: 'Amiri', fontSize: 18),
+                textAlign: TextAlign.center,
+              ),
+              onTap: () => Navigator.of(context).pop(surahNum),
+            );
+          }).toList(),
+        ),
       ),
     );
   }

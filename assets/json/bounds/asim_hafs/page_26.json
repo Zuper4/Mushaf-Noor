@@ -1,0 +1,84 @@
+{
+  "pageNumber": 26,
+  "qiraatId": "asim_hafs",
+  "ayahs": [
+    {
+      "surahNumber": 2,
+      "ayahNumber": 164,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.6699999999999999,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 2,
+      "ayahNumber": 165,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.75,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 2,
+      "ayahNumber": 166,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.83,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 2,
+      "ayahNumber": 167,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.91,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 2,
+      "ayahNumber": 168,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.99,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 2,
+      "ayahNumber": 169,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 1.0699999999999998,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    }
+  ]
+}

@@ -4,10 +4,17 @@ import 'package:provider/provider.dart';
 import 'providers/app_state.dart';
 import 'providers/qiraat_provider.dart';
 import 'providers/download_provider.dart';
+import 'providers/audio_provider.dart';
+import 'services/ayah_bounds_service.dart';
 import 'screens/home_screen.dart';
 import 'utils/theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize services
+  await AyahBoundsService().initialize();
+  
   runApp(const MushafNoorApp());
 }
 
@@ -26,6 +33,7 @@ class MushafNoorApp extends StatelessWidget {
             ChangeNotifierProvider(create: (_) => AppState()),
             ChangeNotifierProvider(create: (_) => QiraatProvider()),
             ChangeNotifierProvider(create: (_) => DownloadProvider()),
+            ChangeNotifierProvider(create: (_) => AudioProvider()),
           ],
           child: Consumer<AppState>(
             builder: (context, appState, child) {

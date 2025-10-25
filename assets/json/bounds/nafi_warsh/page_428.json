@@ -1,0 +1,149 @@
+{
+  "pageNumber": 428,
+  "qiraatId": "nafi_warsh",
+  "ayahs": [
+    {
+      "surahNumber": 33,
+      "ayahNumber": 63,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.59,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 33,
+      "ayahNumber": 64,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.6699999999999999,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 33,
+      "ayahNumber": 65,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.75,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 33,
+      "ayahNumber": 66,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.83,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 33,
+      "ayahNumber": 67,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.91,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 33,
+      "ayahNumber": 68,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.99,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 33,
+      "ayahNumber": 69,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 1.0699999999999998,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 33,
+      "ayahNumber": 70,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.35,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 33,
+      "ayahNumber": 71,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.43,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 33,
+      "ayahNumber": 72,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.51,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 33,
+      "ayahNumber": 73,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.59,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    }
+  ]
+}

@@ -8,6 +8,7 @@ import '../l10n/app_localizations.dart';
 import '../providers/app_state.dart';
 import '../providers/qiraat_provider.dart';
 import '../services/download_service.dart';
+import 'ayah_detection_overlay.dart';
 
 class PageViewer extends StatelessWidget {
   final PageController pageController;
@@ -92,7 +93,7 @@ class PageViewer extends StatelessWidget {
         print('DEBUG: Got image path: $imagePath');
         
         if (imagePath != null) {
-          return _buildImagePage(imagePath, appState);
+          return _buildImagePage(imagePath, appState, pageNumber, selectedQiraat.id);
         } else {
           return _buildPlaceholderPage(context, pageNumber, selectedQiraat, appState);
         }
@@ -110,7 +111,7 @@ class PageViewer extends StatelessWidget {
     return path;
   }
 
-  Widget _buildImagePage(String imagePath, AppState appState) {
+  Widget _buildImagePage(String imagePath, AppState appState, int pageNumber, String qiraatId) {
     return Center(
       child: Container(
         padding: EdgeInsets.all(16.w),
@@ -130,7 +131,25 @@ class PageViewer extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8.r),
-              child: _buildImageWidget(imagePath),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return Stack(
+                    children: [
+                      // Page image
+                      _buildImageWidget(imagePath),
+                      // Ayah detection overlay on top
+                      Positioned.fill(
+                        child: AyahDetectionOverlay(
+                          pageNumber: pageNumber,
+                          qiraatId: qiraatId,
+                          imageWidth: constraints.maxWidth,
+                          imageHeight: constraints.maxHeight,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
             ),
           ),
         ),

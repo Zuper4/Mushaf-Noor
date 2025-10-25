@@ -7,12 +7,14 @@ class ReadingControls extends StatelessWidget {
   final PageController pageController;
   final VoidCallback onSettingsPressed;
   final VoidCallback onQiraatPressed;
+  final VoidCallback onMicPressed;
 
   const ReadingControls({
     super.key,
     required this.pageController,
     required this.onSettingsPressed,
     required this.onQiraatPressed,
+    required this.onMicPressed,
   });
 
   @override
@@ -41,6 +43,14 @@ class ReadingControls extends StatelessWidget {
                 icon: Icons.settings,
                 onPressed: onSettingsPressed,
                 tooltip: appState.languageCode == 'ar' ? 'الإعدادات' : 'Settings',
+              ),
+              
+              // Mic button (voice recording/playback)
+              _buildControlButton(
+                icon: Icons.mic,
+                onPressed: onMicPressed,
+                tooltip: appState.languageCode == 'ar' ? 'تشغيل الصوت' : 'Play Audio',
+                isPrimary: true, // Make it stand out
               ),
               
               // Qiraat selector
@@ -72,17 +82,20 @@ class ReadingControls extends StatelessWidget {
     required IconData icon,
     required VoidCallback onPressed,
     required String tooltip,
+    bool isPrimary = false,
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.6),
+        color: isPrimary 
+            ? Colors.green.withOpacity(0.7)  // Highlight mic button
+            : Colors.black.withOpacity(0.6),
         borderRadius: BorderRadius.circular(25.r),
       ),
       child: IconButton(
         icon: Icon(
           icon,
           color: Colors.white,
-          size: 24.sp,
+          size: isPrimary ? 28.sp : 24.sp,  // Slightly larger mic icon
         ),
         onPressed: onPressed,
         tooltip: tooltip,

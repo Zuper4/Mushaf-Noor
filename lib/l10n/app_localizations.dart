@@ -126,6 +126,22 @@ class AppLocalizations {
       
       // Placeholder Content
       'bismillah': 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ',
+      
+      // Audio Player
+      'play_whole_surah': 'Play Whole Surah',
+      'play_the_page': 'Play the Page',
+      'play_ayah_range': 'Play Ayah Range',
+      'play_range': 'Play Range',
+      'from': 'From',
+      'to': 'To',
+      'ayah': 'Ayah',
+      'surah': 'Surah',
+      'playing_ayah': 'Playing Ayah {0}',
+      'playing_range': 'Playing from Ayah {0} to {1}',
+      'please_select_qiraat': 'Please select a Qiraat first',
+      'showing_all_ayahs': 'Showing all',
+      'showing_ayahs_on_page': 'Showing ayahs on page:',
+      'choose_surah': 'Choose Surah',
     },
     'ar': {
       // App Title
@@ -241,6 +257,22 @@ class AppLocalizations {
       
       // Placeholder Content
       'bismillah': 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ',
+      
+      // Audio Player
+      'play_whole_surah': 'تشغيل السورة كاملة',
+      'play_the_page': 'تشغيل الصفحة',
+      'play_ayah_range': 'تشغيل نطاق من الآيات',
+      'play_range': 'تشغيل النطاق',
+      'from': 'من',
+      'to': 'إلى',
+      'ayah': 'الآية',
+      'surah': 'سورة',
+      'playing_ayah': 'تشغيل الآية {0}',
+      'playing_range': 'تشغيل من الآية {0} إلى {1}',
+      'please_select_qiraat': 'الرجاء اختيار قراءة أولاً',
+      'showing_all_ayahs': 'عرض جميع',
+      'showing_ayahs_on_page': 'عرض الآيات في الصفحة:',
+      'choose_surah': 'اختر السورة',
     },
   };
 
@@ -340,6 +372,26 @@ class AppLocalizations {
       _localizedValues[languageCode]!['ayah_count']!.replaceAll('{0}', count.toString());
   String get loadingPage => _localizedValues[languageCode]!['loading_page']!;
   String get bismillah => _localizedValues[languageCode]!['bismillah']!;
+
+  // Audio Player getters
+  String get playWholeSurah => _localizedValues[languageCode]!['play_whole_surah']!;
+  String get playThePage => _localizedValues[languageCode]!['play_the_page']!;
+  String get playAyahRange => _localizedValues[languageCode]!['play_ayah_range']!;
+  String get playRange => _localizedValues[languageCode]!['play_range']!;
+  String get from => _localizedValues[languageCode]!['from']!;
+  String get to => _localizedValues[languageCode]!['to']!;
+  String get ayah => _localizedValues[languageCode]!['ayah']!;
+  String get surah => _localizedValues[languageCode]!['surah']!;
+  String playingAyah(int ayahNumber) => 
+      _localizedValues[languageCode]!['playing_ayah']!.replaceAll('{0}', ayahNumber.toString());
+  String playingRange(int start, int end) => 
+      _localizedValues[languageCode]!['playing_range']!
+          .replaceAll('{0}', start.toString())
+          .replaceAll('{1}', end.toString());
+  String get pleaseSelectQiraat => _localizedValues[languageCode]!['please_select_qiraat']!;
+  String get showingAllAyahs => _localizedValues[languageCode]!['showing_all_ayahs']!;
+  String get showingAyahsOnPage => _localizedValues[languageCode]!['showing_ayahs_on_page']!;
+  String get chooseSurah => _localizedValues[languageCode]!['choose_surah']!;
 
   // Helper methods for dynamic text
   String getQiraatDownloadedMessage(String qiraatName) => 
