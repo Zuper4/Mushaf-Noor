@@ -150,32 +150,91 @@ class _AyahDetectionOverlayState extends State<AyahDetectionOverlay> {
       return '';
     }
     
-    final qariName = _normalizeQariName(parts[0]);  // e.g., "nafi" -> "nafi"
-    final rawiName = _normalizeRawiName(parts[1]);  // e.g., "warsh" -> "warsh"
+    final qariName = _normalizeQariName(qiraatId, parts[0]);
+    final rawiName = _normalizeRawiName(qiraatId, parts[1]);
     
     // Format: {baseUrl}/ayahs/Zeyd/{qari}/{rawi}/{surah}{ayah}.mp3
     // Example: https://pub-820035f689da4250823ad729c03363e9.r2.dev/ayahs/Zeyd/nafi/warsh/001001.mp3
     final surahPadded = surahNumber.toString().padLeft(3, '0');
     final ayahPadded = ayahNumber.toString().padLeft(3, '0');
     
-    final audioUrl = '$baseUrl/ayahs/Zeyd/$qariName/$rawiName/$surahPadded$ayahPadded.mp3';
+    final audioUrl = '$baseUrl/Zeyd/$qariName/$rawiName/$surahPadded$ayahPadded.mp3';
     print('DEBUG: Built audio URL: $audioUrl');
     return audioUrl;
   }
 
   // Normalize qari names to match R2 folder structure
-  String _normalizeQariName(String qariId) {
-    // Map qari IDs to folder names if they differ
-    // Add mappings here if your R2 folder names differ from the ID
-    return qariId.toLowerCase();
+  String _normalizeQariName(String fullQiraatId, String qariId) {
+    // Handle compound qari names by checking the full qiraat ID
+    if (fullQiraatId.startsWith('ibn_kathir')) return 'ibn_kathir';
+    if (fullQiraatId.startsWith('abu_amr')) return 'abu_amr';
+    if (fullQiraatId.startsWith('abu_jafar')) return 'abu_ja_far';
+    if (fullQiraatId.startsWith('kisai') || fullQiraatId.startsWith('al_kisai')) return 'kisa_i';
+    if (fullQiraatId.startsWith('ibn_amir')) return 'ibn_amir';
+    if (fullQiraatId.startsWith('khalaf')) return 'khalaf_tenth';  // Khalaf al-'Ashir
+    
+    const mapping = {
+      'nafi': 'nafi',
+      'asim': 'asim',
+      'hamzah': 'hamza',        // Note: hamza not hamzah
+      'yaqub': 'ya_qub',        // Note: ya_qub with underscore
+    };
+    
+    return mapping[qariId] ?? qariId;
   }
 
   // Normalize rawi names to match R2 folder structure
-  String _normalizeRawiName(String rawiId) {
-    // Map rawi IDs to folder names if they differ
-    // Add mappings here if your R2 folder names differ from the ID
-    return rawiId.toLowerCase();
+  String _normalizeRawiName(String fullQiraatId, String rawiId) {
+    // Handle context-specific mappings based on the full qiraat ID
+    
+    // Special cases where the same rawi name appears with different qaris
+    if (fullQiraatId == 'abu_amr_duri') return 'duri';
+    if (fullQiraatId == 'kisai_duri') return 'duri_kisa_i';  // Different Duri for Kisa'i
+    
+    const mapping = {
+      // Nafi'
+      'qalun': 'qaloun',        // Note: qaloun not qalun
+      'warsh': 'warsh',
+      
+      // Ibn Kathir
+      'bazzi': 'bazzi',
+      'qunbul': 'qunbul',
+      
+      // Abu Amr
+      'sussi': 'susi',          // Note: susi not sussi
+      
+      // Asim
+      'hafs': 'hafs',
+      'shuba': 'shu_ba',        // Note: shu_ba with underscore
+      
+      // Hamzah (note: khalaf here is different from Khalaf al-'Ashir)
+      'khalaf': 'khalaf',       // Khalaf an Hamzah
+      'khalaad': 'khallad',     // Note: khallad not khalaad
+      
+      // Al-Kisa'i
+      'abu_harith': 'abu_harith',
+      
+      // Abu Jafar
+      'ibn_jammaz': 'ibn_jammaz',
+      'ibn_wardan': 'ibn_wardaan',  // Note: ibn_wardaan not ibn_wardan
+      
+      // Ya'qub
+      'ruways': 'ruways',
+      'rawh': 'rawh',
+      
+      // Khalaf al-'Ashir (the 10th reader) - THESE ARE THE KEY ONES!
+      'ishaq': 'ishaq',         // lowercase
+      'idris': 'idris',         // lowercase
+      
+      // Ibn Amir
+      'hisham': 'hisham',
+      'ibn_zakwan': 'ibn_dhakwan',  // Note: ibn_dhakwan not ibn_zakwan
+    };
+    
+    return mapping[rawiId] ?? rawiId;
   }
+
+
 
   void _showAyahSelectedFeedback(AyahBoundInfo ayahBound) {
     ScaffoldMessenger.of(context).showSnackBar(

@@ -219,8 +219,9 @@ class _AyahAudioSelectorState extends State<AyahAudioSelector> {
       return '';
     }
     
-    final qariName = parts[0].toLowerCase();
-    final rawiName = parts[1].toLowerCase();
+    // Map qiraat IDs to correct R2 folder structure
+    final qariName = _mapQariName(parts[0]);
+    final rawiName = _mapRawiName(parts[1]);
     
     // Format: SSSAAA.mp3 (3-digit surah + 3-digit ayah, no separator)
     final surahStr = surahNumber.toString().padLeft(3, '0');
@@ -233,6 +234,79 @@ class _AyahAudioSelectorState extends State<AyahAudioSelector> {
     print('  Full URL: $audioUrl');
     
     return audioUrl;
+  }
+
+  /// Map qari IDs to R2 folder names
+  String _mapQariName(String qariId) {
+    // Handle compound qari names by checking the full qiraat ID
+    final fullQiraatId = widget.qiraatId;
+    if (fullQiraatId.startsWith('ibn_kathir')) return 'ibn_kathir';
+    if (fullQiraatId.startsWith('abu_amr')) return 'abu_amr';
+    if (fullQiraatId.startsWith('abu_jafar')) return 'abu_ja_far';
+    if (fullQiraatId.startsWith('kisai') || fullQiraatId.startsWith('al_kisai')) return 'kisa_i';
+    if (fullQiraatId.startsWith('ibn_amir')) return 'ibn_amir';
+    if (fullQiraatId.startsWith('khalaf')) return 'khalaf_tenth';  // Khalaf al-'Ashir
+    
+    const mapping = {
+      'nafi': 'nafi',
+      'asim': 'asim',
+      'hamzah': 'hamza',        // Note: hamza not hamzah
+      'yaqub': 'ya_qub',        // Note: ya_qub with underscore
+    };
+    
+    return mapping[qariId] ?? qariId;
+  }
+
+  /// Map rawi IDs to R2 folder names
+  String _mapRawiName(String rawiId) {
+    // Handle context-specific mappings based on the full qiraat ID
+    final fullQiraatId = widget.qiraatId;
+    
+    // Special cases where the same rawi name appears with different qaris
+    if (fullQiraatId == 'abu_amr_duri') return 'duri';
+    if (fullQiraatId == 'kisai_duri') return 'duri_kisa_i';  // Different Duri for Kisa'i
+    
+    const mapping = {
+      // Nafi'
+      'qalun': 'qaloun',        // Note: qaloun not qalun
+      'warsh': 'warsh',
+      
+      // Ibn Kathir
+      'bazzi': 'bazzi',
+      'qunbul': 'qunbul',
+      
+      // Abu Amr
+      'sussi': 'susi',          // Note: susi not sussi
+      
+      // Asim
+      'hafs': 'hafs',
+      'shuba': 'shu_ba',        // Note: shu_ba with underscore
+      
+      // Hamzah (note: khalaf here is different from Khalaf al-'Ashir)
+      'khalaf': 'khalaf',       // Khalaf an Hamzah
+      'khalaad': 'khallad',     // Note: khallad not khalaad
+      
+      // Al-Kisa'i
+      'abu_harith': 'abu_harith',
+      
+      // Abu Jafar
+      'ibn_jammaz': 'ibn_jammaz',
+      'ibn_wardan': 'ibn_wardaan',  // Note: ibn_wardaan not ibn_wardan
+      
+      // Ya'qub
+      'ruways': 'ruways',
+      'rawh': 'rawh',
+      
+      // Khalaf al-'Ashir (the 10th reader) - THESE ARE THE KEY ONES!
+      'ishaq': 'ishaq',         // lowercase
+      'idris': 'idris',         // lowercase
+      
+      // Ibn Amir
+      'hisham': 'hisham',
+      'ibn_zakwan': 'ibn_dhakwan',  // Note: ibn_dhakwan not ibn_zakwan
+    };
+    
+    return mapping[rawiId] ?? rawiId;
   }
 
   void _playSingleAyah(int ayahNumber) {

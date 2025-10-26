@@ -11,6 +11,7 @@ import '../widgets/reading_controls.dart';
 import '../widgets/page_indicator.dart';
 import '../widgets/floating_audio_player.dart';
 import '../widgets/ayah_audio_selector.dart';
+import '../models/surah.dart';
 import '../l10n/app_localizations.dart';
 
 class ReadingScreen extends StatefulWidget {
@@ -219,10 +220,8 @@ class _ReadingScreenState extends State<ReadingScreen> {
     int currentSurah = 1; // Default fallback
     
     if (surahsOnPage.isEmpty) {
-      // Fallback: basic page-to-surah mapping
-      if (pageNumber >= 3) {
-        currentSurah = 2; // Al-Baqarah starts from page 3
-      }
+      // Fallback: proper page-to-surah mapping using Surah model
+      currentSurah = _getSurahForPage(pageNumber);
     } else if (surahsOnPage.length == 1) {
       // Only one surah on this page
       currentSurah = surahsOnPage.first;
@@ -246,6 +245,25 @@ class _ReadingScreenState extends State<ReadingScreen> {
         ),
       ),
     );
+  }
+
+  /// Map a page number to the correct surah using the Surah model data
+  int _getSurahForPage(int pageNumber) {
+    // Find the surah that contains this page
+    for (final surah in Surah.allSurahs) {
+      if (pageNumber >= surah.startPage && pageNumber <= surah.endPage) {
+        print('DEBUG: Page $pageNumber maps to Surah ${surah.number} (${surah.englishName})');
+        return surah.number;
+      }
+    }
+    
+    // Fallback - if page is before any surah, default to Al-Fatiha
+    // If page is after all surahs, default to An-Nas
+    if (pageNumber < Surah.allSurahs.first.startPage) {
+      return 1; // Al-Fatiha
+    } else {
+      return 114; // An-Nas
+    }
   }
 
   Future<int?> _showSurahSelector(BuildContext context, List<int> surahNumbers) async {

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:audio_session/audio_session.dart';
 import '../models/ayah.dart';
+import '../models/audio_settings.dart';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
@@ -18,11 +19,13 @@ class AudioService {
   
   Ayah? _currentAyah;
   bool _isInitialized = false;
+  double _currentSpeed = 1.0;
 
   // Getters for audio state
   AudioPlayer get player => _audioPlayer;
   Ayah? get currentAyah => _currentAyah;
   bool get isPlaying => _audioPlayer.playing;
+  double get currentSpeed => _currentSpeed;
   Stream<Duration> get positionStream => _audioPlayer.positionStream;
   Stream<Duration?> get durationStream => _audioPlayer.durationStream;
   Stream<PlayerState> get playerStateStream => _audioPlayer.playerStateStream;
@@ -33,7 +36,20 @@ class AudioService {
 
     try {
       final session = await AudioSession.instance;
-      await session.configure(const AudioSessionConfiguration.music());
+      await session.configure(const AudioSessionConfiguration(
+        avAudioSessionCategory: AVAudioSessionCategory.playback,
+        avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.allowBluetooth,
+        avAudioSessionMode: AVAudioSessionMode.spokenAudio,
+        avAudioSessionRouteSharingPolicy: AVAudioSessionRouteSharingPolicy.defaultPolicy,
+        avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
+        androidAudioAttributes: AndroidAudioAttributes(
+          contentType: AndroidAudioContentType.speech,
+          flags: AndroidAudioFlags.none,
+          usage: AndroidAudioUsage.media,
+        ),
+        androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
+        androidWillPauseWhenDucked: true,
+      ));
       
       // Ensure loop mode is OFF for sequential playback
       await _audioPlayer.setLoopMode(LoopMode.off);
@@ -52,7 +68,7 @@ class AudioService {
       });
 
       _isInitialized = true;
-      debugPrint('AudioService initialized successfully');
+      debugPrint('AudioService initialized successfully with optimized settings');
     } catch (e) {
       debugPrint('Error initializing AudioService: $e');
     }
@@ -71,8 +87,11 @@ class AudioService {
         final file = File(ayah.localAudioPath!);
         if (await file.exists()) {
           await _audioPlayer.setFilePath(ayah.localAudioPath!);
+          // Restore speed and pitch settings after loading new audio
+          await _audioPlayer.setPitch(1.0); // Maintain original pitch
+          await _audioPlayer.setSpeed(_currentSpeed);
           await _audioPlayer.play();
-          debugPrint('Playing cached audio for ${ayah.ayahKey}');
+          debugPrint('Playing cached audio for ${ayah.ayahKey} at ${_currentSpeed}x speed with pitch correction');
           return;
         }
       }
@@ -80,8 +99,11 @@ class AudioService {
       // Stream from cloud
       if (ayah.audioUrl != null && ayah.audioUrl!.isNotEmpty) {
         await _audioPlayer.setUrl(ayah.audioUrl!);
+        // Restore speed and pitch settings after loading new audio
+        await _audioPlayer.setPitch(1.0); // Maintain original pitch
+        await _audioPlayer.setSpeed(_currentSpeed);
         await _audioPlayer.play();
-        debugPrint('Streaming audio for ${ayah.ayahKey} from ${ayah.audioUrl}');
+        debugPrint('Streaming audio for ${ayah.ayahKey} from ${ayah.audioUrl} at ${_currentSpeed}x speed with pitch correction');
       } else {
         debugPrint('No audio URL available for ${ayah.ayahKey}');
       }
@@ -110,6 +132,38 @@ class AudioService {
   /// Seek to a specific position
   Future<void> seek(Duration position) async {
     await _audioPlayer.seek(position);
+  }
+
+  /// Set playback speed with better audio quality
+  Future<void> setSpeed(double speed) async {
+    if (!AudioSettings.availableSpeeds.contains(speed)) {
+      debugPrint('Invalid speed: $speed. Using 1.0 instead.');
+      speed = 1.0;
+    }
+    
+    try {
+      // Set pitch correction to maintain audio quality
+      await _audioPlayer.setPitch(1.0); // Keep original pitch
+      await _audioPlayer.setSpeed(speed);
+      _currentSpeed = speed;
+      debugPrint('AudioService: Speed set to ${speed}x with pitch correction');
+    } catch (e) {
+      debugPrint('Error setting playback speed: $e');
+      // Fallback without pitch correction if it fails
+      try {
+        await _audioPlayer.setSpeed(speed);
+        _currentSpeed = speed;
+        debugPrint('AudioService: Speed set to ${speed}x (fallback)');
+      } catch (e2) {
+        debugPrint('Error setting playback speed (fallback): $e2');
+        rethrow;
+      }
+    }
+  }
+
+  /// Get current playback speed
+  double getSpeed() {
+    return _currentSpeed;
   }
 
   /// Download audio for offline playback

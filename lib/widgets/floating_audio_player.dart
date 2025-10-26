@@ -2,11 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../providers/audio_provider.dart';
+import 'audio_controls_widget.dart';
 
 /// Floating audio player UI that appears at the bottom when audio is playing
 /// Shows currently playing ayah info and playback controls
-class FloatingAudioPlayer extends StatelessWidget {
+class FloatingAudioPlayer extends StatefulWidget {
   const FloatingAudioPlayer({super.key});
+
+  @override
+  State<FloatingAudioPlayer> createState() => _FloatingAudioPlayerState();
+}
+
+class _FloatingAudioPlayerState extends State<FloatingAudioPlayer> {
+  bool _isControlsExpanded = false;
+  bool _isPlayerCollapsed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +30,129 @@ class FloatingAudioPlayer extends StatelessWidget {
           left: 16.w,
           right: 16.w,
           bottom: 80.h, // Above bottom navigation/controls
-          child: _buildPlayerCard(context, audioProvider),
+          child: _isPlayerCollapsed 
+              ? _buildCollapsedPlayer(context, audioProvider)
+              : _buildPlayerCard(context, audioProvider),
         );
       },
+    );
+  }
+
+  Widget _buildCollapsedPlayer(BuildContext context, AudioProvider audioProvider) {
+    final ayah = audioProvider.currentAyah!;
+    
+    return Material(
+      elevation: 8,
+      borderRadius: BorderRadius.circular(16.r),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).primaryColor,
+              Theme.of(context).primaryColor.withOpacity(0.8),
+            ],
+          ),
+          borderRadius: BorderRadius.circular(16.r),
+        ),
+        child: Row(
+          children: [
+            // Play/Pause button
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.2),
+                shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                icon: audioProvider.isLoading
+                    ? SizedBox(
+                        width: 20.w,
+                        height: 20.h,
+                        child: const CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : Icon(
+                        audioProvider.isPlaying ? Icons.pause : Icons.play_arrow,
+                        color: Colors.white,
+                        size: 24.sp,
+                      ),
+                onPressed: audioProvider.isLoading
+                    ? null
+                    : () => audioProvider.togglePlayPause(),
+              ),
+            ),
+            
+            SizedBox(width: 12.w),
+            
+            // Ayah info and progress
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Surah ${ayah.surahNumber} : Ayah ${ayah.ayahNumber}',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Amiri',
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  
+                  // Mini progress bar
+                  Container(
+                    height: 3.h,
+                    decoration: BoxDecoration(
+                      color: Colors.white24,
+                      borderRadius: BorderRadius.circular(1.5.r),
+                    ),
+                    child: FractionallySizedBox(
+                      alignment: Alignment.centerLeft,
+                      widthFactor: audioProvider.progress.clamp(0.0, 1.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(1.5.r),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            
+            SizedBox(width: 12.w),
+            
+            // Stop button
+            IconButton(
+              icon: Icon(
+                Icons.stop,
+                color: Colors.white,
+                size: 20.sp,
+              ),
+              onPressed: () => audioProvider.stop(),
+            ),
+            
+            // Expand button
+            IconButton(
+              icon: Icon(
+                Icons.keyboard_arrow_up,
+                color: Colors.white70,
+                size: 24.sp,
+              ),
+              onPressed: () {
+                setState(() {
+                  _isPlayerCollapsed = false;
+                });
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -58,6 +187,17 @@ class FloatingAudioPlayer extends StatelessWidget {
             // Time labels
             _buildTimeLabels(audioProvider),
             SizedBox(height: 12.h),
+            
+            // Audio controls (speed and loop settings)
+            AudioControlsWidget(
+              isExpanded: _isControlsExpanded,
+              onToggleExpanded: () {
+                setState(() {
+                  _isControlsExpanded = !_isControlsExpanded;
+                });
+              },
+            ),
+            SizedBox(height: 8.h),
             
             // Playback controls
             _buildControls(audioProvider),
@@ -231,14 +371,18 @@ class FloatingAudioPlayer extends StatelessWidget {
         
         SizedBox(width: 16.w),
         
-        // Close button
+        // Player collapse/expand button (always visible)
         IconButton(
           icon: Icon(
-            Icons.close,
+            Icons.keyboard_arrow_down,
             color: Colors.white70,
             size: 24.sp,
           ),
-          onPressed: () => audioProvider.stop(),
+          onPressed: () {
+            setState(() {
+              _isPlayerCollapsed = true;
+            });
+          },
         ),
       ],
     );

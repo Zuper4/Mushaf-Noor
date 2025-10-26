@@ -1,11 +1,15 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import '../models/ayah.dart';
+import '../models/audio_settings.dart';
 import '../services/audio_service.dart';
+import '../services/database_service.dart';
 
 /// Provider for managing audio playback state across the app
 class AudioProvider extends ChangeNotifier {
   final AudioService _audioService = AudioService();
+  final DatabaseService _databaseService = DatabaseService();
 
   Ayah? _currentAyah;
   bool _isLoading = false;
@@ -19,6 +23,11 @@ class AudioProvider extends ChangeNotifier {
   int _currentQueueIndex = 0;
   bool _isPlayingQueue = false;
 
+  // Audio settings and looping state
+  AudioSettings _audioSettings = const AudioSettings();
+  int _currentAyahLoop = 0;  // Current loop count for the current ayah
+  int _currentTotalLoop = 0; // Current loop count for the entire sequence
+
   // Getters
   Ayah? get currentAyah => _currentAyah;
   bool get isLoading => _isLoading;
@@ -30,6 +39,9 @@ class AudioProvider extends ChangeNotifier {
   bool get isPlayingQueue => _isPlayingQueue;
   List<Ayah> get playbackQueue => _playbackQueue;
   int get currentQueueIndex => _currentQueueIndex;
+  AudioSettings get audioSettings => _audioSettings;
+  int get currentAyahLoop => _currentAyahLoop;
+  int get currentTotalLoop => _currentTotalLoop;
 
   AudioProvider() {
     _initialize();
@@ -37,7 +49,40 @@ class AudioProvider extends ChangeNotifier {
 
   Future<void> _initialize() async {
     await _audioService.initialize();
+    await _loadAudioSettings();
     _setupListeners();
+  }
+
+  /// Load audio settings from storage
+  Future<void> _loadAudioSettings() async {
+    try {
+      final settingsJson = await _databaseService.getSetting('audio_settings');
+      if (settingsJson != null && settingsJson.isNotEmpty) {
+        // Parse the JSON string
+        final settingsMap = Map<String, dynamic>.from(
+          jsonDecode(settingsJson) as Map
+        );
+        _audioSettings = AudioSettings.fromJson(settingsMap).validate();
+        debugPrint('AudioProvider: Loaded settings - $_audioSettings');
+        
+        // Apply loaded speed setting
+        await _audioService.setSpeed(_audioSettings.speed);
+      }
+    } catch (e) {
+      debugPrint('AudioProvider: Error loading settings - $e, using defaults');
+      _audioSettings = const AudioSettings();
+    }
+  }
+
+  /// Save audio settings to storage
+  Future<void> _saveAudioSettings() async {
+    try {
+      final settingsJson = jsonEncode(_audioSettings.toJson());
+      await _databaseService.saveSetting('audio_settings', settingsJson);
+      debugPrint('AudioProvider: Saved settings - $_audioSettings');
+    } catch (e) {
+      debugPrint('AudioProvider: Error saving settings - $e');
+    }
   }
 
   void _setupListeners() {
@@ -54,10 +99,29 @@ class AudioProvider extends ChangeNotifier {
         _errorMessage = null;
       }
 
-      // Handle completion for sequential playback
-      if (state.processingState == ProcessingState.completed && _isPlayingQueue) {
-        debugPrint('AudioProvider: Ayah completed, playing next in queue. Queue: ${_playbackQueue.length}, Index: $_currentQueueIndex');
-        _playNextInQueue();
+      // Handle completion for sequential playback and looping
+      if (state.processingState == ProcessingState.completed && _currentAyah != null) {
+        debugPrint('AudioProvider: Ayah completed. Current ayah loop: $_currentAyahLoop, Settings: ${_audioSettings.ayahLoopCount}');
+        
+        // Check if we need to loop the current ayah
+        if (_audioSettings.ayahLoopCount == AudioSettings.infiniteLoop || 
+            _currentAyahLoop < _audioSettings.ayahLoopCount) {
+          _currentAyahLoop++;
+          debugPrint('AudioProvider: Looping current ayah (${_currentAyahLoop}/${_audioSettings.ayahLoopCount == AudioSettings.infiniteLoop ? "∞" : _audioSettings.ayahLoopCount})');
+          if (_currentAyah != null) {
+            _replayCurrentAyah();
+          }
+          return;
+        }
+        
+        // Reset ayah loop count for next ayah
+        _currentAyahLoop = 0;
+        
+        // Handle queue progression if playing a queue
+        if (_isPlayingQueue) {
+          debugPrint('AudioProvider: Playing next in queue. Queue: ${_playbackQueue.length}, Index: $_currentQueueIndex');
+          _playNextInQueue();
+        }
       }
       
       notifyListeners();
@@ -76,7 +140,63 @@ class AudioProvider extends ChangeNotifier {
     });
   }
 
-  /// Play a specific ayah
+  /// Update audio settings
+  Future<void> updateAudioSettings(AudioSettings settings) async {
+    _audioSettings = settings.validate();
+    
+    // Apply speed change immediately if audio is loaded
+    if (_currentAyah != null) {
+      try {
+        await _audioService.setSpeed(_audioSettings.speed);
+      } catch (e) {
+        _errorMessage = 'Failed to change speed: ${e.toString()}';
+      }
+    }
+    
+    // Save settings to storage
+    await _saveAudioSettings();
+    
+    notifyListeners();
+  }
+
+  /// Set playback speed
+  Future<void> setPlaybackSpeed(double speed) async {
+    final newSettings = _audioSettings.copyWith(speed: speed);
+    await updateAudioSettings(newSettings);
+  }
+
+  /// Set ayah loop count
+  Future<void> setAyahLoopCount(int count) async {
+    // Allow infinite loop (-1) or clamp to valid range
+    int validCount = count;
+    if (count != AudioSettings.infiniteLoop) {
+      validCount = count.clamp(0, AudioSettings.maxLoopCount);
+    }
+    
+    final newSettings = _audioSettings.copyWith(ayahLoopCount: validCount);
+    await updateAudioSettings(newSettings);
+  }
+
+  /// Set total loop count
+  Future<void> setTotalLoopCount(int count) async {
+    // Allow infinite loop (-1) or clamp to valid range
+    int validCount = count;
+    if (count != AudioSettings.infiniteLoop) {
+      validCount = count.clamp(0, AudioSettings.maxLoopCount);
+    }
+    
+    final newSettings = _audioSettings.copyWith(totalLoopCount: validCount);
+    await updateAudioSettings(newSettings);
+  }
+
+  /// Toggle advanced controls visibility
+  void toggleAdvancedControls() {
+    _audioSettings = _audioSettings.copyWith(
+      showAdvancedControls: !_audioSettings.showAdvancedControls
+    );
+    _saveAudioSettings(); // Save the preference
+    notifyListeners();
+  }
   Future<void> playAyah(Ayah ayah, {bool fromQueue = false}) async {
     try {
       _isLoading = true;
@@ -88,11 +208,18 @@ class AudioProvider extends ChangeNotifier {
         _isPlayingQueue = false;
         _playbackQueue = [];
         _currentQueueIndex = 0;
+        _currentTotalLoop = 0; // Reset total loop counter for new playback
       }
+      
+      // Reset ayah loop counter for new ayah
+      _currentAyahLoop = 0;
       
       notifyListeners();
 
       await _audioService.playAyah(ayah);
+      
+      // Apply current speed setting
+      await _audioService.setSpeed(_audioSettings.speed);
       
       _isLoading = false;
       notifyListeners();
@@ -100,6 +227,20 @@ class AudioProvider extends ChangeNotifier {
       _isLoading = false;
       _errorMessage = 'Failed to play audio: ${e.toString()}';
       debugPrint('Error in playAyah: $e');
+      notifyListeners();
+    }
+  }
+
+  /// Replay the current ayah (for looping)
+  Future<void> _replayCurrentAyah() async {
+    if (_currentAyah == null) return;
+    
+    try {
+      await _audioService.playAyah(_currentAyah!);
+      await _audioService.setSpeed(_audioSettings.speed);
+    } catch (e) {
+      _errorMessage = 'Failed to replay ayah: ${e.toString()}';
+      debugPrint('Error in _replayCurrentAyah: $e');
       notifyListeners();
     }
   }
@@ -112,6 +253,7 @@ class AudioProvider extends ChangeNotifier {
     _playbackQueue = ayahs;
     _currentQueueIndex = 0;
     _isPlayingQueue = true;
+    _currentTotalLoop = 0; // Reset total loop counter
     
     try {
       debugPrint('AudioProvider: Playing first ayah in queue: ${ayahs[0].ayahKey}');
@@ -130,11 +272,36 @@ class AudioProvider extends ChangeNotifier {
     _currentQueueIndex++;
     
     if (_currentQueueIndex >= _playbackQueue.length) {
-      // Reached end of queue
+      // Reached end of queue - check if we need to loop the entire sequence
+      if (_audioSettings.totalLoopCount == AudioSettings.infiniteLoop || 
+          _currentTotalLoop < _audioSettings.totalLoopCount) {
+        _currentTotalLoop++;
+        _currentQueueIndex = 0;
+        debugPrint('AudioProvider: Looping entire sequence (${_currentTotalLoop}/${_audioSettings.totalLoopCount == AudioSettings.infiniteLoop ? "∞" : _audioSettings.totalLoopCount})');
+        
+        // Restart from the first ayah
+        try {
+          final firstAyah = _playbackQueue[0];
+          _currentAyah = firstAyah;
+          _currentAyahLoop = 0; // Reset ayah loop for new cycle
+          notifyListeners();
+          
+          await _audioService.playAyah(firstAyah);
+          await _audioService.setSpeed(_audioSettings.speed);
+        } catch (e) {
+          debugPrint('Error restarting sequence: $e');
+          _isPlayingQueue = false;
+          notifyListeners();
+        }
+        return;
+      }
+      
+      // Reached end of queue and all loops completed
       _isPlayingQueue = false;
       _currentQueueIndex = 0;
+      _currentTotalLoop = 0;
       _playbackQueue = [];
-      debugPrint('AudioProvider: Completed playback queue');
+      debugPrint('AudioProvider: Completed playback queue with all loops');
       notifyListeners();
       return;
     }
@@ -143,10 +310,12 @@ class AudioProvider extends ChangeNotifier {
     try {
       final nextAyah = _playbackQueue[_currentQueueIndex];
       _currentAyah = nextAyah;
+      _currentAyahLoop = 0; // Reset ayah loop for new ayah
       notifyListeners();
       
       debugPrint('AudioProvider: Playing ayah ${_currentQueueIndex + 1} of ${_playbackQueue.length}: ${nextAyah.ayahKey}');
       await _audioService.playAyah(nextAyah);
+      await _audioService.setSpeed(_audioSettings.speed);
     } catch (e) {
       debugPrint('Error playing next ayah in queue: $e');
       _isPlayingQueue = false;
@@ -158,6 +327,8 @@ class AudioProvider extends ChangeNotifier {
   Future<void> stopQueue() async {
     _isPlayingQueue = false;
     _currentQueueIndex = 0;
+    _currentTotalLoop = 0;
+    _currentAyahLoop = 0;
     _playbackQueue = [];
     await stop();
   }
@@ -200,6 +371,8 @@ class AudioProvider extends ChangeNotifier {
       _duration = null;
       _isPlaying = false;
       _errorMessage = null;
+      _currentAyahLoop = 0;
+      _currentTotalLoop = 0;
       notifyListeners();
     } catch (e) {
       _errorMessage = 'Failed to stop: ${e.toString()}';

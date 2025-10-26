@@ -47,6 +47,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.3.6
 
 flutter:
   uses-material-design: true
@@ -55,11 +57,43 @@ flutter:
     # All qiraats are now loaded from Cloudflare R2 on demand
     # No bundled images - makes the app lighter and faster to download!
     - assets/icons/
-    - assets/fonts/
     - assets/json/
     - assets/json/bounds/asim_hafs/
     - assets/json/bounds/nafi_warsh/
     - assets/pdfs/
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons/app_icon.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/icons/app_icon.png"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
+  windows:
+    generate: true
+    image_path: "assets/icons/app_icon.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/icons/app_icon.png"
+
+flutter_native_splash:
+  # Full screen image that fills the entire screen
+  image: assets/icons/app_loading.png
+  
+  # Use fullscreen to fill the entire screen
+  fullscreen: true
+  
+  # Background color (black) to ensure no white shows
+  color: "#000000"
+  
+  # Platforms to generate for
+  android: true
+  ios: true
+  web: false
   
   # Fonts will be loaded when available
   # fonts:
