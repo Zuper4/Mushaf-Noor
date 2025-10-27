@@ -51,7 +51,126 @@ class Surah {
 
   // Helper method to get display name based on language
   String getDisplayName(String languageCode) {
-    return languageCode == 'ar' ? nameArabic : englishName;
+    switch (languageCode) {
+      case 'ar':
+        return nameArabic;
+      case 'fr':
+        return _getFrenchName();
+      case 'es':
+        return _getSpanishName();
+      case 'hi':
+        return _getHindiName();
+      default:
+        return englishName;
+    }
+  }
+  
+  // Helper method to get French translation
+  String _getFrenchName() {
+    final frenchNames = {
+      1: 'L\'Ouverture', 2: 'La Vache', 3: 'La Famille d\'Imran', 4: 'Les Femmes',
+      5: 'La Table Servie', 6: 'Les Bestiaux', 7: 'Les Murailles', 8: 'Le Butin',
+      9: 'Le Repentir', 10: 'Jonas', 11: 'Hud', 12: 'Joseph',
+      13: 'Le Tonnerre', 14: 'Abraham', 15: 'Al-Hijr', 16: 'Les Abeilles',
+      17: 'Le Voyage Nocturne', 18: 'La Caverne', 19: 'Marie', 20: 'Ta-Ha',
+      21: 'Les Prophètes', 22: 'Le Pèlerinage', 23: 'Les Croyants', 24: 'La Lumière',
+      25: 'Le Discernement', 26: 'Les Poètes', 27: 'Les Fourmis', 28: 'Le Récit',
+      29: 'L\'Araignée', 30: 'Les Romains', 31: 'Luqman', 32: 'La Prosternation',
+      33: 'Les Coalisés', 34: 'Saba', 35: 'Le Créateur', 36: 'Ya-Sin',
+      37: 'Les Rangés', 38: 'Sad', 39: 'Les Groupes', 40: 'Le Pardonneur',
+      41: 'Les Versets Détaillés', 42: 'La Consultation', 43: 'L\'Ornement', 44: 'La Fumée',
+      45: 'L\'Agenouillée', 46: 'Al-Ahqaf', 47: 'Muhammad', 48: 'La Victoire',
+      49: 'Les Appartements', 50: 'Qaf', 51: 'Qui Éparpillent', 52: 'At-Tur',
+      53: 'L\'Étoile', 54: 'La Lune', 55: 'Le Tout Miséricordieux', 56: 'L\'Événement',
+      57: 'Le Fer', 58: 'La Discussion', 59: 'L\'Exode', 60: 'L\'Éprouvée',
+      61: 'Le Rang', 62: 'Le Vendredi', 63: 'Les Hypocrites', 64: 'La Grande Perte',
+      65: 'Le Divorce', 66: 'L\'Interdiction', 67: 'La Royauté', 68: 'La Plume',
+      69: 'Celle qui Montre', 70: 'Les Voies d\'Ascension', 71: 'Noé', 72: 'Les Djinns',
+      73: 'L\'Enveloppé', 74: 'Le Revêtu', 75: 'La Résurrection', 76: 'L\'Homme',
+      77: 'Les Envoyés', 78: 'La Nouvelle', 79: 'Les Anges', 80: 'Il S\'est Renfrogné',
+      81: 'L\'Obscurcissement', 82: 'La Rupture', 83: 'Les Fraudeurs', 84: 'La Déchirure',
+      85: 'Les Constellations', 86: 'L\'Astre Nocturne', 87: 'Le Très-Haut', 88: 'L\'Enveloppante',
+      89: 'L\'Aube', 90: 'La Cité', 91: 'Le Soleil', 92: 'La Nuit',
+      93: 'Le Jour Montant', 94: 'L\'Ouverture', 95: 'Le Figuier', 96: 'L\'Adhérence',
+      97: 'La Destinée', 98: 'La Preuve', 99: 'La Secousse', 100: 'Les Coursiers',
+      101: 'Le Fracas', 102: 'La Course', 103: 'Le Temps', 104: 'Les Calomniateurs',
+      105: 'L\'Éléphant', 106: 'Quraych', 107: 'L\'Ustensile', 108: 'L\'Abondance',
+      109: 'Les Infidèles', 110: 'Les Secours', 111: 'Les Fibres', 112: 'Le Monothéisme',
+      113: 'L\'Aube Naissante', 114: 'Les Hommes',
+    };
+    return frenchNames[number] ?? englishName;
+  }
+  
+  // Helper method to get Spanish translation
+  String _getSpanishName() {
+    final spanishNames = {
+      1: 'La Apertura', 2: 'La Vaca', 3: 'La Familia de Imran', 4: 'Las Mujeres',
+      5: 'La Mesa Servida', 6: 'Los Rebaños', 7: 'Los Lugares Elevados', 8: 'El Botín',
+      9: 'El Arrepentimiento', 10: 'Jonás', 11: 'Hud', 12: 'José',
+      13: 'El Trueno', 14: 'Abraham', 15: 'Al-Hijr', 16: 'Las Abejas',
+      17: 'El Viaje Nocturno', 18: 'La Caverna', 19: 'María', 20: 'Ta-Ha',
+      21: 'Los Profetas', 22: 'La Peregrinación', 23: 'Los Creyentes', 24: 'La Luz',
+      25: 'El Criterio', 26: 'Los Poetas', 27: 'Las Hormigas', 28: 'El Relato',
+      29: 'La Araña', 30: 'Los Romanos', 31: 'Luqman', 32: 'La Prosternación',
+      33: 'Los Coligados', 34: 'Saba', 35: 'El Creador', 36: 'Ya-Sin',
+      37: 'Los Ordenados', 38: 'Sad', 39: 'Los Grupos', 40: 'El Perdonador',
+      41: 'Los Detallados', 42: 'La Consulta', 43: 'El Ornamento', 44: 'El Humo',
+      45: 'La Arrodillada', 46: 'Al-Ahqaf', 47: 'Muhammad', 48: 'La Victoria',
+      49: 'Las Habitaciones', 50: 'Qaf', 51: 'Los que Esparcen', 52: 'At-Tur',
+      53: 'La Estrella', 54: 'La Luna', 55: 'El Misericordioso', 56: 'El Evento',
+      57: 'El Hierro', 58: 'La Discusión', 59: 'El Exilio', 60: 'La Examinada',
+      61: 'La Fila', 62: 'El Viernes', 63: 'Los Hipócritas', 64: 'El Engaño',
+      65: 'El Divorcio', 66: 'La Prohibición', 67: 'La Soberanía', 68: 'El Cálamo',
+      69: 'La Inevitable', 70: 'Las Vías de Ascenso', 71: 'Noé', 72: 'Los Genios',
+      73: 'El Arropado', 74: 'El Envuelto', 75: 'La Resurrección', 76: 'El Hombre',
+      77: 'Los Enviados', 78: 'La Noticia', 79: 'Los Ángeles', 80: 'Frunció el Ceño',
+      81: 'El Oscurecimiento', 82: 'La Hendidura', 83: 'Los Defraudadores', 84: 'El Resquebrajamiento',
+      85: 'Las Constelaciones', 86: 'El Astro Nocturno', 87: 'El Altísimo', 88: 'La Envolvente',
+      89: 'El Alba', 90: 'La Ciudad', 91: 'El Sol', 92: 'La Noche',
+      93: 'La Mañana', 94: 'La Abertura', 95: 'La Higuera', 96: 'El Coágulo',
+      97: 'El Decreto', 98: 'La Evidencia', 99: 'El Terremoto', 100: 'Los Corceles',
+      101: 'La Calamidad', 102: 'El Afán', 103: 'El Tiempo', 104: 'El Difamador',
+      105: 'El Elefante', 106: 'Quraish', 107: 'La Ayuda', 108: 'La Abundancia',
+      109: 'Los Incrédulos', 110: 'El Auxilio', 111: 'Las Fibras', 112: 'La Pureza',
+      113: 'El Alba Naciente', 114: 'La Gente',
+    };
+    return spanishNames[number] ?? englishName;
+  }
+  
+  // Helper method to get Hindi translation
+  String _getHindiName() {
+    final hindiNames = {
+      1: 'शुरुआत', 2: 'गाय', 3: 'इमरान का परिवार', 4: 'महिलाएं',
+      5: 'मेज़', 6: 'मवेशी', 7: 'ऊंचाइयां', 8: 'लूट का माल',
+      9: 'तौबा', 10: 'युनुस', 11: 'हूद', 12: 'यूसुफ़',
+      13: 'गरज', 14: 'इब्राहीम', 15: 'अल-हिज्र', 16: 'मधुमक्खी',
+      17: 'रात की यात्रा', 18: 'गुफा', 19: 'मरियम', 20: 'ता-हा',
+      21: 'पैगंबर', 22: 'हज', 23: 'विश्वासी', 24: 'प्रकाश',
+      25: 'कसौटी', 26: 'कवि', 27: 'चींटियां', 28: 'कहानी',
+      29: 'मकड़ी', 30: 'रोमन', 31: 'लुक़मान', 32: 'सजदा',
+      33: 'गठबंधन', 34: 'सबा', 35: 'निर्माता', 36: 'या-सीन',
+      37: 'पंक्तिबद्ध', 38: 'साद', 39: 'समूह', 40: 'क्षमाशील',
+      41: 'विस्तृत', 42: 'परामर्श', 43: 'अलंकरण', 44: 'धुआं',
+      45: 'घुटने टेकना', 46: 'अल-अहक़ाफ़', 47: 'मुहम्मद', 48: 'विजय',
+      49: 'कमरे', 50: 'क़ाफ़', 51: 'बिखेरने वाले', 52: 'अत-तूर',
+      53: 'तारा', 54: 'चांद', 55: 'दयालु', 56: 'घटना',
+      57: 'लोहा', 58: 'बहस', 59: 'निर्वासन', 60: 'परीक्षित',
+      61: 'पंक्ति', 62: 'शुक्रवार', 63: 'कपटी', 64: 'धोखा',
+      65: 'तलाक', 66: 'निषेध', 67: 'संप्रभुता', 68: 'कलम',
+      69: 'अवश्यंभावी', 70: 'चढ़ाई के मार्ग', 71: 'नूह', 72: 'जिन्न',
+      73: 'लिपटा हुआ', 74: 'ढका हुआ', 75: 'पुनरुत्थान', 76: 'मनुष्य',
+      77: 'भेजे गए', 78: 'समाचार', 79: 'फ़रिश्ते', 80: 'वह भौंहें चढ़ाया',
+      81: 'अंधकार', 82: 'फटना', 83: 'धोखेबाज', 84: 'विदारण',
+      85: 'नक्षत्र', 86: 'रात का तारा', 87: 'सर्वोच्च', 88: 'घेरने वाला',
+      89: 'भोर', 90: 'नगर', 91: 'सूर्य', 92: 'रात',
+      93: 'सुबह', 94: 'खोलना', 95: 'अंजीर', 96: 'थक्का',
+      97: 'भाग्य', 98: 'प्रमाण', 99: 'भूकंप', 100: 'घोड़े',
+      101: 'आपदा', 102: 'जमाखोरी', 103: 'समय', 104: 'निंदक',
+      105: 'हाथी', 106: 'क़ुरैश', 107: 'छोटी चीज़ें', 108: 'प्रचुरता',
+      109: 'अविश्वासी', 110: 'सहायता', 111: 'रेशे', 112: 'शुद्धता',
+      113: 'उभरती भोर', 114: 'मानवजाति',
+    };
+    return hindiNames[number] ?? englishName;
   }
 
   // Complete list of all 114 Surahs with corrected page numbers (+1 offset applied for cover page)

@@ -198,7 +198,7 @@ class QiraatProvider extends ChangeNotifier {
         description: 'Most common recitation worldwide',
         colorCode: '#000000',
         folderPath: 'asim_hafs',
-        isDownloaded: true, // This is the only qiraat we have as assets
+        isDownloaded: false, // Will be checked by _updateDownloadStatuses()
       ),
       
       // 6. Hamzah from Kufa
@@ -346,11 +346,8 @@ class QiraatProvider extends ChangeNotifier {
   Future<void> selectQiraat(String qiraatId) async {
     final qiraat = _availableQiraats.firstWhere((q) => q.id == qiraatId);
     
-    if (!qiraat.isDownloaded) {
-      // Need to download this qiraat first
-      await downloadQiraat(qiraatId);
-    }
-    
+    // Allow selection without download - user can stream from R2 if online
+    // User can manually download for offline use via the download button
     _selectedQiraat = qiraat;
     notifyListeners();
     
@@ -396,8 +393,6 @@ class QiraatProvider extends ChangeNotifier {
   }
 
   Future<void> deleteQiraat(String qiraatId) async {
-    if (qiraatId == 'asim_hafs') return; // Don't allow deleting default qiraat
-    
     final qiraatIndex = _availableQiraats.indexWhere((q) => q.id == qiraatId);
     if (qiraatIndex == -1) return;
 
@@ -411,10 +406,8 @@ class QiraatProvider extends ChangeNotifier {
       
       await _databaseService.updateQiraat(_availableQiraats[qiraatIndex]);
       
-      // If this was the selected qiraat, switch to Warsh
-      if (_selectedQiraat?.id == qiraatId) {
-        await selectQiraat('nafi_warsh');
-      }
+      // If this was the selected qiraat, it can still be used (will stream from R2)
+      // but user should be notified it's no longer available offline
       
       notifyListeners();
     } catch (e) {

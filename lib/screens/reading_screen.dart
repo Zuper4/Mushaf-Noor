@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import '../providers/app_state.dart';
 import '../providers/qiraat_provider.dart';
 import '../providers/audio_provider.dart';
@@ -111,6 +112,11 @@ class _ReadingScreenState extends State<ReadingScreen> {
                             child: PageIndicator(
                               currentPage: appState.currentPage,
                               totalPages: 606,
+                              onPageSelected: (pageNumber) {
+                                final arabicIndex = 606 - pageNumber;
+                                _pageController.jumpToPage(arabicIndex);
+                                appState.goToPage(pageNumber);
+                              },
                             ),
                           ),
                           IconButton(
@@ -165,7 +171,6 @@ class _ReadingScreenState extends State<ReadingScreen> {
                   child: SafeArea(
                     child: ReadingControls(
                       pageController: _pageController,
-                      onSettingsPressed: () => _showQuickSettings(context, appState),
                       onQiraatPressed: () => _showQiraatSelector(context, qiraatProvider),
                       onMicPressed: () => _handleMicPressed(context, appState, qiraatProvider, audioProvider),
                     ),
@@ -321,63 +326,6 @@ class _ReadingScreenState extends State<ReadingScreen> {
     );
   }
 
-  void _showQuickSettings(BuildContext context, AppState appState) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(20.w),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Consumer<AppState>(
-                builder: (context, appState, child) {
-                  final localizations = AppLocalizations.of(context);
-                  return Text(
-                    localizations.quickSettings,
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
-                    ),
-                  );
-                },
-              ),
-              SizedBox(height: 20.h),
-              
-              // Dark mode toggle
-              Consumer<AppState>(
-                builder: (context, appState, child) {
-                  final localizations = AppLocalizations.of(context);
-                  return SwitchListTile(
-                    title: Text(
-                      localizations.darkMode,
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
-                      ),
-                    ),
-                    value: appState.isDarkMode,
-                    onChanged: (value) {
-                      appState.setDarkMode(value);
-                    },
-                  );
-                },
-              ),
-              
-              SizedBox(height: 20.h),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   void _showQiraatSelector(BuildContext context, QiraatProvider qiraatProvider) {
     showModalBottomSheet(
       context: context,
@@ -453,8 +401,52 @@ class _ReadingScreenState extends State<ReadingScreen> {
                           await qiraatProvider.selectQiraat(qiraat.id);
                           Navigator.pop(context);
                         } else {
-                          // Show download dialog
-                          _showDownloadDialog(context, qiraat, qiraatProvider);
+                          // Check connectivity first before allowing selection
+                          final connectivityResult = await Connectivity().checkConnectivity();
+                          final isOffline = connectivityResult != ConnectivityResult.wifi && 
+                                            connectivityResult != ConnectivityResult.mobile &&
+                                            connectivityResult != ConnectivityResult.ethernet;
+                          
+                          if (isOffline) {
+                            // Show offline error - cannot access undownloaded riwayat
+                            if (!context.mounted) return;
+                            final localizations = AppLocalizations.of(context);
+                            final appState = Provider.of<AppState>(context, listen: false);
+                            
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text(
+                                  localizations.noInternetConnection,
+                                  style: TextStyle(
+                                    fontSize: 18.sp,
+                                    fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
+                                  ),
+                                ),
+                                content: Text(
+                                  localizations.offlineRiwayatMessage,
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text(
+                                      localizations.connectToInternet,
+                                      style: TextStyle(
+                                        fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          } else {
+                            // Online - show download dialog
+                            _showDownloadDialog(context, qiraat, qiraatProvider);
+                          }
                         }
                       },
                     );
@@ -469,6 +461,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
   }
 
   void _showDownloadDialog(BuildContext context, qiraat, QiraatProvider qiraatProvider) {
+    // Show download dialog (connectivity already checked before calling this)
     showDialog(
       context: context,
       builder: (context) => Consumer<AppState>(

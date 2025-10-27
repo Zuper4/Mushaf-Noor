@@ -7,6 +7,7 @@ import '../providers/app_state.dart';
 import '../widgets/qiraat_card.dart';
 import '../widgets/download_progress_card.dart';
 import '../l10n/app_localizations.dart';
+import 'qiraat_explanation_screen.dart';
 
 class QiraatSelectionScreen extends StatelessWidget {
   const QiraatSelectionScreen({super.key});
@@ -117,20 +118,40 @@ class QiraatSelectionScreen extends StatelessWidget {
                           );
                         },
                       ),
-                      Consumer<AppState>(
-                        builder: (context, appState, child) {
-                          final localizations = AppLocalizations.of(context);
-                          return TextButton.icon(
-                            onPressed: () => _showStorageInfo(context, downloadProvider),
-                            icon: const Icon(Icons.storage),
-                            label: Text(
-                              localizations.storage,
-                              style: TextStyle(
-                                fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
-                              ),
-                            ),
-                          );
-                        },
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Info button
+                          IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const QiraatExplanationScreen(),
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.help_outline),
+                            color: const Color(0xFF2C5F2D),
+                            tooltip: 'Learn about Qira\'at',
+                          ),
+                          // Storage button
+                          Consumer<AppState>(
+                            builder: (context, appState, child) {
+                              final localizations = AppLocalizations.of(context);
+                              return TextButton.icon(
+                                onPressed: () => _showStorageInfo(context, downloadProvider),
+                                icon: const Icon(Icons.storage),
+                                label: Text(
+                                  localizations.storage,
+                                  style: TextStyle(
+                                    fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -149,32 +170,31 @@ class QiraatSelectionScreen extends StatelessWidget {
                           qiraat: qiraat,
                           isSelected: qiraatProvider.selectedQiraat?.id == qiraat.id,
                           onTap: () async {
-                            if (qiraat.isDownloaded) {
-                              await qiraatProvider.selectQiraat(qiraat.id);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Consumer<AppState>(
-                                    builder: (context, appState, child) {
-                                      final localizations = AppLocalizations.of(context);
-                                      return Text(
-                                        localizations.qiraatDownloaded.replaceAll('{0}', 
-                                          appState.languageCode == 'ar' ? qiraat.arabicName : qiraat.name),
-                                        style: TextStyle(
-                                          fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
-                                        ),
-                                      );
-                                    },
-                                  ),
+                            // Allow selection regardless of download status
+                            // User can stream from R2 if online, or use downloaded files if offline
+                            await qiraatProvider.selectQiraat(qiraat.id);
+                            
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Consumer<AppState>(
+                                  builder: (context, appState, child) {
+                                    final localizations = AppLocalizations.of(context);
+                                    final statusText = qiraat.isDownloaded
+                                        ? localizations.qiraatDownloaded.replaceAll('{0}', 
+                                            appState.languageCode == 'ar' ? qiraat.arabicName : qiraat.name)
+                                        : (appState.languageCode == 'ar' 
+                                            ? '${qiraat.arabicName} محدد - سيتم البث عبر الإنترنت'
+                                            : '${qiraat.name} selected - will stream online');
+                                    return Text(
+                                      statusText,
+                                      style: TextStyle(
+                                        fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
+                                      ),
+                                    );
+                                  },
                                 ),
-                              );
-                            } else {
-                              _showDownloadConfirmation(
-                                context,
-                                qiraat,
-                                qiraatProvider,
-                                downloadProvider,
-                              );
-                            }
+                              ),
+                            );
                           },
                           onDownload: () {
                             _showDownloadConfirmation(
@@ -202,7 +222,7 @@ class QiraatSelectionScreen extends StatelessWidget {
               // Info section
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: EdgeInsets.all(16.w),
+                  padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 16.w, bottom: 80.h),
                   child: Card(
                     child: Padding(
                       padding: EdgeInsets.all(16.w),

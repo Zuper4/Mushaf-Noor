@@ -196,33 +196,48 @@ class PageViewer extends StatelessWidget {
           return Container(
             color: Colors.grey[900],
             child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.error_outline,
-                    size: 48,
-                    color: Colors.red[300],
-                  ),
-                  SizedBox(height: 16),
-                  Text(
-                    'Failed to load page',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 14,
+              child: Padding(
+                padding: EdgeInsets.all(32.w),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.cloud_off,
+                      size: 64.sp,
+                      color: Colors.red[300],
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Please check your internet connection',
-                    style: TextStyle(
-                      color: Colors.white54,
-                      fontSize: 12,
+                    SizedBox(height: 24.h),
+                    Consumer<AppState>(
+                      builder: (context, appState, child) {
+                        final localizations = AppLocalizations.of(context);
+                        return Column(
+                          children: [
+                            Text(
+                              localizations.errorLoadingPage,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(height: 12.h),
+                            Text(
+                              localizations.ensureQiraatDownloaded,
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: 14.sp,
+                                fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        );
+                      },
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );

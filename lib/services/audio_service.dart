@@ -54,6 +54,13 @@ class AudioService {
       // Ensure loop mode is OFF for sequential playback
       await _audioPlayer.setLoopMode(LoopMode.off);
       
+      // Enable skipSilence to improve audio quality at different speeds
+      // This helps reduce artifacts and vibrations during speed changes
+      await _audioPlayer.setSkipSilenceEnabled(true);
+      
+      // Set volume to 1.0 (full) for consistent playback
+      await _audioPlayer.setVolume(1.0);
+      
       // Handle audio interruptions
       session.interruptionEventStream.listen((event) {
         if (event.begin) {
@@ -142,15 +149,29 @@ class AudioService {
     }
     
     try {
-      // Set pitch correction to maintain audio quality
-      await _audioPlayer.setPitch(1.0); // Keep original pitch
+      // CRITICAL: Set pitch to 1.0 BEFORE changing speed
+      // This maintains natural voice quality and prevents the "chipmunk effect"
+      // and vibrations during speed changes, especially on elongated sounds (mad)
+      await _audioPlayer.setPitch(1.0);
+      
+      // Increased delay to 150ms to allow pitch processing to fully stabilize
+      // This significantly reduces vibrations/artifacts on elongated vowels
+      await Future.delayed(const Duration(milliseconds: 150));
+      
+      // Now set the speed - the pitch correction will prevent artifacts
+      // Android's audio processor handles this more smoothly when pitch is locked
       await _audioPlayer.setSpeed(speed);
+      
+      // Additional short delay after speed change for final stabilization
+      await Future.delayed(const Duration(milliseconds: 50));
+      
       _currentSpeed = speed;
-      debugPrint('AudioService: Speed set to ${speed}x with pitch correction');
+      debugPrint('AudioService: Speed set to ${speed}x with extended pitch stabilization (150ms delay)');
     } catch (e) {
       debugPrint('Error setting playback speed: $e');
-      // Fallback without pitch correction if it fails
+      // Fallback: try setting speed directly without delay
       try {
+        await _audioPlayer.setPitch(1.0);
         await _audioPlayer.setSpeed(speed);
         _currentSpeed = speed;
         debugPrint('AudioService: Speed set to ${speed}x (fallback)');

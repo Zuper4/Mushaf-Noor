@@ -5,14 +5,12 @@ import '../providers/app_state.dart';
 
 class ReadingControls extends StatelessWidget {
   final PageController pageController;
-  final VoidCallback onSettingsPressed;
   final VoidCallback onQiraatPressed;
   final VoidCallback onMicPressed;
 
   const ReadingControls({
     super.key,
     required this.pageController,
-    required this.onSettingsPressed,
     required this.onQiraatPressed,
     required this.onMicPressed,
   });
@@ -36,28 +34,36 @@ class ReadingControls extends StatelessWidget {
                   );
                 },
                 tooltip: appState.languageCode == 'ar' ? 'الصفحة السابقة' : 'Previous Page',
+                appState: appState,
               ),
               
-              // Settings
+              // Dark mode toggle (Moon/Sun icon)
               _buildControlButton(
-                icon: Icons.settings,
-                onPressed: onSettingsPressed,
-                tooltip: appState.languageCode == 'ar' ? 'الإعدادات' : 'Settings',
+                icon: appState.isDarkMode ? Icons.wb_sunny : Icons.nightlight_round,
+                onPressed: () {
+                  appState.toggleDarkMode();
+                },
+                tooltip: appState.languageCode == 'ar' 
+                    ? (appState.isDarkMode ? 'الوضع النهاري' : 'الوضع الليلي')
+                    : (appState.isDarkMode ? 'Light Mode' : 'Dark Mode'),
+                appState: appState,
               ),
               
-              // Mic button (voice recording/playback)
+              // Play audio button
               _buildControlButton(
-                icon: Icons.mic,
+                icon: Icons.play_circle_outline,
                 onPressed: onMicPressed,
                 tooltip: appState.languageCode == 'ar' ? 'تشغيل الصوت' : 'Play Audio',
                 isPrimary: true, // Make it stand out
+                appState: appState,
               ),
               
               // Qiraat selector
               _buildControlButton(
                 icon: Icons.library_books,
                 onPressed: onQiraatPressed,
-                tooltip: appState.languageCode == 'ar' ? 'اختيار القراءة' : 'Select Qiraat',
+                tooltip: appState.languageCode == 'ar' ? 'اختيار الرواية' : 'Select Riwayat',
+                appState: appState,
               ),
               
               // Next page (for Arabic reading, this goes LEFT)
@@ -70,6 +76,7 @@ class ReadingControls extends StatelessWidget {
                   );
                 },
                 tooltip: appState.languageCode == 'ar' ? 'الصفحة التالية' : 'Next Page',
+                appState: appState,
               ),
             ],
           ),
@@ -82,19 +89,20 @@ class ReadingControls extends StatelessWidget {
     required IconData icon,
     required VoidCallback onPressed,
     required String tooltip,
+    required AppState appState,
     bool isPrimary = false,
   }) {
     return Container(
       decoration: BoxDecoration(
         color: isPrimary 
             ? Colors.green.withOpacity(0.7)  // Highlight mic button
-            : Colors.black.withOpacity(0.6),
+            : (appState.isDarkMode ? Colors.white.withOpacity(0.2) : Colors.black.withOpacity(0.6)),
         borderRadius: BorderRadius.circular(25.r),
       ),
       child: IconButton(
         icon: Icon(
           icon,
-          color: Colors.white,
+          color: appState.isDarkMode ? Colors.white : Colors.white,
           size: isPrimary ? 28.sp : 24.sp,  // Slightly larger mic icon
         ),
         onPressed: onPressed,

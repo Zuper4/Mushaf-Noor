@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import '../services/download_service.dart';
 
 class DownloadProvider extends ChangeNotifier {
@@ -26,6 +27,18 @@ class DownloadProvider extends ChangeNotifier {
 
   Future<void> startDownload(String qiraatId, String qiraatName, {VoidCallback? onComplete}) async {
     if (_activeDownloads.contains(qiraatId)) return;
+
+    // Check connectivity before starting download
+    final connectivityResult = await Connectivity().checkConnectivity();
+    final isOnline = connectivityResult == ConnectivityResult.wifi || 
+                     connectivityResult == ConnectivityResult.mobile ||
+                     connectivityResult == ConnectivityResult.ethernet;
+    
+    if (!isOnline) {
+      _downloadStatus[qiraatId] = 'No internet connection. Please connect to WiFi or mobile data.';
+      notifyListeners();
+      return;
+    }
 
     _activeDownloads.add(qiraatId);
     _downloadProgress[qiraatId] = 0.0;
