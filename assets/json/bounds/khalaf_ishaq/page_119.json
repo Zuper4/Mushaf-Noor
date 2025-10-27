@@ -1,0 +1,97 @@
+{
+  "pageNumber": 119,
+  "qiraatId": "khalaf_ishaq",
+  "ayahs": [
+    {
+      "surahNumber": 5,
+      "ayahNumber": 58,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.99,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 5,
+      "ayahNumber": 59,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 1.0699999999999998,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 5,
+      "ayahNumber": 60,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.35,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 5,
+      "ayahNumber": 61,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.43,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 5,
+      "ayahNumber": 62,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.51,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 5,
+      "ayahNumber": 63,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.59,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 5,
+      "ayahNumber": 64,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.6699999999999999,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    }
+  ]
+}

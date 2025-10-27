@@ -1,0 +1,84 @@
+{
+  "pageNumber": 150,
+  "qiraatId": "asim_shuba",
+  "ayahs": [
+    {
+      "surahNumber": 6,
+      "ayahNumber": 152,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.51,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 6,
+      "ayahNumber": 153,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.59,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 6,
+      "ayahNumber": 154,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.6699999999999999,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 6,
+      "ayahNumber": 155,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.75,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 6,
+      "ayahNumber": 156,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.83,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 6,
+      "ayahNumber": 157,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.91,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    }
+  ]
+}

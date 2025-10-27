@@ -1,0 +1,84 @@
+{
+  "pageNumber": 89,
+  "qiraatId": "kisai_abu_harith",
+  "ayahs": [
+    {
+      "surahNumber": 4,
+      "ayahNumber": 60,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.35,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 4,
+      "ayahNumber": 61,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.43,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 4,
+      "ayahNumber": 62,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.51,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 4,
+      "ayahNumber": 63,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.59,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 4,
+      "ayahNumber": 64,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.6699999999999999,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 4,
+      "ayahNumber": 65,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.75,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    }
+  ]
+}

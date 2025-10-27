@@ -1,0 +1,71 @@
+{
+  "pageNumber": 355,
+  "qiraatId": "abu_jafar_ibn_jammaz",
+  "ayahs": [
+    {
+      "surahNumber": 24,
+      "ayahNumber": 32,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.51,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 24,
+      "ayahNumber": 33,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.59,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 24,
+      "ayahNumber": 34,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.6699999999999999,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 24,
+      "ayahNumber": 35,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.75,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 24,
+      "ayahNumber": 36,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.83,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    }
+  ]
+}

@@ -3,6 +3,58 @@
   "qiraatId": "nafi_warsh",
   "ayahs": [
     {
+      "surahNumber": 88,
+      "ayahNumber": 23,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.5,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 88,
+      "ayahNumber": 24,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.5,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 88,
+      "ayahNumber": 25,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.5,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 88,
+      "ayahNumber": 26,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.5,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
       "surahNumber": 89,
       "ayahNumber": 1,
       "positions": [
@@ -282,19 +334,6 @@
         {
           "x": 0.15,
           "y": 0.51,
-          "width": 0.7,
-          "height": 0.08,
-          "lineNumber": 0
-        }
-      ]
-    },
-    {
-      "surahNumber": 89,
-      "ayahNumber": 23,
-      "positions": [
-        {
-          "x": 0.15,
-          "y": 0.59,
           "width": 0.7,
           "height": 0.08,
           "lineNumber": 0

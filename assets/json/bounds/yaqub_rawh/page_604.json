@@ -1,0 +1,211 @@
+{
+  "pageNumber": 604,
+  "qiraatId": "yaqub_rawh",
+  "surahs": [
+    {
+      "surahNumber": 109,
+      "surahName": "Al-Kafirun",
+      "surahNameArabic": "الكافرون",
+      "startAyah": 1,
+      "endAyah": 6
+    },
+    {
+      "surahNumber": 110,
+      "surahName": "An-Nasr",
+      "surahNameArabic": "النصر",
+      "startAyah": 1,
+      "endAyah": 3
+    },
+    {
+      "surahNumber": 111,
+      "surahName": "Al-Masad",
+      "surahNameArabic": "المسد",
+      "startAyah": 1,
+      "endAyah": 5
+    }
+  ],
+  "ayahs": [
+    {
+      "surahNumber": 109,
+      "ayahNumber": 1,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.43,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 109,
+      "ayahNumber": 2,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.51,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 109,
+      "ayahNumber": 3,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.59,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 109,
+      "ayahNumber": 4,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.6699999999999999,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 109,
+      "ayahNumber": 5,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.75,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 109,
+      "ayahNumber": 6,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.83,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 110,
+      "ayahNumber": 1,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.2,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 110,
+      "ayahNumber": 2,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.2,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 110,
+      "ayahNumber": 3,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.2,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 111,
+      "ayahNumber": 1,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.2,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 111,
+      "ayahNumber": 2,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.2,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 111,
+      "ayahNumber": 3,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.2,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 111,
+      "ayahNumber": 4,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.2,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 111,
+      "ayahNumber": 5,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.2,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    }
+  ]
+}

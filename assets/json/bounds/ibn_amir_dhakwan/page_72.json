@@ -1,0 +1,110 @@
+{
+  "pageNumber": 72,
+  "qiraatId": "ibn_amir_dhakwan",
+  "ayahs": [
+    {
+      "surahNumber": 3,
+      "ayahNumber": 158,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.99,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 3,
+      "ayahNumber": 159,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 1.0699999999999998,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 3,
+      "ayahNumber": 160,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.35,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 3,
+      "ayahNumber": 161,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.43,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 3,
+      "ayahNumber": 162,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.51,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 3,
+      "ayahNumber": 163,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.59,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 3,
+      "ayahNumber": 164,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.6699999999999999,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 3,
+      "ayahNumber": 165,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.75,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    }
+  ]
+}

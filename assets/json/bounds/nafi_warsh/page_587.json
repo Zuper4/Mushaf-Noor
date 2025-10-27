@@ -3,6 +3,32 @@
   "qiraatId": "nafi_warsh",
   "ayahs": [
     {
+      "surahNumber": 80,
+      "ayahNumber": 41,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.5,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 80,
+      "ayahNumber": 42,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.5,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
       "surahNumber": 81,
       "ayahNumber": 1,
       "positions": [

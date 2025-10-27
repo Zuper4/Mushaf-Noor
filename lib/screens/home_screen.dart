@@ -17,6 +17,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String _searchQuery = '';
+  final FocusNode _searchFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _searchFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +121,10 @@ class _HomeScreenState extends State<HomeScreen> {
             builder: (context, appState, child) {
               return IconButton(
                 icon: const Icon(Icons.settings, color: Colors.white),
-                onPressed: () => _showSettingsMenu(context, appState),
+                onPressed: () {
+                  _searchFocusNode.unfocus();
+                  _showSettingsMenu(context, appState);
+                },
               );
             },
           ),
@@ -134,6 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   builder: (context, appState, child) {
                     final localizations = AppLocalizations.of(context);
                     return TextField(
+                      focusNode: _searchFocusNode,
                       onChanged: (value) {
                         setState(() {
                           _searchQuery = value.toLowerCase();
@@ -234,6 +245,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           IconButton(
             onPressed: () {
+              _searchFocusNode.unfocus();
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -261,6 +273,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       child: InkWell(
         onTap: () async {
+          _searchFocusNode.unfocus();
           // Always use ReadingScreen instead of PDFReaderScreen for web compatibility
           appState.goToPage(surah.startPage);
           Navigator.push(
@@ -439,6 +452,23 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             SizedBox(height: 20.h),
+            ListTile(
+              leading: Icon(appState.isDarkMode ? Icons.nightlight_round : Icons.wb_sunny),
+              title: Text(
+                localizations.darkMode,
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
+                ),
+              ),
+              trailing: Switch(
+                value: appState.isDarkMode,
+                onChanged: (value) {
+                  appState.setDarkMode(value);
+                },
+              ),
+            ),
+            Divider(height: 1.h),
             ListTile(
               leading: const Icon(Icons.language),
               title: Text(

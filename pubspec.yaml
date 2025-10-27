@@ -1,7 +1,7 @@
 name: mushaf_noor
 description: A beautiful Quran reading app with multiple qiraats support and downloadable content.
 publish_to: 'none'
-version: 1.0.1+3
+version: 1.0.2+4
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -58,8 +58,27 @@ flutter:
     # No bundled images - makes the app lighter and faster to download!
     - assets/icons/
     - assets/json/
+    # Ayah bounds for all 20 riwayat (Qira'at narrations)
     - assets/json/bounds/asim_hafs/
+    - assets/json/bounds/asim_shuba/
+    - assets/json/bounds/nafi_qalun/
     - assets/json/bounds/nafi_warsh/
+    - assets/json/bounds/ibn_kathir_bazzi/
+    - assets/json/bounds/ibn_kathir_qunbul/
+    - assets/json/bounds/abu_amr_duri/
+    - assets/json/bounds/abu_amr_sussi/
+    - assets/json/bounds/ibn_amir_hisham/
+    - assets/json/bounds/ibn_amir_dhakwan/
+    - assets/json/bounds/hamzah_khalaf/
+    - assets/json/bounds/hamzah_khalaad/
+    - assets/json/bounds/kisai_duri/
+    - assets/json/bounds/kisai_abu_harith/
+    - assets/json/bounds/abu_jafar_ibn_wardan/
+    - assets/json/bounds/abu_jafar_ibn_jammaz/
+    - assets/json/bounds/yaqub_ruways/
+    - assets/json/bounds/yaqub_rawh/
+    - assets/json/bounds/khalaf_ishaq/
+    - assets/json/bounds/khalaf_idris/
     - assets/pdfs/
 
 flutter_launcher_icons:

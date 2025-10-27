@@ -4,19 +4,6 @@
   "ayahs": [
     {
       "surahNumber": 79,
-      "ayahNumber": 16,
-      "positions": [
-        {
-          "x": 0.15,
-          "y": 0.83,
-          "width": 0.7,
-          "height": 0.08,
-          "lineNumber": 0
-        }
-      ]
-    },
-    {
-      "surahNumber": 79,
       "ayahNumber": 17,
       "positions": [
         {

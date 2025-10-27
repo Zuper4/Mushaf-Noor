@@ -15,6 +15,39 @@ class ReadingControls extends StatelessWidget {
     required this.onMicPressed,
   });
 
+  void _showTranslationComingSoon(BuildContext context, AppState appState) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          appState.languageCode == 'ar' ? 'الترجمة' : 'Translation',
+          style: TextStyle(
+            fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
+          ),
+        ),
+        content: Text(
+          appState.languageCode == 'ar' 
+              ? 'الترجمة ستأتي قريباً إن شاء الله' 
+              : 'Translation coming soon inshaAllah',
+          style: TextStyle(
+            fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              appState.languageCode == 'ar' ? 'حسناً' : 'OK',
+              style: TextStyle(
+                fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<AppState>(
@@ -37,15 +70,13 @@ class ReadingControls extends StatelessWidget {
                 appState: appState,
               ),
               
-              // Dark mode toggle (Moon/Sun icon)
+              // Translation button
               _buildControlButton(
-                icon: appState.isDarkMode ? Icons.wb_sunny : Icons.nightlight_round,
+                icon: Icons.translate,
                 onPressed: () {
-                  appState.toggleDarkMode();
+                  _showTranslationComingSoon(context, appState);
                 },
-                tooltip: appState.languageCode == 'ar' 
-                    ? (appState.isDarkMode ? 'الوضع النهاري' : 'الوضع الليلي')
-                    : (appState.isDarkMode ? 'Light Mode' : 'Dark Mode'),
+                tooltip: appState.languageCode == 'ar' ? 'الترجمة' : 'Translation',
                 appState: appState,
               ),
               

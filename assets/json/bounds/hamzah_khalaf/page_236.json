@@ -1,0 +1,136 @@
+{
+  "pageNumber": 236,
+  "qiraatId": "hamzah_khalaf",
+  "ayahs": [
+    {
+      "surahNumber": 11,
+      "ayahNumber": 118,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.15,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 11,
+      "ayahNumber": 119,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.23,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 11,
+      "ayahNumber": 120,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.31,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 11,
+      "ayahNumber": 121,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.39,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 11,
+      "ayahNumber": 122,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.47,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 11,
+      "ayahNumber": 123,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.55,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 12,
+      "ayahNumber": 1,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.63,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 12,
+      "ayahNumber": 2,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.71,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 12,
+      "ayahNumber": 3,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.79,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    },
+    {
+      "surahNumber": 12,
+      "ayahNumber": 4,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.87,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    }
+  ]
+}

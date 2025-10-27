@@ -1,5 +1,5 @@
 {
-  "page": 1,
+  "pageNumber": 1,
   "qiraatId": "nafi_warsh",
   "ayahs": [
     {
@@ -7,10 +7,11 @@
       "ayahNumber": 1,
       "positions": [
         {
-          "x": 0.20,
-          "y": 0.34,
-          "width": 0.60,
-          "height": 0.055
+          "x": 0.15,
+          "y": 0.35,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
         }
       ]
     },
@@ -19,10 +20,11 @@
       "ayahNumber": 2,
       "positions": [
         {
-          "x": 0.18,
-          "y": 0.405,
-          "width": 0.64,
-          "height": 0.045
+          "x": 0.12,
+          "y": 0.45,
+          "width": 0.76,
+          "height": 0.07,
+          "lineNumber": 0
         }
       ]
     },
@@ -31,10 +33,11 @@
       "ayahNumber": 3,
       "positions": [
         {
-          "x": 0.15,
-          "y": 0.465,
-          "width": 0.70,
-          "height": 0.045
+          "x": 0.18,
+          "y": 0.54,
+          "width": 0.64,
+          "height": 0.06,
+          "lineNumber": 0
         }
       ]
     },
@@ -43,10 +46,11 @@
       "ayahNumber": 4,
       "positions": [
         {
-          "x": 0.12,
-          "y": 0.525,
-          "width": 0.76,
-          "height": 0.045
+          "x": 0.16,
+          "y": 0.62,
+          "width": 0.68,
+          "height": 0.07,
+          "lineNumber": 0
         }
       ]
     },
@@ -55,10 +59,11 @@
       "ayahNumber": 5,
       "positions": [
         {
-          "x": 0.15,
-          "y": 0.585,
-          "width": 0.70,
-          "height": 0.045
+          "x": 0.14,
+          "y": 0.71,
+          "width": 0.72,
+          "height": 0.06,
+          "lineNumber": 0
         }
       ]
     },
@@ -67,10 +72,11 @@
       "ayahNumber": 6,
       "positions": [
         {
-          "x": 0.10,
-          "y": 0.650,
-          "width": 0.80,
-          "height": 0.055
+          "x": 0.13,
+          "y": 0.79,
+          "width": 0.74,
+          "height": 0.06,
+          "lineNumber": 0
         }
       ]
     },
@@ -79,10 +85,11 @@
       "ayahNumber": 7,
       "positions": [
         {
-          "x": 0.22,
-          "y": 0.735,
-          "width": 0.56,
-          "height": 0.045
+          "x": 0.11,
+          "y": 0.87,
+          "width": 0.78,
+          "height": 0.08,
+          "lineNumber": 0
         }
       ]
     }

@@ -397,56 +397,52 @@ class _ReadingScreenState extends State<ReadingScreen> {
                               ? const Icon(Icons.download_done, color: Colors.green)
                               : const Icon(Icons.download, color: Colors.grey),
                       onTap: () async {
-                        if (qiraat.isDownloaded) {
+                        // Allow selection if downloaded OR if online (for streaming)
+                        final connectivityResult = await Connectivity().checkConnectivity();
+                        final isOnline = connectivityResult == ConnectivityResult.wifi || 
+                                        connectivityResult == ConnectivityResult.mobile ||
+                                        connectivityResult == ConnectivityResult.ethernet;
+                        
+                        if (qiraat.isDownloaded || isOnline) {
+                          // Can select - either downloaded or online for streaming
                           await qiraatProvider.selectQiraat(qiraat.id);
                           Navigator.pop(context);
                         } else {
-                          // Check connectivity first before allowing selection
-                          final connectivityResult = await Connectivity().checkConnectivity();
-                          final isOffline = connectivityResult != ConnectivityResult.wifi && 
-                                            connectivityResult != ConnectivityResult.mobile &&
-                                            connectivityResult != ConnectivityResult.ethernet;
+                          // Offline and not downloaded - show error
+                          if (!context.mounted) return;
+                          final localizations = AppLocalizations.of(context);
+                          final appState = Provider.of<AppState>(context, listen: false);
                           
-                          if (isOffline) {
-                            // Show offline error - cannot access undownloaded riwayat
-                            if (!context.mounted) return;
-                            final localizations = AppLocalizations.of(context);
-                            final appState = Provider.of<AppState>(context, listen: false);
-                            
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: Text(
-                                  localizations.noInternetConnection,
-                                  style: TextStyle(
-                                    fontSize: 18.sp,
-                                    fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
-                                  ),
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text(
+                                localizations.noInternetConnection,
+                                style: TextStyle(
+                                  fontSize: 18.sp,
+                                  fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
                                 ),
-                                content: Text(
-                                  localizations.offlineRiwayatMessage,
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
-                                  ),
+                              ),
+                              content: Text(
+                                localizations.offlineRiwayatMessage,
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
                                 ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    child: Text(
-                                      localizations.connectToInternet,
-                                      style: TextStyle(
-                                        fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
-                                      ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: Text(
+                                    localizations.connectToInternet,
+                                    style: TextStyle(
+                                      fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
                                     ),
                                   ),
-                                ],
-                              ),
-                            );
-                          } else {
-                            // Online - show download dialog
-                            _showDownloadDialog(context, qiraat, qiraatProvider);
-                          }
+                                ),
+                              ],
+                            ),
+                          );
                         }
                       },
                     );
@@ -456,58 +452,6 @@ class _ReadingScreenState extends State<ReadingScreen> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  void _showDownloadDialog(BuildContext context, qiraat, QiraatProvider qiraatProvider) {
-    // Show download dialog (connectivity already checked before calling this)
-    showDialog(
-      context: context,
-      builder: (context) => Consumer<AppState>(
-        builder: (context, appState, child) {
-          final localizations = AppLocalizations.of(context);
-          return AlertDialog(
-            title: Text(
-              localizations.downloadQiraat,
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
-              ),
-            ),
-            content: Text(
-              '${localizations.downloadConfirmation} ${appState.languageCode == 'ar' ? qiraat.arabicName : qiraat.name}?\nSize: approximately ${qiraatProvider.getQiraatSize(qiraat.id).toStringAsFixed(1)} MB',
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text(
-                  localizations.cancel,
-                  style: TextStyle(
-                    fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
-                  ),
-                ),
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  Navigator.pop(context);
-                  Navigator.pop(context); // Close qiraat selector
-                  await qiraatProvider.downloadQiraat(qiraat.id);
-                },
-                child: Text(
-                  localizations.download,
-                  style: TextStyle(
-                    fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
-                  ),
-                ),
-              ),
-            ],
-          );
-        },
       ),
     );
   }

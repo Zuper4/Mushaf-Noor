@@ -1,0 +1,19 @@
+{
+  "pageNumber": 49,
+  "qiraatId": "nafi_qalun",
+  "ayahs": [
+    {
+      "surahNumber": 2,
+      "ayahNumber": 282,
+      "positions": [
+        {
+          "x": 0.15,
+          "y": 0.51,
+          "width": 0.7,
+          "height": 0.08,
+          "lineNumber": 0
+        }
+      ]
+    }
+  ]
+}
