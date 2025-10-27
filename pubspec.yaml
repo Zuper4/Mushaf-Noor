@@ -1,7 +1,7 @@
 name: mushaf_noor
 description: A beautiful Quran reading app with multiple qiraats support and downloadable content.
 publish_to: 'none'
-version: 1.0.0+2
+version: 1.0.1+3
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
