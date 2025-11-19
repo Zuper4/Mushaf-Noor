@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppState extends ChangeNotifier {
   int _currentPage = 2;  // Start from page 2 (page 1 is cover)
@@ -8,6 +9,7 @@ class AppState extends ChangeNotifier {
   bool _showTranslation = false;
   bool _isFullScreen = false;
   String _languageCode = 'en'; // Default to English
+  bool _isInitialized = false;
 
   // Getters
   int get currentPage => _currentPage;
@@ -17,11 +19,57 @@ class AppState extends ChangeNotifier {
   bool get showTranslation => _showTranslation;
   bool get isFullScreen => _isFullScreen;
   String get languageCode => _languageCode;
+  bool get isInitialized => _isInitialized;
+
+  AppState() {
+    _loadSettings();
+  }
+
+  /// Load settings from SharedPreferences
+  Future<void> _loadSettings() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      
+      _isDarkMode = prefs.getBool('isDarkMode') ?? false;
+      _languageCode = prefs.getString('languageCode') ?? 'en';
+      _currentPage = prefs.getInt('currentPage') ?? 2;
+      _fontSize = prefs.getDouble('fontSize') ?? 18.0;
+      _fontFamily = prefs.getString('fontFamily') ?? 'Uthmanic';
+      _showTranslation = prefs.getBool('showTranslation') ?? false;
+      
+      _isInitialized = true;
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Error loading app settings: $e');
+      _isInitialized = true;
+      notifyListeners();
+    }
+  }
+
+  /// Save a specific setting to SharedPreferences
+  Future<void> _saveSetting(String key, dynamic value) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      
+      if (value is bool) {
+        await prefs.setBool(key, value);
+      } else if (value is int) {
+        await prefs.setInt(key, value);
+      } else if (value is double) {
+        await prefs.setDouble(key, value);
+      } else if (value is String) {
+        await prefs.setString(key, value);
+      }
+    } catch (e) {
+      debugPrint('Error saving setting $key: $e');
+    }
+  }
 
   // Page navigation
   void goToPage(int page) {
     if (page >= 1 && page <= 606) {
       _currentPage = page;
+      _saveSetting('currentPage', page);
       notifyListeners();
     }
   }
@@ -29,6 +77,7 @@ class AppState extends ChangeNotifier {
   void nextPage() {
     if (_currentPage < 606) {
       _currentPage++;
+      _saveSetting('currentPage', _currentPage);
       notifyListeners();
     }
   }
@@ -36,6 +85,7 @@ class AppState extends ChangeNotifier {
   void previousPage() {
     if (_currentPage > 1) {
       _currentPage--;
+      _saveSetting('currentPage', _currentPage);
       notifyListeners();
     }
   }
@@ -43,11 +93,13 @@ class AppState extends ChangeNotifier {
   // Theme settings
   void toggleDarkMode() {
     _isDarkMode = !_isDarkMode;
+    _saveSetting('isDarkMode', _isDarkMode);
     notifyListeners();
   }
 
   void setDarkMode(bool isDark) {
     _isDarkMode = isDark;
+    _saveSetting('isDarkMode', isDark);
     notifyListeners();
   }
 
@@ -55,6 +107,7 @@ class AppState extends ChangeNotifier {
   void increaseFontSize() {
     if (_fontSize < 32.0) {
       _fontSize += 2.0;
+      _saveSetting('fontSize', _fontSize);
       notifyListeners();
     }
   }
@@ -62,6 +115,7 @@ class AppState extends ChangeNotifier {
   void decreaseFontSize() {
     if (_fontSize > 12.0) {
       _fontSize -= 2.0;
+      _saveSetting('fontSize', _fontSize);
       notifyListeners();
     }
   }
@@ -69,23 +123,27 @@ class AppState extends ChangeNotifier {
   void setFontSize(double size) {
     if (size >= 12.0 && size <= 32.0) {
       _fontSize = size;
+      _saveSetting('fontSize', size);
       notifyListeners();
     }
   }
 
   void setFontFamily(String family) {
     _fontFamily = family;
+    _saveSetting('fontFamily', family);
     notifyListeners();
   }
 
   // Display settings
   void toggleTranslation() {
     _showTranslation = !_showTranslation;
+    _saveSetting('showTranslation', _showTranslation);
     notifyListeners();
   }
 
   void setShowTranslation(bool show) {
     _showTranslation = show;
+    _saveSetting('showTranslation', show);
     notifyListeners();
   }
 
@@ -102,11 +160,13 @@ class AppState extends ChangeNotifier {
   // Language settings
   void setLanguage(String languageCode) {
     _languageCode = languageCode;
+    _saveSetting('languageCode', languageCode);
     notifyListeners();
   }
 
   void toggleLanguage() {
     _languageCode = _languageCode == 'en' ? 'ar' : 'en';
+    _saveSetting('languageCode', _languageCode);
     notifyListeners();
   }
 

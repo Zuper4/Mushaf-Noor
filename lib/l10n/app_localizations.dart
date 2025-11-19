@@ -59,7 +59,7 @@ class AppLocalizations {
       
       // Qiraat Explanation
       'what_are_qiraats': 'What are the Qira\'at (The Canonical Recitations)?',
-      'qiraats_explanation': 'The Qira\'at (singular: Qira\'ah) are the ten authentic and distinct methods of reciting the Holy Qur\'an, which trace back through an unbroken chain of reliable narrators directly to the Prophet Muhammad (PBUH).\n\nThese are not different versions of the Qur\'an; they are diverse linguistic, phonetic, and rhythmic styles of recitation, all of which are considered divinely revealed and authentic.',
+      'qiraats_explanation': 'The Qira\'at (singular: Qira\'ah) are the ten authentic and distinct methods of reciting the Holy Qur\'an, which trace back through an unbroken chain of reliable narrators directly to the Prophet Muhammad (PBUH).\n\nThese are not different versions of the Qur\'an; they are diverse linguistic, phonetic, and rhythmic styles of recitation, all of which are divinely revealed and authentic.',
       'riwayat_title': 'The Riwayāt (Narrations)',
       'riwayat_explanation': 'Each of the ten major Qira\'at is primarily conveyed through two major narrations, known as Riwayāt. A Riwayah is the specific, authenticated transmission route from a primary Qari (Reciter/Imam). For instance, the most common recitation worldwide is the Riwayah of Hafs from the Qira\'ah of Imam \'Āsim.',
       'app_feature_note': 'App Feature Note',
@@ -214,7 +214,7 @@ class AppLocalizations {
       
       // Qiraat Explanation
       'what_are_qiraats': 'ما هي القراءات القرآنية المتواترة؟',
-      'qiraats_explanation': 'القراءات (مفردها: قراءة) هي عشر طرق أصيلة ومتميزة لتلاوة القرآن الكريم، تعود بسلسلة متصلة من الرواة الموثوقين مباشرة إلى النبي محمد صلى الله عليه وسلم.\n\nهذه ليست نسخاً مختلفة من القرآن؛ بل هي أساليب لغوية وصوتية وإيقاعية متنوعة للتلاوة، وكلها تعتبر منزلة من عند الله وأصيلة.',
+      'qiraats_explanation': 'القراءات (مفردها: قراءة) هي عشر طرق أصيلة ومتميزة لتلاوة القرآن الكريم، تعود بسلسلة متصلة من الرواة الموثوقين مباشرة إلى النبي محمد صلى الله عليه وسلم.\n\nهذه ليست نسخاً مختلفة من القرآن؛ بل هي أساليب لغوية وصوتية وإيقاعية متنوعة للتلاوة، وكلها منزلة من عند الله وأصيلة.',
       'riwayat_title': 'الروايات',
       'riwayat_explanation': 'كل قراءة من القراءات العشر الكبرى تُنقل بشكل رئيسي من خلال روايتين رئيسيتين، تُعرف بالروايات. الرواية هي طريق النقل المحددة والموثقة من قارئ رئيسي (إمام). على سبيل المثال، القراءة الأكثر شيوعاً في جميع أنحاء العالم هي رواية حفص عن الإمام عاصم.',
       'app_feature_note': 'ملاحظة حول ميزة التطبيق',
@@ -370,7 +370,7 @@ class AppLocalizations {
       
       // Qiraat Explanation
       'what_are_qiraats': 'Que sont les Qira\'at (Les Récitations Canoniques)?',
-      'qiraats_explanation': 'Les Qira\'at (singulier: Qira\'ah) sont les dix méthodes authentiques et distinctes de récitation du Saint Coran, qui remontent par une chaîne ininterrompue de narrateurs fiables directement au Prophète Muhammad (PSL).\n\nCe ne sont pas des versions différentes du Coran; ce sont des styles linguistiques, phonétiques et rythmiques diversifiés de récitation, tous considérés comme révélés divinement et authentiques.',
+      'qiraats_explanation': 'Les Qira\'at (singulier: Qira\'ah) sont les dix méthodes authentiques et distinctes de récitation du Saint Coran, qui remontent par une chaîne ininterrompue de narrateurs fiables directement au Prophète Muhammad (PSL).\n\nCe ne sont pas des versions différentes du Coran; ce sont des styles linguistiques, phonétiques et rythmiques diversifiés de récitation, tous révélés divinement et authentiques.',
       'riwayat_title': 'Les Riwayāt (Narrations)',
       'riwayat_explanation': 'Chacune des dix principales Qira\'at est principalement transmise à travers deux narrations majeures, connues sous le nom de Riwayāt. Une Riwayah est la voie de transmission spécifique et authentifiée d\'un Qari principal (Récitateur/Imam). Par exemple, la récitation la plus courante dans le monde est la Riwayah de Hafs de la Qira\'ah de l\'Imam \'Āsim.',
       'app_feature_note': 'Note',
@@ -526,7 +526,7 @@ class AppLocalizations {
       
       // Qiraat Explanation
       'what_are_qiraats': '¿Qué son las Qira\'at (Las Recitaciones Canónicas)?',
-      'qiraats_explanation': 'Las Qira\'at (singular: Qira\'ah) son los diez métodos auténticos y distintos de recitar el Sagrado Corán, que se remontan a través de una cadena ininterrumpida de narradores confiables directamente al Profeta Muhammad (la paz sea con él).\n\nEstas no son versiones diferentes del Corán; son estilos lingüísticos, fonéticos y rítmicos diversos de recitación, todos considerados divinamente revelados y auténticos.',
+      'qiraats_explanation': 'Las Qira\'at (singular: Qira\'ah) son los diez métodos auténticos y distintos de recitar el Sagrado Corán, que se remontan a través de una cadena ininterrumpida de narradores confiables directamente al Profeta Muhammad (la paz sea con él).\n\nEstas no son versiones diferentes del Corán; son estilos lingüísticos, fonéticos y rítmicos diversos de recitación, todos divinamente revelados y auténticos.',
       'riwayat_title': 'Las Riwayāt (Narraciones)',
       'riwayat_explanation': 'Cada una de las diez Qira\'at principales se transmite principalmente a través de dos narraciones principales, conocidas como Riwayāt. Una Riwayah es la ruta de transmisión específica y autenticada de un Qari principal (Recitador/Imam). Por ejemplo, la recitación más común en todo el mundo es la Riwayah de Hafs de la Qira\'ah del Imam \'Āsim.',
       'app_feature_note': 'Nota',
@@ -682,7 +682,7 @@ class AppLocalizations {
       
       // Qiraat Explanation
       'what_are_qiraats': 'क़िरात (प्रामाणिक पाठ) क्या हैं?',
-      'qiraats_explanation': 'क़िरात (एकवचन: क़िरा\'अह) पवित्र कुरान की पाठ करने की दस प्रामाणिक और विशिष्ट विधियां हैं, जो विश्वसनीय वर्णनकर्ताओं की एक अटूट श्रृंखला के माध्यम से सीधे पैगंबर मुहम्मद (सल्ल०) तक जाती हैं।\n\nये कुरान के विभिन्न संस्करण नहीं हैं; ये पाठ की विविध भाषाई, ध्वन्यात्मक और लयबद्ध शैलियाँ हैं, जो सभी दिव्य रूप से प्रकट और प्रामाणिक मानी जाती हैं।',
+      'qiraats_explanation': 'क़िरात (एकवचन: क़िरा\'अह) पवित्र कुरान की पाठ करने की दस प्रामाणिक और विशिष्ट विधियां हैं, जो विश्वसनीय वर्णनकर्ताओं की एक अटूट श्रृंखला के माध्यम से सीधे पैगंबर मुहम्मद (सल्ल०) तक जाती हैं।\n\nये कुरान के विभिन्न संस्करण नहीं हैं; ये पाठ की विविध भाषाई, ध्वन्यात्मक और लयबद्ध शैलियाँ हैं, जो सभी दिव्य रूप से प्रकट और प्रामाणिक हैं।',
       'riwayat_title': 'रिवायत (वर्णन)',
       'riwayat_explanation': 'दस प्रमुख क़िरात में से प्रत्येक मुख्य रूप से दो प्रमुख वर्णनों के माध्यम से प्रसारित होता है, जिन्हें रिवायत के रूप में जाना जाता है। एक रिवायत एक प्राथमिक क़ारी (पाठक/इमाम) से विशिष्ट, प्रमाणित संचरण मार्ग है। उदाहरण के लिए, दुनिया भर में सबसे आम पाठ इमाम आसिम की क़िरात से हफ्स की रिवायत है।',
       'app_feature_note': 'ऐप फ़ीचर नोट',

@@ -54,9 +54,10 @@ class AudioService {
       // Ensure loop mode is OFF for sequential playback
       await _audioPlayer.setLoopMode(LoopMode.off);
       
-      // Enable skipSilence to improve audio quality at different speeds
-      // This helps reduce artifacts and vibrations during speed changes
-      await _audioPlayer.setSkipSilenceEnabled(true);
+      // Disable skipSilence to preserve intentional pauses in recitation
+      // Note: skipSilence only trims silence at the very beginning and end of audio files
+      // It does NOT affect pauses in the middle of the recitation
+      await _audioPlayer.setSkipSilenceEnabled(false);
       
       // Set volume to 1.0 (full) for consistent playback
       await _audioPlayer.setVolume(1.0);

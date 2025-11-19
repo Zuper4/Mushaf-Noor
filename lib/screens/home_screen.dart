@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/app_state.dart';
 import '../providers/qiraat_provider.dart';
 import '../models/surah.dart';
@@ -18,10 +19,50 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String _searchQuery = '';
   final FocusNode _searchFocusNode = FocusNode();
+  final ScrollController _surahListController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Restore scroll position after the widget is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _restoreScrollPosition();
+    });
+    
+    // Save scroll position when scrolling
+    _surahListController.addListener(() {
+      _saveScrollPosition();
+    });
+  }
+
+  Future<void> _restoreScrollPosition() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final savedPosition = prefs.getDouble('surah_list_scroll_position') ?? 0.0;
+      
+      if (_surahListController.hasClients && savedPosition > 0) {
+        _surahListController.jumpTo(savedPosition);
+      }
+    } catch (e) {
+      debugPrint('Error restoring scroll position: $e');
+    }
+  }
+
+  Future<void> _saveScrollPosition() async {
+    try {
+      if (_surahListController.hasClients) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setDouble('surah_list_scroll_position', _surahListController.offset);
+      }
+    } catch (e) {
+      debugPrint('Error saving scroll position: $e');
+    }
+  }
 
   @override
   void dispose() {
     _searchFocusNode.dispose();
+    _surahListController.dispose();
     super.dispose();
   }
 
@@ -172,6 +213,7 @@ class _HomeScreenState extends State<HomeScreen> {
               // Surahs List
               Expanded(
                 child: ListView.builder(
+                  controller: _surahListController,
                   padding: EdgeInsets.only(
                     left: 16.w,
                     right: 16.w,

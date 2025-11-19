@@ -42,11 +42,23 @@ class QiraatProvider extends ChangeNotifier {
       // Update download status for all qiraats
       await _updateDownloadStatuses();
 
-      // Set default qiraat (asim_hafs - since we have its images)
-      _selectedQiraat = _availableQiraats.firstWhere(
-        (q) => q.id == 'asim_hafs',
-        orElse: () => _availableQiraats.first,
-      );
+      // Try to restore last selected qiraat, otherwise default to asim_hafs
+      final savedQiraatId = await _databaseService.getSelectedQiraat();
+      if (savedQiraatId != null) {
+        _selectedQiraat = _availableQiraats.firstWhere(
+          (q) => q.id == savedQiraatId,
+          orElse: () => _availableQiraats.firstWhere(
+            (q) => q.id == 'asim_hafs',
+            orElse: () => _availableQiraats.first,
+          ),
+        );
+      } else {
+        // Set default qiraat (asim_hafs - since we have its images)
+        _selectedQiraat = _availableQiraats.firstWhere(
+          (q) => q.id == 'asim_hafs',
+          orElse: () => _availableQiraats.first,
+        );
+      }
     } catch (e) {
       debugPrint('Error initializing qiraats: $e');
       // Fall back to default qiraats

@@ -335,123 +335,158 @@ class _ReadingScreenState extends State<ReadingScreen> {
         initialChildSize: 0.6,
         maxChildSize: 0.9,
         minChildSize: 0.3,
-        builder: (context, scrollController) => Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
-          ),
-          child: Column(
-            children: [
-              Container(
-                width: 40.w,
-                height: 4.h,
-                margin: EdgeInsets.symmetric(vertical: 8.h),
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(2.r),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(20.w),
-                child: Text(
-                  'اختر القراءة',
-                  style: TextStyle(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Amiri',
+        builder: (context, scrollController) {
+          // Scroll to currently selected qiraat after the widget is built
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (scrollController.hasClients && qiraatProvider.selectedQiraat != null) {
+              final selectedIndex = qiraatProvider.availableQiraats
+                  .indexWhere((q) => q.id == qiraatProvider.selectedQiraat!.id);
+              
+              if (selectedIndex != -1) {
+                // Calculate item height more accurately for ListTile with title + subtitle
+                final itemHeight = 76.h;
+                
+                // Calculate position and offset to center the selected item
+                // Subtract half the visible height to center the item in viewport
+                final viewportHeight = MediaQuery.of(context).size.height * 0.6; // 60% of screen
+                final centerOffset = viewportHeight / 2;
+                
+                final targetOffset = (selectedIndex * itemHeight) - centerOffset;
+                
+                // Clamp to valid scroll range
+                final maxScroll = scrollController.position.maxScrollExtent;
+                final clampedOffset = targetOffset.clamp(0.0, maxScroll);
+                
+                scrollController.jumpTo(clampedOffset);
+              }
+            }
+          });
+          
+          return Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  width: 40.w,
+                  height: 4.h,
+                  margin: EdgeInsets.symmetric(vertical: 8.h),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(2.r),
                   ),
                 ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  controller: scrollController,
-                  itemCount: qiraatProvider.availableQiraats.length,
-                  itemBuilder: (context, index) {
-                    final qiraat = qiraatProvider.availableQiraats[index];
-                    final isSelected = qiraatProvider.selectedQiraat?.id == qiraat.id;
+                Padding(
+                  padding: EdgeInsets.all(20.w),
+                  child: Text(
+                    'اختر القراءة',
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Amiri',
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Scrollbar(
+                    controller: scrollController,
+                    thumbVisibility: true,
+                    thickness: 12.w,
+                    radius: Radius.circular(6.r),
+                    interactive: true, // Enable dragging the scrollbar for fast scrolling
+                    child: ListView.builder(
+                      controller: scrollController,
+                      itemCount: qiraatProvider.availableQiraats.length,
+                      itemBuilder: (context, index) {
+                        final qiraat = qiraatProvider.availableQiraats[index];
+                        final isSelected = qiraatProvider.selectedQiraat?.id == qiraat.id;
                     
-                    return ListTile(
-                      title: Text(
-                        qiraat.arabicName,
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontFamily: 'Amiri',
-                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                        ),
-                      ),
-                      subtitle: Text(
-                        qiraat.name,
-                        style: TextStyle(fontSize: 14.sp),
-                      ),
-                      leading: Container(
-                        width: 20.w,
-                        height: 20.w,
-                        decoration: BoxDecoration(
-                          color: Color(int.parse('0xFF${qiraat.colorCode.substring(1)}')),
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      trailing: isSelected
-                          ? Icon(Icons.check, color: Theme.of(context).primaryColor)
-                          : qiraat.isDownloaded
-                              ? const Icon(Icons.download_done, color: Colors.green)
-                              : const Icon(Icons.download, color: Colors.grey),
-                      onTap: () async {
-                        // Allow selection if downloaded OR if online (for streaming)
-                        final connectivityResult = await Connectivity().checkConnectivity();
-                        final isOnline = connectivityResult == ConnectivityResult.wifi || 
-                                        connectivityResult == ConnectivityResult.mobile ||
-                                        connectivityResult == ConnectivityResult.ethernet;
-                        
-                        if (qiraat.isDownloaded || isOnline) {
-                          // Can select - either downloaded or online for streaming
-                          await qiraatProvider.selectQiraat(qiraat.id);
-                          Navigator.pop(context);
-                        } else {
-                          // Offline and not downloaded - show error
-                          if (!context.mounted) return;
-                          final localizations = AppLocalizations.of(context);
-                          final appState = Provider.of<AppState>(context, listen: false);
-                          
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: Text(
-                                localizations.noInternetConnection,
-                                style: TextStyle(
-                                  fontSize: 18.sp,
-                                  fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
-                                ),
-                              ),
-                              content: Text(
-                                localizations.offlineRiwayatMessage,
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  child: Text(
-                                    localizations.connectToInternet,
+                        return ListTile(
+                          title: Text(
+                            qiraat.arabicName,
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              fontFamily: 'Amiri',
+                              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                            ),
+                          ),
+                          subtitle: Text(
+                            qiraat.name,
+                            style: TextStyle(fontSize: 14.sp),
+                          ),
+                          leading: Container(
+                            width: 20.w,
+                            height: 20.w,
+                            decoration: BoxDecoration(
+                              color: Color(int.parse('0xFF${qiraat.colorCode.substring(1)}')),
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          trailing: isSelected
+                              ? Icon(Icons.check, color: Theme.of(context).primaryColor)
+                              : qiraat.isDownloaded
+                                  ? const Icon(Icons.download_done, color: Colors.green)
+                                  : const Icon(Icons.download, color: Colors.grey),
+                          onTap: () async {
+                            // Allow selection if downloaded OR if online (for streaming)
+                            final connectivityResult = await Connectivity().checkConnectivity();
+                            final isOnline = connectivityResult == ConnectivityResult.wifi || 
+                                            connectivityResult == ConnectivityResult.mobile ||
+                                            connectivityResult == ConnectivityResult.ethernet;
+                            
+                            if (qiraat.isDownloaded || isOnline) {
+                              // Can select - either downloaded or online for streaming
+                              await qiraatProvider.selectQiraat(qiraat.id);
+                              Navigator.pop(context);
+                            } else {
+                              // Offline and not downloaded - show error
+                              if (!context.mounted) return;
+                              final localizations = AppLocalizations.of(context);
+                              final appState = Provider.of<AppState>(context, listen: false);
+                              
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text(
+                                    localizations.noInternetConnection,
                                     style: TextStyle(
+                                      fontSize: 18.sp,
                                       fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
                                     ),
                                   ),
+                                  content: Text(
+                                    localizations.offlineRiwayatMessage,
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
+                                      fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
+                                    ),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: Text(
+                                        localizations.connectToInternet,
+                                        style: TextStyle(
+                                          fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          );
-                        }
+                              );
+                            }
+                          },
+                        );
                       },
-                    );
-                  },
+                    ),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

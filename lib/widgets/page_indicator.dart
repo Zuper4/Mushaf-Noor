@@ -84,112 +84,143 @@ class PageIndicator extends StatelessWidget {
         initialChildSize: 0.7,
         maxChildSize: 0.9,
         minChildSize: 0.4,
-        builder: (context, scrollController) => Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
-          ),
-          child: Column(
-            children: [
-              Container(
-                width: 40.w,
-                height: 4.h,
-                margin: EdgeInsets.symmetric(vertical: 8.h),
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(2.r),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(16.w),
-                child: Text(
-                  localizations.selectPage,
-                  style: TextStyle(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
+        builder: (context, scrollController) {
+          // Scroll to current page after the widget is built
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (scrollController.hasClients) {
+              // Use a proportional approach since items have variable heights
+              // Calculate where in the list we are (0.0 to 1.0)
+              final proportion = (currentPage - 1) / (totalPages - 1);
+              
+              // Calculate the scroll position based on proportion of max scroll
+              final maxScroll = scrollController.position.maxScrollExtent;
+              final targetOffset = maxScroll * proportion;
+              
+              // Center the item by subtracting half viewport height
+              final viewportHeight = scrollController.position.viewportDimension;
+              final centeredOffset = targetOffset - (viewportHeight / 2);
+              
+              // Clamp to valid range
+              final clampedOffset = centeredOffset.clamp(0.0, maxScroll);
+              
+              scrollController.jumpTo(clampedOffset);
+            }
+          });
+          
+          return Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  width: 40.w,
+                  height: 4.h,
+                  margin: EdgeInsets.symmetric(vertical: 8.h),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(2.r),
                   ),
                 ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  controller: scrollController,
-                  padding: EdgeInsets.only(
-                    bottom: 20.h + MediaQuery.of(context).padding.bottom,
+                Padding(
+                  padding: EdgeInsets.all(16.w),
+                  child: Text(
+                    localizations.selectPage,
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
+                    ),
                   ),
-                  itemCount: totalPages,
-                  itemBuilder: (context, index) {
-                    final pageNum = index + 1;
-                    final surahsOnPage = _getSurahsStartingOnPage(pageNum);
-                    final isCurrentPage = pageNum == currentPage;
+                ),
+                Expanded(
+                  child: Scrollbar(
+                    controller: scrollController,
+                    thumbVisibility: true,
+                    thickness: 12.w,
+                    radius: Radius.circular(6.r),
+                    interactive: true, // Enable dragging the scrollbar
+                    child: ListView.builder(
+                      controller: scrollController,
+                      padding: EdgeInsets.only(
+                        bottom: 20.h + MediaQuery.of(context).padding.bottom,
+                      ),
+                      itemCount: totalPages,
+                      itemBuilder: (context, index) {
+                        final pageNum = index + 1;
+                        final surahsOnPage = _getSurahsStartingOnPage(pageNum);
+                        final isCurrentPage = pageNum == currentPage;
                     
-                    return ListTile(
-                      selected: isCurrentPage,
-                      selectedTileColor: Theme.of(context).primaryColor.withOpacity(0.1),
-                      leading: Container(
-                        width: 50.w,
-                        height: 50.w,
-                        decoration: BoxDecoration(
-                          color: isCurrentPage 
-                              ? Theme.of(context).primaryColor 
-                              : Theme.of(context).primaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        child: Center(
-                          child: Text(
-                            '$pageNum',
-                            style: TextStyle(
-                              color: isCurrentPage ? Colors.white : Theme.of(context).primaryColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.sp,
+                        return ListTile(
+                          selected: isCurrentPage,
+                          selectedTileColor: Theme.of(context).primaryColor.withOpacity(0.1),
+                          leading: Container(
+                            width: 50.w,
+                            height: 50.w,
+                            decoration: BoxDecoration(
+                              color: isCurrentPage 
+                                  ? Theme.of(context).primaryColor 
+                                  : Theme.of(context).primaryColor.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                            child: Center(
+                              child: Text(
+                                '$pageNum',
+                                style: TextStyle(
+                                  color: isCurrentPage ? Colors.white : Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16.sp,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      title: surahsOnPage.isNotEmpty
-                          ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: surahsOnPage.map((surah) {
-                                return Padding(
-                                  padding: EdgeInsets.only(bottom: 4.h),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          surah.getDisplayName(appState.languageCode),
-                                          style: TextStyle(
-                                            fontSize: 15.sp,
-                                            fontWeight: FontWeight.w600,
-                                            fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
+                          title: surahsOnPage.isNotEmpty
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: surahsOnPage.map((surah) {
+                                    return Padding(
+                                      padding: EdgeInsets.only(bottom: 4.h),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              surah.getDisplayName(appState.languageCode),
+                                              style: TextStyle(
+                                                fontSize: 15.sp,
+                                                fontWeight: FontWeight.w600,
+                                                fontFamily: appState.languageCode == 'ar' ? 'Amiri' : null,
+                                              ),
+                                            ),
                                           ),
-                                        ),
+                                          Text(
+                                            surah.nameArabic,
+                                            style: TextStyle(
+                                              fontSize: 15.sp,
+                                              fontWeight: FontWeight.w600,
+                                              fontFamily: 'Amiri',
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      Text(
-                                        surah.nameArabic,
-                                        style: TextStyle(
-                                          fontSize: 15.sp,
-                                          fontWeight: FontWeight.w600,
-                                          fontFamily: 'Amiri',
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }).toList(),
-                            )
-                          : null,
-                      onTap: () {
-                        Navigator.pop(context);
-                        onPageSelected?.call(pageNum);
+                                    );
+                                  }).toList(),
+                                )
+                              : null,
+                          onTap: () {
+                            Navigator.pop(context);
+                            onPageSelected?.call(pageNum);
+                          },
+                        );
                       },
-                    );
-                  },
+                    ),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
